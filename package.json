@@ -1,0 +1,22 @@
+{
+  "name": "disha-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Disha: student portal for the IITM BS Student Risk Identification and Intervention Platform (Team 026)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/mukta": "^5.1.0",
+    "pinia": "^2.2.6",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^5.4.11"
+  }
+}
