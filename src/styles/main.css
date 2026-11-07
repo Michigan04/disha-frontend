@@ -18,6 +18,14 @@
   --ok: #0a7d53;
   --ok-soft: #e6f5ee;
 
+  /* Calm palette: sage and sea-green for guidance and learning content */
+  --calm: #3c7f73;
+  --calm-ink: #2b5f56;
+  --calm-mid: #9ccabf;
+  --calm-light: #d6ebe5;
+  --calm-soft: #eef7f4;
+  --clay: #b0644b;
+
   --r-s: 8px;
   --r-m: 14px;
   --r-l: 22px;

@@ -53,7 +53,7 @@ const effort = computed(() => [
       </ol>
       <div class="heavy">
         <div v-if="thisWeek" class="this">
-          <span class="chip route">This week</span>
+          <span class="chip calm">This week</span>
           <strong>Week {{ thisWeek.w }}: {{ thisWeek.topic }}</strong>
           <span class="muted">{{ LOAD[thisWeek.load] }}</span>
         </div>
@@ -108,22 +108,25 @@ const effort = computed(() => [
 .guide {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  --c-light: #e6f2ee;
+  --c-mid: #bcdcd3;
+  --c-heavy: #7db3a6;
 }
 
 .tiles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 .tile {
   display: flex;
   flex-direction: column;
-  padding: 16px 18px;
+  padding: 20px 22px;
   border-radius: var(--r-m);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--calm-soft);
+  border: 1px solid var(--calm-light);
   line-height: 1.3;
 }
 
@@ -131,7 +134,7 @@ const effort = computed(() => [
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--route-ink);
+  color: var(--calm-ink);
 }
 
 .v small {
@@ -151,7 +154,7 @@ const effort = computed(() => [
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-m);
-  padding: 18px 20px;
+  padding: 22px 24px;
 }
 
 .block-head {
@@ -180,11 +183,12 @@ h3 {
   height: 12px;
   border-radius: 3px;
   margin-left: 6px;
+  box-shadow: inset 0 0 0 1px rgba(43, 95, 86, 0.12);
 }
 
-.l1 { background: #dfe1fa; }
-.l2 { background: #9da1ea; }
-.l3 { background: var(--route); }
+.l1 { background: var(--c-light); }
+.l2 { background: var(--c-mid); }
+.l3 { background: var(--c-heavy); }
 
 .strip {
   list-style: none;
@@ -192,12 +196,12 @@ h3 {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 4px;
+  gap: 6px;
 }
 
 .strip li {
-  height: 44px;
-  border-radius: 6px;
+  height: 46px;
+  border-radius: 8px;
   display: grid;
   place-items: end center;
   padding-bottom: 4px;
@@ -207,17 +211,16 @@ h3 {
 .strip .wn {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--route-ink);
+  color: var(--ink-2);
 }
 
-.strip .l3 .wn,
-.strip .l2 .wn {
-  color: #fff;
+.strip .l3 .wn {
+  color: var(--ink);
 }
 
 .strip li.now {
-  outline: 3px solid var(--ink);
-  outline-offset: 2px;
+  outline: 2px solid var(--calm-ink);
+  outline-offset: 3px;
 }
 
 .heavy {
@@ -233,6 +236,11 @@ h3 {
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
+}
+
+.chip.calm {
+  background: var(--calm-light);
+  color: var(--calm-ink);
 }
 
 .this strong {
@@ -262,7 +270,7 @@ h3 {
 .two {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 20px;
 }
 
 .effort {
@@ -285,7 +293,7 @@ h3 {
 .eb {
   height: 12px;
   border-radius: 999px;
-  background: var(--paper);
+  background: var(--calm-soft);
   overflow: hidden;
 }
 
@@ -295,9 +303,9 @@ h3 {
   border-radius: inherit;
 }
 
-.eb .top { background: var(--route); }
-.eb .pass { background: #9da1ea; }
-.eb .fail { background: var(--line-2); }
+.eb .top { background: var(--c-heavy); }
+.eb .pass { background: var(--c-mid); }
+.eb .fail { background: #d9d6cf; }
 
 .effort strong {
   text-align: right;
@@ -323,7 +331,7 @@ h3 {
 .slips svg {
   flex: none;
   margin-top: 3px;
-  color: var(--high);
+  color: var(--clay);
 }
 
 .habits {
@@ -332,7 +340,16 @@ h3 {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
+
+.habits .meter {
+  height: 8px;
+  background: var(--calm-soft);
+}
+
+.habits .meter > span {
+  background: #5d9c8e;
 }
 
 .ht {
@@ -359,9 +376,9 @@ h3 {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: var(--r-s);
-  background: var(--paper);
+  background: var(--calm-soft);
   font-size: 0.9375rem;
 }
 
@@ -373,7 +390,7 @@ h3 {
   display: grid;
   place-items: center;
   background: var(--surface);
-  color: var(--route);
+  color: var(--calm);
 }
 
 @media (max-width: 760px) {

@@ -50,8 +50,8 @@ const C = 2 * Math.PI * R
     <div class="head">
       <div class="ring" role="img" :aria-label="`${doneCount} of ${total} tasks done`">
         <svg viewBox="0 0 72 72" width="88" height="88">
-          <circle cx="36" cy="36" :r="R" fill="none" stroke="var(--line)" stroke-width="8" />
-          <circle cx="36" cy="36" :r="R" fill="none" stroke="var(--route)" stroke-width="8" stroke-linecap="round"
+          <circle cx="36" cy="36" :r="R" fill="none" stroke="var(--calm-light)" stroke-width="8" />
+          <circle cx="36" cy="36" :r="R" fill="none" stroke="var(--calm)" stroke-width="8" stroke-linecap="round"
             :stroke-dasharray="C" :stroke-dashoffset="C * (1 - pct / 100)" transform="rotate(-90 36 36)" />
         </svg>
         <span class="pct num">{{ pct }}%</span>
@@ -79,7 +79,7 @@ const C = 2 * Math.PI * R
             <span>{{ w.focus }}</span>
           </span>
           <span class="meta">
-            <span v-if="w.checkpoint" class="chip high">{{ w.checkpoint }}</span>
+            <span v-if="w.checkpoint" class="chip check">{{ w.checkpoint }}</span>
             <span class="chip">{{ w.hours }} h</span>
             <span class="count num">{{ weekCount(w) }}/{{ w.tasks.length }}</span>
             <Icon name="chevron" :size="18" class="chev" />
@@ -113,7 +113,7 @@ const C = 2 * Math.PI * R
 .plan {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .head {
@@ -124,7 +124,7 @@ const C = 2 * Math.PI * R
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-m);
-  padding: 18px 20px;
+  padding: 22px 24px;
 }
 
 .ring {
@@ -208,7 +208,7 @@ const C = 2 * Math.PI * R
   grid-template-columns: 34px 1fr auto;
   gap: 14px;
   align-items: center;
-  padding: 12px 18px;
+  padding: 14px 20px;
   border: 0;
   background: none;
   text-align: left;
@@ -220,7 +220,7 @@ const C = 2 * Math.PI * R
 }
 
 .now > .wk {
-  background: var(--route-soft);
+  background: var(--calm-soft);
 }
 
 .badge {
@@ -236,7 +236,7 @@ const C = 2 * Math.PI * R
 }
 
 .now .badge {
-  background: var(--route);
+  background: var(--calm);
   color: #fff;
 }
 
@@ -268,6 +268,11 @@ const C = 2 * Math.PI * R
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.chip.check {
+  background: #f8ece6;
+  color: #8a4a35;
 }
 
 .count {
@@ -307,7 +312,7 @@ const C = 2 * Math.PI * R
   width: 18px;
   height: 18px;
   margin-top: 3px;
-  accent-color: var(--route);
+  accent-color: var(--calm);
   flex: none;
 }
 
@@ -320,7 +325,16 @@ const C = 2 * Math.PI * R
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-m);
-  padding: 18px 20px;
+  padding: 22px 24px;
+}
+
+.helped .meter {
+  height: 8px;
+  background: var(--calm-soft);
+}
+
+.helped .meter > span {
+  background: var(--calm);
 }
 
 .helped h3 {

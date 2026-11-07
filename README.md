@@ -42,7 +42,7 @@ Each role can open only its own pages. A student who types a staff address, or s
 | Student | Level | Situation | What you will see |
 |---|---|---|---|
 | Ananya Rao | Foundation, term 4 | Failed Statistics II once | **Low risk**: 12-week study plan for Statistics II, built from past students |
-| Rahul Verma | Foundation, term 4 | Failed Programming in Python twice | **High risk**: instructor support plan and check-in; predicted score below the pass mark |
+| Rahul Verma | Foundation, term 4 | Failed Programming in Python twice | **High risk**: instructor support with a weekly check-in; predicted score below the pass mark |
 | Karthik Iyer | Diploma, term 3 | No failures | **On track**: course guides and predicted grades only |
 
 ## Features
@@ -68,19 +68,19 @@ Staff see a demo cohort of **60 students**: the three demo students plus 57 gene
 
 | Feature | User story | Who | Where |
 |---|---|---|---|
-| Overview: headline numbers, students newly moved to High risk, courses with the most risk flags, follow-ups due, risk over the term, caseload by staff member, data and system health, today's meetings | US-05, US-08, US-14 | Admin, support | **Overview** |
-| At-risk list sorted by urgency, with filters for risk, level, term and owner, the main reason, the model's predicted score, owner and case status | US-05 | Admin, support | **At-risk students** |
-| Assign one or many students to a staff member, with a reason; capacity shown | US-08 | Admin | **At-risk students** (tick rows) and each profile (**Reassign**) |
-| Student profile: risk reasons with the rule behind each, suggested actions labelled academic support, planning advice or administrative follow-up ("Mark shared"), route through the degree, this term's courses with predictions, course attempts, owner history | US-06 | Admin, support | Click any student |
-| Log an intervention: call, email, meeting or referral, linked reason, notes, outcome and follow-up date, with checks before saving | US-07 | Admin, support | Student profile |
-| Interventions board: follow-ups due and overdue (oldest first), every case by outcome, change an outcome from the card | US-07 | Admin, support | **Interventions** |
-| Course view for instructors: only students referred to their course, record support offered, course totals by component | US-13 | Instructor | **My course** |
-| Reports: time to first contact and to resolution, risk by term, outcomes by intervention type, top risk reasons, progress by level and admission cohort; totals only | US-12, US-14 | Admin | **Reports** |
-| CSV upload with a template, row-by-row checks (row number and reason for each rejected row), confirm, then risk recalculation; import history and data freshness | US-10 | Admin | **Data and system** |
-| System status and AI: imports, recalculations, alert batches, model version and accuracy, switch the language model off, flag sample messages | US-16 | Admin | **Data and system** |
-| Risk and milestone rules: edit thresholds and milestones, check the effect (who would change level) before applying, version history with reasons | US-09 | Admin | **Rules and access** |
-| Users and access: what each role can do, change a staff member's role, deactivate an account | US-15 | Admin | **Rules and access**, second tab |
-| Audit log: every assignment, intervention, outcome, rule change, import, recalculation and setting, searchable by text, action, person and date; read only | US-11 | Admin | **Audit log** |
+| Overview: KPI tiles with weekly trends, risk mix chart (with a split by level), where cases stand, caseload against capacity, students newly moved to High risk, at-risk students by week, courses with the most risk flags, follow-ups due, caseload by staff member, data and system health, today's meetings | US-04, US-07, US-13 | Admin, support | **Overview** |
+| At-risk list sorted by urgency, with filters for risk, level, term and owner, the main reason, the model's predicted score, owner and case status | US-04 | Admin, support | **At-risk students** |
+| Assign one or many students to a staff member, with a reason; capacity shown | US-07 | Admin | **At-risk students** (tick rows) and each profile (**Reassign**) |
+| Student profile: risk reasons with the rule behind each, suggested actions labelled academic support, planning advice or administrative follow-up ("Mark shared"), route through the degree, this term's courses with predictions, course attempts, owner history | US-05 | Admin, support | Click any student |
+| Log an intervention: call, email, meeting or referral, linked reason, notes, outcome and follow-up date, with checks before saving | US-06 | Admin, support | Student profile |
+| Interventions board: follow-ups due and overdue (oldest first), every case by outcome, change an outcome from the card | US-06 | Admin, support | **Interventions** |
+| Course view for instructors: only students referred to their course, record support offered, course totals by component | US-12 | Instructor | **My course** |
+| Reports: time to first contact and to resolution, risk by term, outcomes by intervention type, top risk reasons, progress by level and admission cohort; totals only | US-11, US-13 | Admin | **Reports** |
+| CSV upload with a template, row-by-row checks (row number and reason for each rejected row), confirm, then risk recalculation; import history and data freshness | US-09 | Admin | **Data and system** |
+| System status and AI: imports, recalculations, alert batches, model version and accuracy, switch the language model off, flag sample messages | US-15 | Admin | **Data and system** |
+| Risk and milestone rules: edit thresholds and milestones, check the effect (who would change level) before applying, version history with reasons | US-08 | Admin | **Rules and access** |
+| Users and access: what each role can do, change a staff member's role, deactivate an account | US-14 | Admin | **Rules and access**, second tab |
+| Audit log: every assignment, intervention, outcome, rule change, import, recalculation and setting, searchable by text, action, person and date; read only | US-10 | Admin | **Audit log** |
 
 Try this as the administrator: assign Vikram Singh and Yash Jain (filter **Owner: No owner**), open Vikram and log a call, change the High-risk rule to 3 failed attempts and check the effect, import the sample file on **Data and system**, then see all of it in the **Audit log**.
 
@@ -91,7 +91,7 @@ Try this as the administrator: assign Vikram Singh and Yash Jain (filter **Owner
 | `/#/` | Home: route through the degree, risk status, meetings, CGPA, OPPE eligibility, this term's courses |
 | `/#/progress` | CGPA and terms |
 | `/#/courses` | All courses, with filters |
-| `/#/courses/:id` | One course, in tabs: **Overview** (predicted score, this term, OPPE, instructor support), **Course guide**, **Study plan** (failed once), **Attempts**. Open a tab directly with `?tab=guide` or `?tab=plan` |
+| `/#/courses/:id` | One course, in tabs: **Overview** (instructor check-in, this term so far, predicted score, OPPE), **Course guide**, **Study plan** (failed once), **Attempts**. Open a tab directly with `?tab=guide` or `?tab=plan` |
 | `/#/oppe` | OPPE eligibility in detail |
 | `/#/meetings` | Google Calendar connection and upcoming meetings |
 | `/#/ask` | Ask Disha chatbot |
@@ -110,7 +110,7 @@ Try this as the administrator: assign Vikram Singh and Yash Jain (filter **Owner
 
 The rules live in `src/utils/progress.js` (`risk()`) and `src/data/rules.js`. They only consider courses the student has **not yet cleared**:
 
-- **High risk**: the same course failed twice. The course page shows the instructor's support plan and the next check-in.
+- **High risk**: the same course failed twice. The course page shows the instructor working with the student and the next check-in.
 - **Low risk**: a course failed once. The course page shows how past students who failed it once went on to pass it, and a week-by-week plan.
 - **On track**: no uncleared failed course.
 
@@ -229,7 +229,7 @@ src/
     chat.js             chatbot: JSON schema, context, validation, built-in responder
     calendar.js         Google Calendar connection and events
   components/           RouteTrack, RiskPanel, TodayCard, PredictionCard, CourseGuide, StudyPlan, ...
-    staff/              Kpi, RiskChip, StackBar, TrendChart, Timeline, InterventionForm, Person
+    staff/              Kpi, KpiChart, Donut, Gauge, RiskChip, StackBar, TrendChart, Timeline, InterventionForm, Person
   views/                one file per student page, LoginView.vue
     staff/              one file per staff page
   styles/main.css       colours, type and shared styles

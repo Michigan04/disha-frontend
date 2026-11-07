@@ -12,7 +12,7 @@ import Person from '../../components/staff/Person.vue'
 import TodayCard from '../../components/TodayCard.vue'
 import InterventionForm from '../../components/staff/InterventionForm.vue'
 
-// Course instructor or TA view (US-13): only students referred to this course,
+// Course instructor or TA view (US-12): only students referred to this course,
 // plus totals for the whole course.
 const auth = useAuthStore()
 const staff = useStaffStore()

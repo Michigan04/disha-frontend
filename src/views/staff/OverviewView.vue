@@ -4,11 +4,14 @@ import { useAuthStore } from '../../stores/auth'
 import { useStaffStore } from '../../stores/staff'
 import { STAFF, staffEvents } from '../../data/staff'
 import { COURSES } from '../../data/courses'
-import { INTERVENTION_TYPES } from '../../data/actions'
+import { INTERVENTION_TYPES, OUTCOMES } from '../../data/actions'
 import { formatDate, greeting, relativeDay } from '../../utils/dates'
 import TodayCard from '../../components/TodayCard.vue'
 import Icon from '../../components/Icon.vue'
-import Kpi from '../../components/staff/Kpi.vue'
+import KpiChart from '../../components/staff/KpiChart.vue'
+import Donut from '../../components/staff/Donut.vue'
+import Gauge from '../../components/staff/Gauge.vue'
+import Sparkline from '../../components/Sparkline.vue'
 import StackBar from '../../components/staff/StackBar.vue'
 import TrendChart from '../../components/staff/TrendChart.vue'
 import Person from '../../components/staff/Person.vue'
@@ -43,6 +46,9 @@ const byCourse = computed(() => {
 })
 const courseMax = computed(() => Math.max(...byCourse.value.map((c) => c.high + c.low + c.pred)))
 
+// Risk colours, shared by every chart on this page (checked for colour-blind separation)
+const C = { none: '#1f9a6e', low: '#d98a1c', high: '#b42318' }
+
 // Weekly counts this term (sample history ending at today's numbers)
 const trend = computed(() => {
   const h = high.value.length
@@ -50,10 +56,53 @@ const trend = computed(() => {
   return {
     labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
     series: [
-      { name: 'Low', color: '#c27610', values: [l + 4, l + 4, l + 3, l + 2, l + 2, l + 1, l] },
-      { name: 'High', color: '#b42318', values: [h - 3, h - 3, h - 2, h - 2, h - 2, h - 2, h] },
+      { name: 'Low', color: C.low, values: [l + 4, l + 4, l + 3, l + 2, l + 2, l + 1, l] },
+      { name: 'High', color: C.high, values: [h - 3, h - 3, h - 2, h - 2, h - 2, h - 2, h] },
     ],
   }
+})
+const signed = (n) => (n > 0 ? `+${n}` : n < 0 ? `\u2212${-n}` : '0')
+const change = (vals) => vals.at(-1) - vals[0]
+
+// Risk mix of the whole cohort
+const riskParts = computed(() => [
+  { key: 'none', label: 'On track', value: staff.rows.length - staff.atRisk.length, color: C.none },
+  { key: 'low', label: 'Low risk', value: low.value.length, color: C.low, to: { path: '/staff/students', query: { risk: 'low' } } },
+  { key: 'high', label: 'High risk', value: high.value.length, color: C.high, to: { path: '/staff/students', query: { risk: 'high' } } },
+])
+
+// Where each at-risk case stands (latest intervention outcome)
+const caseRows = computed(() => (isAdmin.value ? staff.atRisk : mine.value))
+const caseStatus = computed(() => {
+  const count = {}
+  for (const r of caseRows.value) {
+    const k = staff.statusOf(r.id) || 'plan'
+    count[k] = (count[k] || 0) + 1
+  }
+  const label = (k) => (k === 'plan' ? 'Following the study plan' : OUTCOMES[k].label)
+  return Object.entries(count)
+    .map(([key, n]) => ({ key, n, label: label(key) }))
+    .sort((a, b) => b.n - a.n)
+})
+const statusMax = computed(() => Math.max(1, ...caseStatus.value.map((c) => c.n)))
+
+// Risk mix by level
+const byLevel = computed(() => {
+  const out = {}
+  for (const r of staff.rows) {
+    const o = (out[r.level] = out[r.level] || { key: r.level, label: r.levelLabel, n: 0, none: 0, low: 0, high: 0 })
+    o.n += 1
+    o[r.risk.level] += 1
+  }
+  return Object.values(out)
+})
+
+// Caseload against capacity: the whole support team (admin) or my own (support)
+const myCapacity = computed(() => STAFF[myId.value]?.capacity || 12)
+const load = computed(() => {
+  const cases = isAdmin.value ? staff.caseload.flatMap((m) => m.cases) : mine.value
+  const capacity = isAdmin.value ? staff.caseload.reduce((t, m) => t + m.capacity, 0) : myCapacity.value
+  return { cases: cases.length, capacity, high: cases.filter((r) => r.risk.level === 'high').length, low: cases.filter((r) => r.risk.level === 'low').length }
 })
 
 const lastImport = computed(() => staff.imports[0])
@@ -91,17 +140,88 @@ const events = computed(() => staffEvents(myId.value))
     </section>
 
     <div class="kpis">
-      <Kpi :value="staff.rows.length" label="Students tracked" sub="Demo cohort, Sep 2026" icon="users" />
-      <Kpi :value="high.length" label="High risk" :sub="`${newHigh.length} new this week`" icon="alert" tone="high" :to="{ path: '/staff/students', query: { risk: 'high' } }" />
-      <Kpi :value="low.length" label="Low risk" sub="Following a study plan" icon="flag" tone="low" :to="{ path: '/staff/students', query: { risk: 'low' } }" />
-      <Kpi v-if="isAdmin" :value="unassigned.length" label="High risk, no owner" sub="Every case needs an owner" icon="person" :tone="unassigned.length ? 'high' : 'ok'" :to="{ path: '/staff/students', query: { owner: 'none' } }" />
-      <Kpi v-else :value="mine.length" label="My open cases" :sub="`${mine.filter((r) => r.risk.level === 'high').length} High, ${mine.filter((r) => r.risk.level === 'low').length} Low`" icon="person" :to="{ path: '/staff/students', query: { owner: 'me' } }" />
-      <Kpi :value="dueNow.length" label="Follow-ups due" :sub="`${overdue.length} overdue`" icon="clock" :tone="overdue.length ? 'high' : ''" to="/staff/interventions" />
-      <Kpi :value="predictedFail.length" label="Predicted to fail a course" sub="Model estimate, not a risk level" icon="spark" :to="{ path: '/staff/students', query: { risk: 'pred' } }" />
+      <KpiChart :value="high.length" label="High risk" icon="alert" tone="high" :delta="signed(change(trend.series[1].values))" :delta-good="change(trend.series[1].values) <= 0" sub="since week 1" :to="{ path: '/staff/students', query: { risk: 'high' } }">
+        <Sparkline :values="trend.series[1].values" :w="200" :h="40" fluid fit :color="C.high" label="High risk by week" />
+      </KpiChart>
+      <KpiChart :value="low.length" label="Low risk" icon="flag" tone="low" :delta="signed(change(trend.series[0].values))" :delta-good="change(trend.series[0].values) <= 0" sub="since week 1" :to="{ path: '/staff/students', query: { risk: 'low' } }">
+        <Sparkline :values="trend.series[0].values" :w="200" :h="40" fluid fit :color="C.low" label="Low risk by week" />
+      </KpiChart>
+      <KpiChart v-if="isAdmin" :value="unassigned.length" label="High risk, no owner" icon="person" :tone="unassigned.length ? 'high' : 'ok'" :sub="`of ${high.length} High-risk students`" :to="{ path: '/staff/students', query: { owner: 'none' } }">
+        <div class="mini-meter high" role="img" :aria-label="`${unassigned.length} of ${high.length} without an owner`"><span :style="{ width: `${high.length ? (unassigned.length / high.length) * 100 : 0}%` }"></span></div>
+      </KpiChart>
+      <KpiChart v-else :value="mine.length" label="My open cases" icon="person" :sub="`${mine.filter((r) => r.risk.level === 'high').length} High, ${mine.filter((r) => r.risk.level === 'low').length} Low, of ${myCapacity} places`" :to="{ path: '/staff/students', query: { owner: 'me' } }">
+        <div class="mini-meter route" role="img" :aria-label="`${mine.length} of ${myCapacity}`"><span :style="{ width: `${Math.min(100, (mine.length / myCapacity) * 100)}%` }"></span></div>
+      </KpiChart>
+      <KpiChart :value="dueNow.length" label="Follow-ups due" icon="clock" :tone="overdue.length ? 'high' : ''" :sub="`${overdue.length} of them overdue`" to="/staff/interventions">
+        <div class="mini-meter high" role="img" :aria-label="`${overdue.length} of ${dueNow.length} overdue`"><span :style="{ width: `${dueNow.length ? (overdue.length / dueNow.length) * 100 : 0}%` }"></span></div>
+      </KpiChart>
+      <KpiChart :value="predictedFail.length" label="Predicted to fail" icon="spark" :sub="`${Math.round((predictedFail.length / staff.rows.length) * 100)}% of students, model estimate`" :to="{ path: '/staff/students', query: { risk: 'pred' } }">
+        <div class="mini-meter route" role="img" :aria-label="`${predictedFail.length} of ${staff.rows.length}`"><span :style="{ width: `${(predictedFail.length / staff.rows.length) * 100}%` }"></span></div>
+      </KpiChart>
     </div>
 
-    <div class="grid">
-      <section class="panel a-courses" aria-labelledby="c-h">
+    <div class="charts">
+      <section class="panel" aria-labelledby="mix-h">
+        <div class="panel-head">
+          <h2 id="mix-h">Risk mix</h2>
+          <span class="muted small">All {{ staff.rows.length }} students</span>
+        </div>
+        <Donut :parts="riskParts" :center="staff.rows.length" center-sub="students" />
+        <div class="by-level">
+          <h3>By level</h3>
+          <ul>
+            <li v-for="lv in byLevel" :key="lv.key">
+              <div class="lv-top"><span>{{ lv.label }}</span><span class="muted num">{{ lv.high }} High, {{ lv.low }} Low of {{ lv.n }}</span></div>
+              <StackBar :parts="[{ value: lv.none, cls: 'ontrack', label: 'On track' }, { value: lv.low, cls: 'low', label: 'Low risk' }, { value: lv.high, cls: 'high', label: 'High risk' }]" :height="8" />
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel status-card" aria-labelledby="st-h">
+        <div class="panel-head">
+          <h2 id="st-h">{{ isAdmin ? 'Where cases stand' : 'Where my cases stand' }}</h2>
+          <span class="muted small">{{ caseRows.length }} at risk</span>
+        </div>
+        <ul class="bars">
+          <li v-for="c in caseStatus" :key="c.key" :class="{ act: c.key === 'not_contacted' || c.key === 'escalated' }">
+            <div class="b-top">
+              <span>{{ c.label }}</span>
+              <strong class="num">{{ c.n }}</strong>
+            </div>
+            <div class="b-track" role="img" :aria-label="`${c.label}: ${c.n}`" :title="`${c.label}: ${c.n}`">
+              <span :style="{ width: `${(c.n / statusMax) * 100}%` }"></span>
+            </div>
+          </li>
+        </ul>
+        <p class="note">Latest outcome logged for each case. Red bars need action.</p>
+      </section>
+
+      <section class="panel gauge-card" aria-labelledby="g-h">
+        <div class="panel-head">
+          <h2 id="g-h">{{ isAdmin ? 'Team capacity used' : 'My caseload' }}</h2>
+        </div>
+        <Gauge :value="load.cases" :max="load.capacity" :tone="load.cases / load.capacity > 0.9 ? 'high' : load.cases / load.capacity > 0.75 ? 'low' : 'calm'" :label="isAdmin ? 'Cases against the support team capacity' : 'My cases against my capacity'" />
+        <dl class="g-stats">
+          <div><dt>High risk</dt><dd class="num">{{ load.high }}</dd></div>
+          <div><dt>Low risk</dt><dd class="num">{{ load.low }}</dd></div>
+          <div><dt>Places left</dt><dd class="num">{{ load.capacity - load.cases }}</dd></div>
+        </dl>
+        <p class="g-note">{{ isAdmin ? `Open cases across ${staff.caseload.length} support staff, against their combined capacity.` : 'Your open cases against the number you can take.' }}</p>
+      </section>
+    </div>
+
+    <div class="row two-a">
+      <section class="panel" aria-labelledby="t-h">
+        <div class="panel-head">
+          <h2 id="t-h">At-risk students this term</h2>
+          <span class="muted small">By week</span>
+        </div>
+        <TrendChart :labels="trend.labels" :series="trend.series" :height="262" />
+        <p class="note">Weeks 1 to 6 are sample history. Week 7 is today’s count.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="c-h">
         <div class="panel-head">
           <h2 id="c-h">Courses with the most risk flags</h2>
         </div>
@@ -111,7 +231,7 @@ const events = computed(() => staffEvents(myId.value))
               <span>{{ c.course.name }}</span>
               <span class="num muted">{{ c.high + c.low + c.pred }}</span>
             </div>
-            <StackBar :parts="[{ value: c.high, cls: 'high', label: 'High risk' }, { value: c.low, cls: 'low', label: 'Low risk' }, { value: c.pred, cls: 'pred', label: 'Predicted to fail' }]" :max="courseMax" :height="14" />
+            <StackBar :parts="[{ value: c.high, cls: 'high', label: 'High risk' }, { value: c.low, cls: 'low', label: 'Low risk' }, { value: c.pred, cls: 'pred', label: 'Predicted to fail' }]" :max="courseMax" :height="12" />
           </li>
         </ul>
         <p class="legend">
@@ -120,8 +240,10 @@ const events = computed(() => staffEvents(myId.value))
           <span><i class="sw pred"></i>Predicted to fail (model)</span>
         </p>
       </section>
+    </div>
 
-      <section class="panel a-follow" aria-labelledby="f-h">
+    <div class="row two-a">
+      <section class="panel" aria-labelledby="f-h">
         <div class="panel-head">
           <h2 id="f-h">Follow-ups, oldest first</h2>
           <RouterLink to="/staff/interventions">All interventions</RouterLink>
@@ -141,64 +263,57 @@ const events = computed(() => staffEvents(myId.value))
         <p v-else class="muted">Nothing due. Well done.</p>
       </section>
 
-      <section class="panel a-trend" aria-labelledby="t-h">
-        <div class="panel-head">
-          <h2 id="t-h">At-risk students this term</h2>
-          <span class="muted small">By week</span>
-        </div>
-        <TrendChart :labels="trend.labels" :series="trend.series" :height="190" />
-        <p class="note">Weeks 1 to 6 are sample history. Week 7 is today’s count.</p>
-      </section>
+      <div class="side-stack">
+        <section v-if="isAdmin" class="panel" aria-labelledby="l-h">
+          <div class="panel-head">
+            <h2 id="l-h">Caseload by staff member</h2>
+          </div>
+          <ul class="load">
+            <li v-for="m in staff.caseload" :key="m.id">
+              <Person :name="m.name" :sub="m.title" :size="32" />
+              <div class="l-bar">
+                <StackBar
+                  :parts="[
+                    { value: m.cases.filter((r) => r.risk.level === 'high').length, cls: 'high', label: 'High' },
+                    { value: m.cases.filter((r) => r.risk.level === 'low').length, cls: 'low', label: 'Low' },
+                  ]"
+                  :max="m.capacity"
+                  :height="12"
+                />
+                <span class="num small">{{ m.cases.length }} of {{ m.capacity }}</span>
+              </div>
+            </li>
+          </ul>
+          <p class="note">Bar length is cases against each person’s capacity.</p>
+        </section>
 
-      <section v-if="isAdmin" class="panel a-load" aria-labelledby="l-h">
-        <div class="panel-head">
-          <h2 id="l-h">Caseload by staff member</h2>
-        </div>
-        <ul class="load">
-          <li v-for="m in staff.caseload" :key="m.id">
-            <Person :name="m.name" :sub="m.title" :size="32" />
-            <div class="l-bar">
-              <StackBar
-                :parts="[
-                  { value: m.cases.filter((r) => r.risk.level === 'high').length, cls: 'high', label: 'High' },
-                  { value: m.cases.filter((r) => r.risk.level === 'low').length, cls: 'low', label: 'Low' },
-                ]"
-                :max="m.capacity"
-                :height="12"
-              />
-              <span class="num small">{{ m.cases.length }} of {{ m.capacity }}</span>
-            </div>
-          </li>
-        </ul>
-        <p class="note">Bar length is cases against each person’s capacity.</p>
-      </section>
+        <section v-else class="panel" aria-labelledby="m-h">
+          <div class="panel-head">
+            <h2 id="m-h">My cases</h2>
+            <RouterLink :to="{ path: '/staff/students', query: { owner: 'me' } }">Open list</RouterLink>
+          </div>
+          <ul class="mine">
+            <li v-for="r in mine.slice(0, 6)" :key="r.id">
+              <RouterLink :to="`/staff/students/${r.id}`">
+                <Person :name="r.name" :sub="r.main?.text" :size="32" :tone="r.risk.level" />
+              </RouterLink>
+            </li>
+          </ul>
+        </section>
 
-      <section v-else class="panel a-load" aria-labelledby="m-h">
-        <div class="panel-head">
-          <h2 id="m-h">My cases</h2>
-          <RouterLink :to="{ path: '/staff/students', query: { owner: 'me' } }">Open list</RouterLink>
-        </div>
-        <ul class="mine">
-          <li v-for="r in mine.slice(0, 6)" :key="r.id">
-            <RouterLink :to="`/staff/students/${r.id}`">
-              <Person :name="r.name" :sub="r.main?.text" :size="32" :tone="r.risk.level" />
-            </RouterLink>
-          </li>
-        </ul>
-      </section>
-
-      <section v-if="isAdmin" class="panel a-sys" aria-labelledby="s-h">
-        <div class="panel-head">
-          <h2 id="s-h">Data and system</h2>
-          <RouterLink to="/staff/data">Open</RouterLink>
-        </div>
-        <ul class="sys">
-          <li><span class="dot ok"></span>Last import: {{ lastImport.category }}, {{ relativeDay(lastImport.at).toLowerCase() }}</li>
-          <li><span class="dot ok"></span>Risk recalculated {{ relativeDay(staff.lastRecalc).toLowerCase() }} (rules v{{ staff.rules.version }})</li>
-          <li v-for="j in failedJobs" :key="j.id"><span class="dot high"></span>{{ j.name }}: failed</li>
-          <li><span class="dot" :class="staff.llmEnabled ? 'ok' : 'low'"></span>Language model for student messages: {{ staff.llmEnabled ? 'on' : 'off' }}</li>
-        </ul>
-      </section>
+        <section v-if="isAdmin" class="panel" aria-labelledby="s-h">
+          <div class="panel-head">
+            <h2 id="s-h">Data and system</h2>
+            <RouterLink to="/staff/data">Open</RouterLink>
+          </div>
+          <ul class="sys">
+            <li><span class="dot ok"></span>Last import: {{ lastImport.category }}, {{ relativeDay(lastImport.at).toLowerCase() }}</li>
+            <li><span class="dot ok"></span>Risk recalculated {{ relativeDay(staff.lastRecalc).toLowerCase() }} (rules v{{ staff.rules.version }})</li>
+            <li v-for="j in failedJobs" :key="j.id"><span class="dot high"></span>{{ j.name }}: failed</li>
+            <li><span class="dot" :class="staff.llmEnabled ? 'ok' : 'low'"></span>Language model for student messages: {{ staff.llmEnabled ? 'on' : 'off' }}</li>
+          </ul>
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -305,27 +420,177 @@ const events = computed(() => staffEvents(myId.value))
 
 .kpis {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.grid {
+.mini-meter {
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--route-soft);
+  margin-bottom: 4px;
+}
+
+.mini-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--route);
+}
+
+.mini-meter.high { background: #f7d6d1; }
+.mini-meter.high span { background: var(--high); }
+.mini-meter.ok { background: #d3eee2; }
+.mini-meter.ok span { background: var(--ok); }
+
+.charts {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  grid-template-areas:
-    'courses follow'
-    'trend load'
-    'trend sys';
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.85fr);
   gap: 20px;
-  align-items: start;
+  margin-bottom: 24px;
+  align-items: stretch;
 }
 
-.a-courses { grid-area: courses; }
-.a-follow { grid-area: follow; }
-.a-trend { grid-area: trend; }
-.a-load { grid-area: load; }
-.a-sys { grid-area: sys; }
+.row {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 24px;
+  align-items: stretch;
+}
+
+.two-a {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+}
+
+.side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.charts .panel,
+.row .panel {
+  padding: 22px 24px;
+}
+
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.b-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.9375rem;
+  margin-bottom: 4px;
+}
+
+.b-top strong {
+  font-weight: 600;
+}
+
+.b-track {
+  height: 10px;
+}
+
+.b-track span {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--route);
+}
+
+.bars li.act .b-track span {
+  background: var(--high);
+}
+
+.gauge-card,
+.status-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-card .note {
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.gauge-card .panel-head {
+  margin-bottom: 18px;
+}
+
+.g-stats {
+  margin: 18px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  text-align: center;
+}
+
+.g-stats div {
+  padding: 10px 6px;
+  border-radius: var(--r-s);
+  background: var(--paper);
+}
+
+.g-stats dt {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.g-stats dd {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.by-level {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.by-level h3 {
+  font-size: 0.9375rem;
+  margin-bottom: 10px;
+}
+
+.by-level ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lv-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.875rem;
+  margin-bottom: 4px;
+}
+
+.g-note {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 0.875rem;
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.g-note a {
+  font-weight: 600;
+}
 
 .small {
   font-size: 0.875rem;
@@ -371,7 +636,7 @@ const events = computed(() => staffEvents(myId.value))
 }
 
 .sw.high { background: var(--high); }
-.sw.low { background: #e0952b; }
+.sw.low { background: #d98a1c; }
 .sw.pred { background: repeating-linear-gradient(135deg, #8c90ff 0 3px, #b9bbff 3px 6px); }
 
 .follow,
@@ -480,11 +745,17 @@ const events = computed(() => staffEvents(myId.value))
 
 .dot.ok { background: var(--ok); }
 .dot.high { background: var(--high); }
-.dot.low { background: #e0952b; }
+.dot.low { background: #d98a1c; }
 
 @media (max-width: 1240px) {
   .kpis {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .charts > :first-child {
+    grid-column: 1 / -1;
   }
 }
 
@@ -496,15 +767,18 @@ const events = computed(() => staffEvents(myId.value))
 }
 
 @media (max-width: 980px) {
-  .grid {
+  .charts,
+  .two-a {
     grid-template-columns: 1fr;
-    grid-template-areas: 'follow' 'courses' 'load' 'trend' 'sys';
   }
 }
 
 @media (max-width: 640px) {
   .kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .kpis > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
   .alert {
     grid-template-columns: minmax(0, 1fr);

@@ -9,7 +9,7 @@ import { formatDate } from '../../utils/dates'
 import Icon from '../../components/Icon.vue'
 import RiskChip from '../../components/staff/RiskChip.vue'
 
-// Milestone and risk rules (US-09), and users and access (US-15).
+// Milestone and risk rules (US-08), and users and access (US-14).
 const auth = useAuthStore()
 const staff = useStaffStore()
 const tab = ref('rules')

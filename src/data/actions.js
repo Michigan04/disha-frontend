@@ -1,5 +1,5 @@
 // Suggested actions for each risk reason. In the full platform the administrator
-// maintains this list (US-06); these are sample entries.
+// maintains this list (US-05); these are sample entries.
 
 export const CATEGORIES = {
   academic: { label: 'Academic support', cls: 'route' },

@@ -5,7 +5,7 @@ import { CATEGORIES, SAMPLE_FILES, parseCsv, templateCsv, validate } from '../..
 import { formatDate, formatTime, relativeDay } from '../../utils/dates'
 import Icon from '../../components/Icon.vue'
 
-// Data uploads (US-10) and system status (US-16). Files are read in the browser only.
+// Data uploads (US-09) and system status (US-15). Files are read in the browser only.
 const staff = useStaffStore()
 const cat = ref('scores')
 const fileName = ref('')

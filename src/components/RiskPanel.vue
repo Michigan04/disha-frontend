@@ -17,7 +17,7 @@ const view = computed(() => {
       title: 'Your instructor is supporting you',
       body: `${r.focus.course.name} has not been cleared in two attempts, so ${iv?.instructor || 'your instructor'} will work with you on a plan to pass it.`,
       next: iv ? `Next check-in: ${relativeDay(iv.meetingAt)}, ${formatTime(iv.meetingAt)}` : '',
-      cta: { label: 'See your support plan', to: `/courses/${r.focus.course.id}` },
+      cta: { label: 'Open your study plan', to: { path: `/courses/${r.focus.course.id}`, query: { tab: 'plan' } } },
     }
   }
   if (r.level === 'low') {
@@ -59,7 +59,7 @@ const view = computed(() => {
   display: flex;
   gap: 16px;
   border-radius: var(--r-l);
-  padding: 22px 24px;
+  padding: 26px 28px;
   background: var(--ok-soft);
   --tone: var(--ok);
 }
@@ -111,7 +111,7 @@ h2 {
 }
 
 .btn {
-  margin-top: 16px;
+  margin-top: 18px;
   background: var(--ink);
 }
 

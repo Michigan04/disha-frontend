@@ -67,80 +67,106 @@ function ask(q) {
       />
     </section>
 
-    <div class="grid">
-      <RiskPanel class="a-risk" :risk="store.risk" :student="s" />
+    <div class="sections">
+      <div class="row status-row">
+        <RiskPanel :risk="store.risk" :student="s" />
 
-      <section class="panel a-meet" aria-labelledby="meet-h">
-        <div class="panel-head">
-          <h2 id="meet-h">Coming up</h2>
-          <RouterLink to="/meetings">See all</RouterLink>
-        </div>
-        <MeetingList compact :events="upcoming" />
-        <p class="note">
-          <template v-if="cal.connected && cal.source === 'google'">Synced from Google Calendar.</template>
-          <template v-else-if="cal.connected">Demo connection: sample meetings shown.</template>
-          <template v-else>Sample meetings. <RouterLink to="/meetings">Connect Google Calendar</RouterLink> to see your own.</template>
-        </p>
-      </section>
-
-      <section class="panel a-cgpa" aria-labelledby="cgpa-h">
-        <div class="panel-head">
-          <h2 id="cgpa-h">CGPA</h2>
-          <RouterLink to="/progress">Details</RouterLink>
-        </div>
-        <div class="cgpa">
+        <section class="panel cgpa-card" aria-labelledby="cgpa-h">
+          <div class="panel-head">
+            <h2 id="cgpa-h">CGPA</h2>
+            <RouterLink to="/progress">Details</RouterLink>
+          </div>
           <span class="big num">{{ store.cgpa?.toFixed(2) ?? 'None yet' }}</span>
-          <Sparkline :values="trend" label="CGPA by term" />
-        </div>
-        <p class="muted small">
-          From {{ doneTotal }} completed {{ doneTotal === 1 ? 'course' : 'courses' }}.
-          <template v-if="lastTerm && lastTerm.fails">{{ lastTerm.term }}: {{ lastTerm.fails }} course not cleared.</template>
-        </p>
-      </section>
+          <Sparkline class="cgpa-line" :values="trend" :w="300" :h="64" fluid label="CGPA by term" />
+          <p class="muted small">
+            From {{ doneTotal }} completed {{ doneTotal === 1 ? 'course' : 'courses' }}.
+            <template v-if="lastTerm && lastTerm.fails">{{ lastTerm.term }}: {{ lastTerm.fails }} course not cleared.</template>
+          </p>
+        </section>
+      </div>
 
-      <section class="panel a-oppe" aria-labelledby="oppe-h">
-        <div class="panel-head">
-          <h2 id="oppe-h">OPPE eligibility</h2>
-          <RouterLink to="/oppe">Details</RouterLink>
-        </div>
-        <OppeList :items="s.oppe" />
-      </section>
-
-      <section class="panel a-term" aria-labelledby="term-h">
-        <div class="panel-head">
+      <section aria-labelledby="term-h">
+        <div class="sec-head">
           <h2 id="term-h">This term</h2>
           <RouterLink to="/courses">All courses</RouterLink>
         </div>
-        <ul class="term">
-          <li v-for="c in store.current" :key="c.course.id">
-            <RouterLink :to="`/courses/${c.course.id}`" class="term-row">
-              <div class="t-main">
-                <strong>{{ c.course.name }}</strong>
+        <ul class="courses" :class="`n${Math.min(store.current.length, 4)}`">
+          <li v-for="c in store.current" :key="c.course.id" class="course">
+            <div class="c-top">
+              <div class="c-name">
+                <RouterLink :to="`/courses/${c.course.id}`" class="c-title">{{ c.course.name }}</RouterLink>
                 <StatusChip :status="c.status" />
               </div>
-              <div v-if="predicted(c)" class="t-pred" :class="gradeCls(predicted(c))" :aria-label="`Predicted grade ${predicted(c).grade}, score ${Math.round(predicted(c).score)}`">
+              <div v-if="predicted(c)" class="c-grade" :class="gradeCls(predicted(c))" :aria-label="`Predicted grade ${predicted(c).grade}`">
                 <span class="pg">{{ predicted(c).grade }}</span>
-                <span class="pl">predicted<br /><b class="num">{{ Math.round(predicted(c).score) }}</b>/100</span>
+                <span class="pl">predicted<br />grade</span>
               </div>
-              <div class="t-meta">
-                <span class="muted">Week {{ c.attempt.week }} of {{ c.attempt.weeks }}</span>
-                <div class="meter" role="img" :aria-label="`Week ${c.attempt.week} of ${c.attempt.weeks}`">
-                  <span :style="{ width: `${(c.attempt.week / c.attempt.weeks) * 100}%` }"></span>
-                </div>
-                <span class="muted">Assignment average <strong class="num" :class="{ warn: c.attempt.assignmentAvg < 40 }">{{ c.attempt.assignmentAvg }}</strong></span>
+            </div>
+
+            <div class="c-week">
+              <div class="c-wk-row">
+                <span>Week {{ c.attempt.week }} of {{ c.attempt.weeks }}</span>
+                <span class="muted">{{ c.attempt.weeks - c.attempt.week }} {{ c.attempt.weeks - c.attempt.week === 1 ? 'week' : 'weeks' }} left</span>
               </div>
-            </RouterLink>
+              <div class="meter" role="img" :aria-label="`Week ${c.attempt.week} of ${c.attempt.weeks}`">
+                <span :style="{ width: `${(c.attempt.week / c.attempt.weeks) * 100}%` }"></span>
+              </div>
+            </div>
+
+            <dl class="c-stats">
+              <div>
+                <dt>Assignment average</dt>
+                <dd class="num" :class="{ warn: c.attempt.assignmentAvg < 40 }">{{ c.attempt.assignmentAvg }}</dd>
+              </div>
+              <div v-if="predicted(c)">
+                <dt>Predicted score</dt>
+                <dd class="num" :class="gradeCls(predicted(c))">{{ Math.round(predicted(c).score) }}<small>/100</small></dd>
+              </div>
+            </dl>
+
             <RouterLink class="guide-link" :to="{ path: `/courses/${c.course.id}`, query: { tab: c.status.fails ? 'plan' : 'guide' } }">
               <Icon name="spark" :size="16" /> {{ c.status.fails ? 'Your study plan' : 'How others passed it' }}
+              <Icon name="chevron" :size="16" class="go" />
             </RouterLink>
           </li>
         </ul>
       </section>
 
-      <section class="ask a-ask" aria-labelledby="ask-h">
-        <Icon name="chat" :size="24" />
-        <h2 id="ask-h">Questions about your degree?</h2>
-        <p>Disha answers from your own record and the program rules.</p>
+      <div class="row two">
+        <section class="panel" aria-labelledby="meet-h">
+          <div class="panel-head">
+            <h2 id="meet-h">Coming up</h2>
+            <RouterLink to="/meetings">See all</RouterLink>
+          </div>
+          <MeetingList compact :events="upcoming" />
+          <p class="note">
+            <template v-if="cal.connected && cal.source === 'google'">Synced from Google Calendar.</template>
+            <template v-else-if="cal.connected">Demo connection: sample meetings shown.</template>
+            <template v-else>Sample meetings. <RouterLink to="/meetings">Connect Google Calendar</RouterLink> to see your own.</template>
+          </p>
+        </section>
+
+        <section class="panel oppe-card" aria-labelledby="oppe-h">
+          <div class="panel-head">
+            <h2 id="oppe-h">OPPE eligibility</h2>
+            <RouterLink to="/oppe">Details</RouterLink>
+          </div>
+          <OppeList :items="s.oppe" />
+          <p class="oppe-rule">
+            <Icon name="oppe" :size="18" />
+            <span>To sit an OPPE you need a weekly assignment average of at least 40 in that course. Each OPPE is decided on a set date before the exam.</span>
+          </p>
+        </section>
+      </div>
+
+      <section class="ask" aria-labelledby="ask-h">
+        <div class="ask-text">
+          <span class="ask-ic"><Icon name="chat" :size="22" /></span>
+          <div>
+            <h2 id="ask-h">Questions about your degree?</h2>
+            <p>Disha answers from your own record and the program rules.</p>
+          </div>
+        </div>
         <div class="prompts">
           <button v-for="p in prompts" :key="p" type="button" @click="ask(p)">{{ p }}</button>
         </div>
@@ -174,34 +200,60 @@ function ask(q) {
 }
 
 .hero {
-  margin: 26px 0 30px;
+  margin: 30px 0 38px;
   padding: 8px 0 4px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  grid-template-areas:
-    'risk meet'
-    'cgpa meet'
-    'oppe oppe'
-    'term ask';
-  gap: 20px;
-  align-items: start;
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
 }
 
-.a-risk { grid-area: risk; }
-.a-meet { grid-area: meet; }
-.a-cgpa { grid-area: cgpa; }
-.a-oppe { grid-area: oppe; }
-.a-term { grid-area: term; }
-.a-ask { grid-area: ask; }
+.row {
+  display: grid;
+  gap: 24px;
+  align-items: stretch;
+}
 
-.cgpa {
+.status-row {
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+}
+
+.row.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sections .panel {
+  padding: 24px 28px;
+}
+
+.sec-head {
   display: flex;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sec-head a {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.sec-head a:hover {
+  text-decoration: underline;
+}
+
+/* CGPA */
+.cgpa-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.cgpa-card .panel-head {
+  margin-bottom: 6px;
 }
 
 .big {
@@ -211,88 +263,106 @@ function ask(q) {
   letter-spacing: -0.02em;
 }
 
-.small {
-  font-size: 0.9375rem;
-  margin-top: 10px;
+.cgpa-line {
+  margin: 14px 0 0;
+  max-height: 72px;
 }
 
-.term {
+.small {
+  font-size: 0.9375rem;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* This term: one card per course */
+.courses {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.term li + li {
-  border-top: 1px solid var(--line);
-}
-
-.term-row {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px 16px;
-  padding: 14px 0 6px;
-  color: inherit;
-  text-decoration: none;
-  align-items: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
 
-.term li:first-child .term-row {
-  padding-top: 0;
+.courses.n1 {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 560px;
 }
 
-.t-main {
+.courses.n3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.course {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 10px;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 26px 20px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
-.t-main strong {
+.c-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.c-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.c-title {
+  font-size: 1.125rem;
   font-weight: 600;
-}
-
-.t-meta {
-  grid-column: 1;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 12px;
-  align-items: center;
-  font-size: 0.875rem;
-}
-
-.t-meta strong {
+  line-height: 1.3;
   color: var(--ink);
+  text-decoration: none;
 }
 
-.t-meta strong.warn {
-  color: var(--high);
+.c-title:hover {
+  color: var(--route-ink);
+  text-decoration: underline;
 }
 
-.t-pred {
-  grid-row: 1 / span 2;
-  grid-column: 2;
+.c-grade {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px 6px 6px;
+  padding: 6px 12px 6px 6px;
   border-radius: 12px;
   background: var(--ok-soft);
   --tone: var(--ok);
 }
 
-.t-pred.low {
-  background: var(--low-soft);
+.c-grade.low,
+dd.low {
   --tone: var(--low);
 }
 
-.t-pred.high {
-  background: var(--high-soft);
+.c-grade.low {
+  background: var(--low-soft);
+}
+
+.c-grade.high,
+dd.high {
   --tone: var(--high);
 }
 
+.c-grade.high {
+  background: var(--high-soft);
+}
+
 .pg {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 9px;
   display: grid;
   place-items: center;
@@ -308,63 +378,167 @@ function ask(q) {
   color: var(--ink-2);
 }
 
-.pl b {
+.c-wk-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 0.9375rem;
+  margin-bottom: 8px;
+}
+
+.c-week .meter {
+  height: 8px;
+}
+
+.c-stats {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.c-stats div {
+  padding: 12px 14px;
+  border-radius: var(--r-s);
+  background: var(--paper);
+}
+
+.c-stats dt {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.c-stats dd {
+  margin: 2px 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.c-stats dd.ok,
+.c-stats dd.low,
+.c-stats dd.high {
   color: var(--tone);
 }
 
-.guide-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 12px;
+.c-stats dd small {
   font-size: 0.875rem;
   font-weight: 500;
+  color: var(--muted);
+}
+
+.c-stats dd.warn {
+  color: var(--high);
+}
+
+.guide-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 0.9375rem;
+  font-weight: 500;
   text-decoration: none;
+  color: var(--calm-ink);
+}
+
+.guide-link .go {
+  margin-left: auto;
 }
 
 .guide-link:hover {
   text-decoration: underline;
 }
 
-.term-row:hover strong:first-child {
-  color: var(--route-ink);
+.oppe-card {
+  display: flex;
+  flex-direction: column;
 }
 
+.oppe-rule {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: auto;
+  padding: 12px 14px;
+  border-radius: var(--r-s);
+  background: var(--calm-soft);
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.oppe-card .oppe-list {
+  margin-bottom: 20px;
+}
+
+.oppe-rule svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--calm);
+}
+
+/* Ask Disha */
 .ask {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   border-radius: var(--r-l);
-  padding: 22px 24px;
-  background: var(--ink);
-  color: #fff;
+  padding: 26px 28px;
+  background: var(--calm-soft);
+  border: 1px solid var(--calm-light);
 }
 
-.ask p {
-  color: #c9cde0;
-  margin: 4px 0 16px;
+.ask-text {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.ask-ic {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  color: var(--calm);
 }
 
 .ask h2 {
-  margin-top: 10px;
+  color: var(--calm-ink);
+}
+
+.ask p {
+  color: var(--ink-2);
+  margin-top: 4px;
 }
 
 .prompts {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .prompts button {
-  text-align: left;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: transparent;
-  color: #fff;
+  border: 1px solid var(--calm-light);
+  background: var(--surface);
+  color: var(--calm-ink);
   border-radius: var(--r-s);
-  padding: 9px 12px;
+  padding: 11px 16px;
+  font-weight: 500;
+  text-align: left;
   cursor: pointer;
 }
 
 .prompts button:hover {
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--calm-mid);
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(43, 95, 86, 0.12);
 }
 
 @media (max-width: 1100px) {
@@ -372,19 +546,36 @@ function ask(q) {
     grid-template-columns: 1fr;
     gap: 18px;
   }
-}
-
-@media (max-width: 1000px) {
-  .grid {
-    grid-template-columns: 1fr;
-    grid-template-areas: 'risk' 'meet' 'oppe' 'cgpa' 'term' 'ask';
+  .courses.n3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 560px) {
-  .t-meta {
+@media (max-width: 1000px) {
+  .status-row,
+  .row.two {
     grid-template-columns: 1fr;
-    gap: 4px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sections {
+    gap: 28px;
+  }
+  .courses,
+  .courses.n3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .course,
+  .sections .panel {
+    padding: 20px;
+  }
+  .ask {
+    padding: 22px 20px;
+  }
+  .prompts {
+    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -71,7 +71,7 @@ function reset() {
   router.replace({ query: {} })
 }
 
-// Assigning (administrators, US-08)
+// Assigning (administrators, US-07)
 const selected = ref([])
 const allOn = computed(() => list.value.length > 0 && list.value.every((r) => selected.value.includes(r.id)))
 function toggleAll() {

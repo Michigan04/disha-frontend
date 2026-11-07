@@ -97,7 +97,6 @@ export function buildStudents() {
           'A set of 20 OPPE-style problems, reviewed by a course TA each Sunday.',
           'A mock OPPE in Week 9 under exam conditions, with feedback the same day.',
         ],
-        bring: ['Your last two OPPE attempts', 'The weekly assignments you found hardest'],
       },
       oppe: [
         {
