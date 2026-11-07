@@ -22,6 +22,17 @@ npm run preview    # serves dist/ on http://localhost:4173
 
 The app uses hash routes (`/#/oppe`), so the built `dist/` folder works on any static host without server configuration.
 
+## Deploy on Vercel
+
+The repo is ready for Vercel: `vercel.json` sets the Vite framework, `npm ci`, `npm run build` and the `dist` output folder, and `package.json` pins Node 20.
+
+1. In the Vercel dashboard choose **Add New… → Project** and import this GitHub repository.
+2. Leave the detected settings as they are (Framework **Vite**, Root Directory `./`). Vercel reads the build settings from `vercel.json`.
+3. Optional: under **Environment Variables**, add `VITE_CHAT_API_URL` and/or `VITE_GOOGLE_CLIENT_ID` (see below). Without them the app runs on its built-in sample data.
+4. Click **Deploy**. Every push to `main` redeploys automatically.
+
+If you use Google Calendar, add the Vercel URL (for example `https://your-project.vercel.app`) to the OAuth client's **Authorised JavaScript origins**.
+
 ## Sign in
 
 The app opens on the sign-in page. Pick a role, click a demo account to fill in the form, and press **Sign in**. Every demo account uses the password **`disha123`**. **Sign out** is at the bottom of the side menu (top right on a phone).

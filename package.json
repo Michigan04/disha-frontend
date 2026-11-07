@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Disha: student portal for the IITM BS Student Risk Identification and Intervention Platform (Team 026)",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
