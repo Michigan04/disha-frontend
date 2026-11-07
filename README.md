@@ -24,7 +24,7 @@ The app uses hash routes (`/#/oppe`), so the built `dist/` folder works on any s
 
 ## Deploy on Vercel
 
-The repo is ready for Vercel: `vercel.json` sets the Vite framework, `npm ci`, `npm run build` and the `dist` output folder, and `package.json` pins Node 20.
+The repo is ready for Vercel: `vercel.json` sets the Vite framework, `npm ci`, `npm run build` and the `dist` output folder, and `package.json` asks for Node 20 or later (Vercel uses its newest supported version).
 
 1. In the Vercel dashboard choose **Add New… → Project** and import this GitHub repository.
 2. Leave the detected settings as they are (Framework **Vite**, Root Directory `./`). Vercel reads the build settings from `vercel.json`.
