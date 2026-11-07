@@ -548,7 +548,7 @@ const SAMPLES = ref([
 }
 
 .stale .dot {
-  background: #e0952b;
+  background: var(--low-fill);
 }
 
 .when {

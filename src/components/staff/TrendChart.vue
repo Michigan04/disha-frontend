@@ -168,7 +168,7 @@ const tipLeft = computed(() => (at.value == null ? 0 : (x(at.value) / W) * 100))
   border-radius: 8px;
   background: var(--surface);
   border: 1px solid var(--line);
-  box-shadow: 0 6px 18px rgba(20, 26, 50, 0.12);
+  box-shadow: 0 6px 18px rgba(28, 25, 23, 0.12);
   font-size: 0.8125rem;
   color: var(--ink-2);
   pointer-events: none;

@@ -198,7 +198,7 @@ const STATUS = { known: 'so far', missed: 'not taken', upcoming: 'expected' }
   top: 0;
   bottom: 0;
   border-radius: 999px;
-  background: rgba(59, 63, 196, 0.28);
+  background: rgba(123, 30, 43, 0.2);
 }
 
 .mark {

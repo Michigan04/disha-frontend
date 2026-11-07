@@ -40,7 +40,7 @@ defineProps({
 
 a.kpi:hover {
   border-color: var(--line-2);
-  box-shadow: 0 2px 10px rgba(20, 26, 50, 0.06);
+  box-shadow: 0 2px 10px rgba(28, 25, 23, 0.06);
 }
 
 .kpi.high { --tone: var(--high); --tone-soft: var(--high-soft); }

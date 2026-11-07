@@ -334,7 +334,7 @@ function save(rec) {
 }
 
 .cb span.weak {
-  background: #e0952b;
+  background: var(--low-fill);
 }
 
 @media (max-width: 1100px) {

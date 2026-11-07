@@ -10,6 +10,7 @@ import OppeList from '../components/OppeList.vue'
 import Sparkline from '../components/Sparkline.vue'
 import StatusChip from '../components/StatusChip.vue'
 import Icon from '../components/Icon.vue'
+import AiMark from '../components/AiMark.vue'
 import TodayCard from '../components/TodayCard.vue'
 import { greeting, isToday } from '../utils/dates'
 import { predict } from '../utils/predict'
@@ -161,7 +162,7 @@ function ask(q) {
 
       <section class="ask" aria-labelledby="ask-h">
         <div class="ask-text">
-          <span class="ask-ic"><Icon name="chat" :size="22" /></span>
+          <AiMark class="ask-ic" :size="44" />
           <div>
             <h2 id="ask-h">Questions about your degree?</h2>
             <p>Disha answers from your own record and the program rules.</p>
@@ -499,14 +500,8 @@ dd.high {
 }
 
 .ask-ic {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--surface);
-  color: var(--calm);
+  box-shadow: 0 2px 8px rgba(123, 30, 43, 0.18);
+  border-radius: 14px;
 }
 
 .ask h2 {
@@ -538,7 +533,7 @@ dd.high {
 .prompts button:hover {
   border-color: var(--calm-mid);
   background: #fff;
-  box-shadow: 0 1px 6px rgba(43, 95, 86, 0.12);
+  box-shadow: 0 1px 4px rgba(28, 25, 23, 0.06);
 }
 
 @media (max-width: 1100px) {

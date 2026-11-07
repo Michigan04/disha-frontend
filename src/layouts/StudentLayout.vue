@@ -6,6 +6,7 @@ import { useAuthStore } from '../stores/auth'
 import { useCalendar } from '../services/calendar'
 import Icon from '../components/Icon.vue'
 import BrandMark from '../components/BrandMark.vue'
+import AiMark from '../components/AiMark.vue'
 
 const store = useStudentStore()
 const auth = useAuthStore()
@@ -26,7 +27,7 @@ const nav = [
   { to: '/courses', label: 'Courses', icon: 'courses', mobile: true },
   { to: '/oppe', label: 'OPPE eligibility', short: 'OPPE', icon: 'oppe', mobile: false },
   { to: '/meetings', label: 'Meetings', icon: 'calendar', mobile: true },
-  { to: '/ask', label: 'Ask Disha', short: 'Ask', icon: 'chat', mobile: true },
+  { to: '/ask', label: 'Ask Disha', short: 'Ask', icon: 'ai', mobile: true },
 ]
 
 const initials = computed(() => store.student.name.split(' ').map((p) => p[0]).join(''))
@@ -48,7 +49,8 @@ watch(() => store.student.id, () => calendar.load(store.student), { immediate: t
         <ul class="nav">
           <li v-for="item in nav" :key="item.to">
             <RouterLink :to="item.to" class="nav-link" :exact-active-class="item.to === '/' ? 'active' : ''" :active-class="item.to === '/' ? '' : 'active'">
-              <Icon :name="item.icon" />
+              <AiMark v-if="item.icon === 'ai'" :size="22" />
+              <Icon v-else :name="item.icon" />
               <span>{{ item.label }}</span>
             </RouterLink>
           </li>
@@ -92,7 +94,8 @@ watch(() => store.student.id, () => calendar.load(store.student), { immediate: t
         :exact-active-class="item.to === '/' ? 'active' : ''"
         :active-class="item.to === '/' ? '' : 'active'"
       >
-        <Icon :name="item.icon" :size="22" />
+        <AiMark v-if="item.icon === 'ai'" :size="24" />
+        <Icon v-else :name="item.icon" :size="22" />
         <span>{{ item.short || item.label }}</span>
       </RouterLink>
     </nav>

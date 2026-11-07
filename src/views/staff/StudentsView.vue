@@ -273,7 +273,7 @@ const loadOf = (id) => staff.caseload.find((m) => m.id === id)
   border-radius: var(--r-m);
   background: var(--ink);
   color: #fff;
-  box-shadow: 0 8px 24px rgba(20, 26, 50, 0.18);
+  box-shadow: 0 8px 24px rgba(28, 25, 23, 0.18);
 }
 
 .assign label {
@@ -295,7 +295,7 @@ const loadOf = (id) => staff.caseload.find((m) => m.id === id)
 
 .err {
   flex-basis: 100%;
-  color: #ffb4ab;
+  color: #e8a99f;
   font-size: 0.875rem;
 }
 

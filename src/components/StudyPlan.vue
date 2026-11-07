@@ -271,8 +271,8 @@ const C = 2 * Math.PI * R
 }
 
 .chip.check {
-  background: #f8ece6;
-  color: #8a4a35;
+  background: var(--route-soft);
+  color: var(--clay);
 }
 
 .count {

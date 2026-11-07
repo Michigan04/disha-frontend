@@ -215,7 +215,7 @@ function move(c, outcome) {
   color: var(--ink);
   text-decoration: none;
   line-height: 1.35;
-  border-left: 4px solid #e0952b;
+  border-left: 4px solid var(--low-fill);
 }
 
 .due-list .late a {
@@ -263,7 +263,7 @@ function move(c, outcome) {
 }
 
 .col {
-  background: #eceef3;
+  background: #f1ede6;
   border-radius: var(--r-m);
   padding: 12px;
   min-width: 0;
@@ -293,7 +293,7 @@ function move(c, outcome) {
 
 .dot.high { background: var(--high); }
 .dot.route { background: var(--route); }
-.dot.low { background: #e0952b; }
+.dot.low { background: var(--low-fill); }
 .dot.ok { background: var(--ok); }
 
 .n {
@@ -314,7 +314,7 @@ function move(c, outcome) {
   background: var(--surface);
   border-radius: 12px;
   padding: 12px;
-  box-shadow: 0 1px 2px rgba(20, 26, 50, 0.08);
+  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.08);
   display: flex;
   flex-direction: column;
   gap: 6px;

@@ -5,6 +5,7 @@ import { useStudentStore } from '../stores/student'
 import { ask, buildContext, RESPONSE_SCHEMA, usingLiveModel } from '../services/chat'
 import JsonViewer from '../components/JsonViewer.vue'
 import Icon from '../components/Icon.vue'
+import AiMark from '../components/AiMark.vue'
 
 const store = useStudentStore()
 const route = useRoute()
@@ -67,7 +68,7 @@ onMounted(() => {
 <template>
   <div class="page ask-page">
     <header class="page-head">
-      <h1>Ask Disha</h1>
+      <h1 class="ask-title"><AiMark :size="40" /> Ask Disha</h1>
       <p>Questions about your CGPA, terms, OPPEs, failed courses or sessions. Disha answers from your own record and the program rules, and tells you when a person should help instead.</p>
     </header>
 
@@ -230,6 +231,12 @@ onMounted(() => {
   color: #fff;
   padding: 10px 16px;
   border-radius: 18px 18px 4px 18px;
+}
+
+.ask-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .msg.bot {

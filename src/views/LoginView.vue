@@ -56,19 +56,19 @@ async function submit() {
 
       <svg class="route" viewBox="0 0 440 250">
         <path id="track" d="M20 200 C 110 200, 120 60, 220 60 S 330 190, 420 120" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="10" stroke-linecap="round" />
-        <path d="M20 200 C 110 200, 120 60, 220 60 S 330 190, 420 120" fill="none" stroke="#8c90ff" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 10" />
+        <path d="M20 200 C 110 200, 120 60, 220 60 S 330 190, 420 120" fill="none" stroke="#c9a24a" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 10" />
         <g>
           <circle cx="20" cy="200" r="9" fill="#fff" />
-          <circle cx="75" cy="178" r="9" fill="#ffd38a" />
+          <circle cx="75" cy="178" r="9" fill="#c9a24a" />
           <circle cx="220" cy="60" r="9" fill="#fff" />
-          <circle cx="365" cy="140" r="9" fill="#ff8f84" />
-          <circle cx="420" cy="120" r="12" fill="#7be0b4" />
+          <circle cx="365" cy="140" r="9" fill="#d4847a" />
+          <circle cx="420" cy="120" r="12" fill="#8fbf9f" />
         </g>
         <g class="tags" font-size="13" font-weight="600">
           <rect x="0" y="214" width="76" height="26" rx="13" fill="rgba(255,255,255,0.12)" /><text x="38" y="232" text-anchor="middle" fill="#fff">Term 1</text>
-          <rect x="94" y="178" width="124" height="26" rx="13" fill="#ffd38a" /><text x="156" y="196" text-anchor="middle" fill="#141a32">Failed once: plan</text>
-          <rect x="250" y="164" width="156" height="26" rx="13" fill="#ff8f84" /><text x="328" y="182" text-anchor="middle" fill="#141a32">Failed twice: instructor</text>
-          <rect x="358" y="74" width="80" height="26" rx="13" fill="#7be0b4" /><text x="398" y="92" text-anchor="middle" fill="#141a32">Degree</text>
+          <rect x="94" y="178" width="124" height="26" rx="13" fill="#c9a24a" /><text x="156" y="196" text-anchor="middle" fill="#1c1917">Failed once: plan</text>
+          <rect x="250" y="164" width="156" height="26" rx="13" fill="#d4847a" /><text x="328" y="182" text-anchor="middle" fill="#1c1917">Failed twice: instructor</text>
+          <rect x="358" y="74" width="80" height="26" rx="13" fill="#8fbf9f" /><text x="398" y="92" text-anchor="middle" fill="#1c1917">Degree</text>
         </g>
         <circle class="runner" r="7" fill="#fff" />
       </svg>
@@ -167,7 +167,8 @@ async function submit() {
   gap: 26px;
   padding: 44px 48px 36px;
   background:
-    radial-gradient(120% 70% at 100% 0%, rgba(140, 144, 255, 0.28), transparent 60%),
+    radial-gradient(120% 70% at 100% 0%, rgba(123, 30, 43, 0.65), transparent 60%),
+    radial-gradient(90% 60% at 0% 100%, rgba(201, 162, 74, 0.16), transparent 65%),
     var(--ink);
   color: #fff;
   overflow: hidden;
@@ -211,7 +212,7 @@ async function submit() {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: #c9cde0;
+  color: var(--on-dark-2);
 }
 
 .facts li {
@@ -227,7 +228,7 @@ async function submit() {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #8c90ff;
+  background: var(--saffron);
 }
 
 .facts strong {
@@ -238,7 +239,7 @@ async function submit() {
 .foot {
   margin-top: auto;
   font-size: 0.8125rem;
-  color: #8f96b3;
+  color: var(--on-dark-3);
 }
 
 .main {
@@ -290,7 +291,7 @@ h1 {
   background: var(--surface);
   color: var(--route-ink);
   font-weight: 600;
-  box-shadow: 0 1px 2px rgba(20, 26, 50, 0.12);
+  box-shadow: 0 1px 2px rgba(28, 25, 23, 0.12);
 }
 
 form {

@@ -4,7 +4,8 @@ import { useStaffStore } from '../../stores/staff'
 import { INTERVENTION_TYPES, OUTCOMES } from '../../data/actions'
 import Icon from '../../components/Icon.vue'
 import Kpi from '../../components/staff/Kpi.vue'
-import StackBar from '../../components/staff/StackBar.vue'
+import Donut from '../../components/staff/Donut.vue'
+import { VIZ } from '../../utils/viz'
 
 // Outcome reporting (US-11) and the program progress overview (US-13). Totals only.
 const staff = useStaffStore()
@@ -46,7 +47,32 @@ const byTerm = computed(() => {
     make('Sep 2026', h, l, n),
   ]
 })
-const termMax = computed(() => Math.max(...byTerm.value.map((t) => t.n)))
+// Each term as a KPI pie: share at risk, with the change from the term before in points
+const termKpis = computed(() =>
+  byTerm.value.map((t, i, all) => {
+    const pct = pctOf(t.high + t.low, t.n)
+    const prev = i ? pctOf(all[i - 1].high + all[i - 1].low, all[i - 1].n) : null
+    return {
+      ...t,
+      pct,
+      delta: prev == null ? null : pct - prev,
+      parts: [
+        { key: 'high', label: 'High risk', value: t.high, color: VIZ.critical },
+        { key: 'low', label: 'Low risk', value: t.low, color: VIZ.warning },
+        { key: 'ok', label: 'On track', value: t.ok, color: VIZ.good },
+      ],
+    }
+  }),
+)
+const signedPts = (d) => (d > 0 ? `+${d} pts` : d < 0 ? `\u2212${-d} pts` : 'no change')
+
+// Outcome colours carry meaning: red escalated, mustard no response, blue under way, green resolved
+const OUTCOME_COLOR = { escalated: VIZ.critical, no_response: VIZ.warning, in_progress: VIZ.active, resolved: VIZ.good }
+const cohortPie = (c) => [
+  { key: 'behind', label: 'Behind a milestone', value: c.behind, color: VIZ.critical },
+  { key: 'risk', label: 'At risk', value: c.risk, color: VIZ.warning },
+  { key: 'ok', label: 'On track', value: c.ok, color: VIZ.good },
+]
 
 const byType = computed(() =>
   Object.entries(INTERVENTION_TYPES).map(([key, t]) => {
@@ -56,11 +82,12 @@ const byType = computed(() =>
       label: t.label,
       icon: t.icon,
       n: list.length,
-      parts: ['resolved', 'in_progress', 'no_response', 'escalated'].map((o) => ({ value: list.filter((i) => i.outcome === o).length, cls: { resolved: 'ok', in_progress: 'route', no_response: 'low', escalated: 'high' }[o], label: OUTCOMES[o].label })),
+      resolved: list.filter((i) => i.outcome === 'resolved').length,
+      parts: ['escalated', 'no_response', 'in_progress', 'resolved'].map((o) => ({ key: o, value: list.filter((i) => i.outcome === o).length, color: OUTCOME_COLOR[o], label: OUTCOMES[o].label })),
     }
   }),
 )
-const typeMax = computed(() => Math.max(1, ...byType.value.map((t) => t.n)))
+const pctOf = (a, b) => (b ? Math.round((a / b) * 100) : 0)
 
 const REASON_LABEL = {
   failed_twice: 'Same course failed twice',
@@ -120,18 +147,15 @@ const cohorts = computed(() => {
           <h2 id="term-h">Risk level by term</h2>
           <span class="muted small">Students</span>
         </div>
-        <div class="cols" role="img" :aria-label="byTerm.map((t) => `${t.term}: ${t.high} High, ${t.low} Low, ${t.ok} on track`).join('; ')">
-          <div v-for="t in byTerm" :key="t.term" class="col">
-            <div class="barwrap">
-              <div class="stackv" :style="{ height: `${(t.n / termMax) * 180}px` }">
-                <span class="ok" :style="{ flex: t.ok }"><b v-if="t.ok > 3">{{ t.ok }}</b></span>
-                <span class="low" :style="{ flex: t.low }"><b v-if="t.low > 2">{{ t.low }}</b></span>
-                <span class="high" :style="{ flex: t.high }"><b v-if="t.high > 2">{{ t.high }}</b></span>
-              </div>
-            </div>
-            <span class="tl">{{ t.term }}</span>
-          </div>
-        </div>
+        <ul class="term-kpis">
+          <li v-for="(t, i) in termKpis" :key="t.term" :class="{ now: i === termKpis.length - 1 }">
+            <span class="tk-term">{{ t.term }}<span v-if="i === termKpis.length - 1" class="now-tag">Now</span></span>
+            <Donut :parts="t.parts" :center="`${t.pct}%`" center-sub="at risk" :size="116" :thickness="24" :legend="false" />
+            <span v-if="t.delta != null" class="tk-delta num" :class="t.delta > 0 ? 'bad' : t.delta < 0 ? 'good' : ''">{{ signedPts(t.delta) }} vs last term</span>
+            <span v-else class="tk-delta num">First term shown</span>
+            <span class="muted num small">{{ t.high }} High · {{ t.low }} Low of {{ t.n }}</span>
+          </li>
+        </ul>
         <p class="legend"><span><i class="sw high"></i>High</span><span><i class="sw low"></i>Low</span><span><i class="sw ok"></i>On track</span></p>
         <p class="note">Sep 2026 is today’s data; earlier terms are sample history.</p>
       </section>
@@ -140,13 +164,14 @@ const cohorts = computed(() => {
         <div class="panel-head">
           <h2 id="type-h">Outcomes by intervention type</h2>
         </div>
-        <ul class="types">
+        <ul class="pies four">
           <li v-for="t in byType" :key="t.key">
-            <span class="tn"><Icon :name="t.icon" :size="16" /> {{ t.label }} <span class="muted num">{{ t.n }}</span></span>
-            <StackBar :parts="t.parts" :max="typeMax" :height="20" show-values />
+            <Donut :parts="t.parts" :center="t.n ? `${pctOf(t.resolved, t.n)}%` : '–'" center-sub="resolved" :size="96" :thickness="22" :legend="false" />
+            <span class="pn"><Icon :name="t.icon" :size="15" /> {{ t.label }}</span>
+            <span class="muted num small">{{ t.n }} logged</span>
           </li>
         </ul>
-        <p class="legend"><span><i class="sw ok"></i>Resolved</span><span><i class="sw route"></i>In progress</span><span><i class="sw low"></i>No response</span><span><i class="sw high"></i>Escalated</span></p>
+        <p class="legend"><span><i class="sw high"></i>Escalated</span><span><i class="sw low"></i>No response</span><span><i class="sw active"></i>In progress</span><span><i class="sw ok"></i>Resolved</span></p>
       </section>
 
       <section class="panel" aria-labelledby="why-h">
@@ -166,21 +191,14 @@ const cohorts = computed(() => {
         <div class="panel-head">
           <h2 id="co-h">Progress by level and admission cohort</h2>
         </div>
-        <ul class="cohorts">
+        <ul class="pies">
           <li v-for="c in cohorts" :key="c.level + c.cohort">
-            <span class="cl"><strong>{{ c.level }}</strong>, {{ c.cohort }} <span class="muted num">({{ c.n }})</span></span>
-            <StackBar
-              :parts="[
-                { value: c.ok, cls: 'ok', label: 'On track' },
-                { value: c.risk, cls: 'low', label: 'At risk' },
-                { value: c.behind, cls: 'high', label: 'Behind a milestone' },
-              ]"
-              :height="16"
-            />
-            <span class="pct num">{{ Math.round((c.ok / c.n) * 100) }}% on track</span>
+            <Donut :parts="cohortPie(c)" :center="`${pctOf(c.ok, c.n)}%`" center-sub="on track" :size="104" :thickness="22" :legend="false" />
+            <span class="pc"><strong>{{ c.level }}</strong>, {{ c.cohort }}</span>
+            <span class="muted num small">{{ c.n }} students</span>
           </li>
         </ul>
-        <p class="legend"><span><i class="sw ok"></i>On track</span><span><i class="sw low"></i>At risk</span><span><i class="sw high"></i>Behind a milestone</span></p>
+        <p class="legend"><span><i class="sw high"></i>Behind a milestone</span><span><i class="sw low"></i>At risk</span><span><i class="sw ok"></i>On track</span></p>
       </section>
     </div>
   </div>
@@ -241,59 +259,6 @@ const cohorts = computed(() => {
   font-size: 0.875rem;
 }
 
-.cols {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  padding: 0 12px;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.barwrap {
-  width: 100%;
-  height: 190px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  border-bottom: 1px solid var(--line-2);
-}
-
-.stackv {
-  width: 100%;
-  max-width: 88px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  border-radius: 8px 8px 0 0;
-  overflow: hidden;
-}
-
-.stackv span {
-  display: grid;
-  place-items: center;
-  min-height: 2px;
-  font-size: 0.75rem;
-}
-
-.stackv b {
-  font-weight: 700;
-}
-
-.stackv .ok { background: var(--ok); color: #fff; }
-.stackv .low { background: #e0952b; color: var(--ink); }
-.stackv .high { background: var(--high); color: #fff; }
-
-.tl {
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -303,9 +268,126 @@ const cohorts = computed(() => {
   color: var(--muted);
 }
 
-.types + .legend,
-.cohorts + .legend {
-  margin-top: 14px;
+.term-kpis {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.term-kpis li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px 16px;
+  border-radius: var(--r-m);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.term-kpis li.now {
+  background: var(--surface);
+  border-color: var(--route);
+  box-shadow: inset 0 3px 0 var(--route);
+}
+
+.tk-term {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.now-tag {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--route);
+  color: #fff;
+}
+
+.tk-delta {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--line);
+  color: var(--ink-2);
+}
+
+.tk-delta.bad {
+  background: var(--high-soft);
+  color: var(--high);
+}
+
+.tk-delta.good {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+@media (max-width: 560px) {
+  .term-kpis {
+    grid-template-columns: 1fr;
+  }
+}
+
+.term-kpis + .legend,
+.pies + .legend {
+  margin-top: 18px;
+}
+
+.pies {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 18px 12px;
+}
+
+.pies li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.pies li > :first-child {
+  margin-bottom: 6px;
+}
+
+.pn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.pies.four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.pc strong {
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .pies.four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .legend span {
@@ -321,28 +403,18 @@ const cohorts = computed(() => {
   display: inline-block;
 }
 
-.sw.high { background: var(--high); }
-.sw.low { background: #e0952b; }
-.sw.ok { background: var(--ok); }
-.sw.route { background: var(--route); }
+.sw.high { background: var(--viz-critical); }
+.sw.low { background: var(--viz-warning); }
+.sw.ok { background: var(--viz-good); }
+.sw.active { background: var(--viz-active); }
 
-.types,
-.reasons,
-.cohorts {
+.reasons {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.tn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-  margin-bottom: 4px;
 }
 
 .reasons li {
@@ -363,31 +435,13 @@ const cohorts = computed(() => {
 .rb span {
   display: block;
   height: 100%;
-  background: var(--route);
+  background: var(--ink-2);
   border-radius: inherit;
 }
 
 .reasons strong {
   text-align: right;
   font-weight: 600;
-}
-
-.cohorts li {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 100px;
-  gap: 12px;
-  align-items: center;
-  font-size: 0.9375rem;
-}
-
-.cl strong {
-  font-weight: 600;
-}
-
-.pct {
-  font-size: 0.8125rem;
-  color: var(--ink-2);
-  text-align: right;
 }
 
 @media (max-width: 1000px) {
@@ -400,18 +454,12 @@ const cohorts = computed(() => {
 }
 
 @media (max-width: 560px) {
-  .cohorts li,
   .reasons li {
     grid-template-columns: 1fr auto;
   }
-  .cohorts li .stack,
   .reasons li .rb {
     grid-column: 1 / -1;
     grid-row: 2;
-  }
-  .pct {
-    grid-row: 1;
-    grid-column: 2;
   }
 }
 </style>

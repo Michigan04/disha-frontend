@@ -44,11 +44,12 @@ const label = computed(() => props.parts.filter((p) => p.value).map((p) => `${p.
   min-width: 3px;
 }
 
-.seg.high { background: var(--high); }
-.seg.low { background: #d98a1c; color: var(--ink); }
-.seg.ok { background: var(--ok); }
-.seg.ontrack { background: #1f9a6e; }
-.seg.route { background: var(--route); }
-.seg.pred { background: repeating-linear-gradient(135deg, #8c90ff 0 4px, #b9bbff 4px 8px); color: var(--ink); }
-.seg.muted { background: var(--line-2); color: var(--ink-2); }
+.seg.high { background: var(--viz-critical); }
+.seg.low { background: var(--viz-warning); color: var(--ink); }
+.seg.ok,
+.seg.ontrack { background: var(--viz-good); }
+.seg.active,
+.seg.route { background: var(--viz-active); }
+.seg.pred { background: var(--viz-pred); }
+.seg.muted { background: var(--viz-neutral); color: var(--ink); }
 </style>

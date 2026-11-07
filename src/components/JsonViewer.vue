@@ -27,8 +27,8 @@ const html = computed(() =>
   margin: 0;
   padding: 14px 16px;
   border-radius: var(--r-s);
-  background: #141a32;
-  color: #e7e9f5;
+  background: var(--ink);
+  color: var(--on-dark);
   font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   overflow-x: auto;
   white-space: pre-wrap;
@@ -36,15 +36,15 @@ const html = computed(() =>
 }
 
 .json :deep(.k) {
-  color: #a8b0ff;
+  color: var(--saffron);
 }
 .json :deep(.s) {
-  color: #b8e6c8;
+  color: #b5c99a;
 }
 .json :deep(.n) {
-  color: #ffd29a;
+  color: #e0a47a;
 }
 .json :deep(.b) {
-  color: #ffb1a8;
+  color: #e39a90;
 }
 </style>

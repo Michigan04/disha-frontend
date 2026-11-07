@@ -1,30 +1,56 @@
 :root {
-  --paper: #f5f6f8;
+  /* Maroon and gold, after the IIT Madras colours: clean ivory and white surfaces,
+     a deep maroon accent, gold for highlights, and a near-black maroon for dark areas. */
+  --paper: #fbf8f1;
   --surface: #ffffff;
-  --ink: #141a32;
-  --ink-2: #39405a;
-  --muted: #646b80;
-  --line: #e2e5ec;
-  --line-2: #cfd4de;
+  --ink: #221316;
+  --ink-2: #45393a;
+  --muted: #75696a;
+  --line: #eee6d6;
+  --line-2: #ddd0b6;
 
-  --route: #3b3fc4;
-  --route-ink: #2b2e96;
-  --route-soft: #eceefc;
+  --route: #7b1e2b;
+  --route-ink: #5e1520;
+  --route-soft: #f6e9ea;
+  --route-mid: #c98a93;
 
-  --high: #b42318;
-  --high-soft: #fdeeec;
-  --low: #a15c07;
-  --low-soft: #fef4e2;
-  --ok: #0a7d53;
-  --ok-soft: #e6f5ee;
+  /* Gold accents for use on dark surfaces */
+  --saffron: #c9a24a;
+  --tangerine: #d4b061;
+  --mustard: #b8913c;
+  --on-dark: #f3eadb;
+  --on-dark-2: #c8b8a6;
+  --on-dark-3: #9c8a7c;
 
-  /* Calm palette: sage and sea-green for guidance and learning content */
-  --calm: #3c7f73;
-  --calm-ink: #2b5f56;
-  --calm-mid: #9ccabf;
-  --calm-light: #d6ebe5;
-  --calm-soft: #eef7f4;
-  --clay: #b0644b;
+  --high: #a8362e;
+  --high-soft: #fbeeec;
+  --high-mid: #efc9c4;
+  --low: #8a6516;
+  --low-soft: #fbf3df;
+  --low-fill: #d4a03a;
+  --ok: #2f6b51;
+  --ok-soft: #ebf4ef;
+  --ok-mid: #c5ddd0;
+  --ok-fill: #389670;
+  --pred-soft: #f2edf7;
+
+  /* Chart status palette: one meaning per colour, validated for colour-blind
+     separation. Mirrored in src/utils/viz.js for SVG and JS use. */
+  --viz-critical: #a8362e;
+  --viz-warning: #d4a03a;
+  --viz-good: #389670;
+  --viz-active: #3e65a8;
+  --viz-pred: #7d5ca8;
+  --viz-neutral: #d5ccc0;
+  --viz-track: #f3eee6;
+
+  /* Guidance and learning content: gold */
+  --calm: #a8822e;
+  --calm-ink: #6f5418;
+  --calm-mid: #e3cd8f;
+  --calm-light: #f2e6c4;
+  --calm-soft: #fbf6ea;
+  --clay: #7b1e2b;
 
   --r-s: 8px;
   --r-m: 14px;
@@ -266,4 +292,9 @@ textarea {
     animation: none !important;
     transition: none !important;
   }
+}
+
+::selection {
+  background: var(--route-soft);
+  color: var(--ink);
 }

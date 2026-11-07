@@ -109,9 +109,9 @@ const effort = computed(() => [
   display: flex;
   flex-direction: column;
   gap: 20px;
-  --c-light: #e6f2ee;
-  --c-mid: #bcdcd3;
-  --c-heavy: #7db3a6;
+  --c-light: var(--calm-light);
+  --c-mid: var(--calm-mid);
+  --c-heavy: var(--mustard);
 }
 
 .tiles {
@@ -183,7 +183,7 @@ h3 {
   height: 12px;
   border-radius: 3px;
   margin-left: 6px;
-  box-shadow: inset 0 0 0 1px rgba(43, 95, 86, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(110, 82, 34, 0.12);
 }
 
 .l1 { background: var(--c-light); }
@@ -305,7 +305,7 @@ h3 {
 
 .eb .top { background: var(--c-heavy); }
 .eb .pass { background: var(--c-mid); }
-.eb .fail { background: #d9d6cf; }
+.eb .fail { background: var(--line-2); }
 
 .effort strong {
   text-align: right;
@@ -349,7 +349,7 @@ h3 {
 }
 
 .habits .meter > span {
-  background: #5d9c8e;
+  background: var(--calm);
 }
 
 .ht {

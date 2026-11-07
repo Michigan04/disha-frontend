@@ -148,7 +148,7 @@ function signOut() {
   padding: 2px 8px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
-  color: #dfe2ff;
+  color: var(--saffron);
 }
 
 .nav {
@@ -166,7 +166,7 @@ function signOut() {
   gap: 12px;
   padding: 9px 12px;
   border-radius: var(--r-s);
-  color: #c9cde0;
+  color: var(--on-dark-2);
   text-decoration: none;
   font-weight: 500;
 }
@@ -180,7 +180,7 @@ function signOut() {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   font-weight: 600;
-  box-shadow: inset 3px 0 0 #8c90ff;
+  box-shadow: inset 3px 0 0 var(--saffron);
 }
 
 .badge {
@@ -193,7 +193,7 @@ function signOut() {
   place-items: center;
   font-size: 0.75rem;
   font-weight: 700;
-  background: #ff8f84;
+  background: var(--tangerine);
   color: var(--ink);
 }
 
@@ -220,7 +220,7 @@ function signOut() {
 
 .who span:not(.avatar) {
   font-size: 0.8125rem;
-  color: #aab0c8;
+  color: var(--on-dark-3);
   line-height: 1.3;
 }
 
@@ -231,7 +231,7 @@ function signOut() {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #8c90ff;
+  background: var(--saffron);
   color: var(--ink);
   font-weight: 700;
   font-size: 0.875rem;

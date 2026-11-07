@@ -268,7 +268,7 @@ const planFor = (c) => r.value.risk.level === 'low' && r.value.risk.focus?.cours
 }
 
 .hero.high { border-left-color: var(--high); }
-.hero.low { border-left-color: #e0952b; }
+.hero.low { border-left-color: var(--low-fill); }
 
 .id { grid-area: id; display: flex; flex-direction: column; gap: 12px; }
 .hero :deep(.person strong) { font-size: 1.5rem; }

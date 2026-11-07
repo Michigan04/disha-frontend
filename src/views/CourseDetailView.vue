@@ -14,6 +14,7 @@ import PredictionCard from '../components/PredictionCard.vue'
 import CourseGuide from '../components/CourseGuide.vue'
 import StudyPlan from '../components/StudyPlan.vue'
 import Icon from '../components/Icon.vue'
+import AiMark from '../components/AiMark.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -145,7 +146,7 @@ function attemptResult(a) {
             <Icon name="chevron" :size="18" />
           </button>
           <RouterLink class="link-card" :to="{ path: '/ask', query: { q: `How do I do well in ${course.name}?` } }">
-            <span class="lc-ic"><Icon name="chat" :size="20" /></span>
+            <AiMark :size="40" />
             <span class="lc-t"><strong>Ask Disha about this course</strong><span>What to focus on, OPPE rules</span></span>
             <Icon name="chevron" :size="18" />
           </RouterLink>
@@ -296,7 +297,7 @@ function attemptResult(a) {
   flex-direction: column;
   line-height: 1.35;
   padding-left: 22px;
-  border-left: 1px solid #f3cdc8;
+  border-left: 1px solid var(--high-mid);
 }
 
 .next .muted {
@@ -428,7 +429,7 @@ function attemptResult(a) {
 
 .link-card:hover {
   border-color: var(--calm-mid);
-  background: #e6f2ee;
+  background: var(--calm-soft);
 }
 
 .lc-ic {
