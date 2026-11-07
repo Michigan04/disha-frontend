@@ -4,7 +4,7 @@ import Icon from '../Icon.vue'
 import { INTERVENTION_TYPES, OUTCOMES } from '../../data/actions'
 import { STAFF } from '../../data/staff'
 
-// Log an intervention (US-07), or, for an instructor, the support offered on a referral (US-13).
+// Log an intervention (US-06), or, for an instructor, the support offered on a referral (US-12).
 const props = defineProps({
   row: { type: Object, required: true },
   mode: { type: String, default: 'log' }, // log | support

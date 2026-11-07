@@ -5,7 +5,7 @@ import { STAFF } from '../../data/staff'
 import { COURSES } from '../../data/courses'
 import { formatDate, relativeDay } from '../../utils/dates'
 
-// Intervention history, newest first (US-07).
+// Intervention history, newest first (US-06).
 defineProps({ items: { type: Array, required: true } })
 const name = (id) => STAFF[id]?.name || id
 const overdue = (d) => d && d < new Date(new Date().setHours(0, 0, 0, 0))

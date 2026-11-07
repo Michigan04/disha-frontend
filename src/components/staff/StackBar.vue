@@ -45,8 +45,9 @@ const label = computed(() => props.parts.filter((p) => p.value).map((p) => `${p.
 }
 
 .seg.high { background: var(--high); }
-.seg.low { background: #e0952b; color: var(--ink); }
+.seg.low { background: #d98a1c; color: var(--ink); }
 .seg.ok { background: var(--ok); }
+.seg.ontrack { background: #1f9a6e; }
 .seg.route { background: var(--route); }
 .seg.pred { background: repeating-linear-gradient(135deg, #8c90ff 0 4px, #b9bbff 4px 8px); color: var(--ink); }
 .seg.muted { background: var(--line-2); color: var(--ink-2); }

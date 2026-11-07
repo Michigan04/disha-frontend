@@ -4,7 +4,7 @@ import { useStaffStore } from '../../stores/staff'
 import { formatDate, formatTime } from '../../utils/dates'
 import Icon from '../../components/Icon.vue'
 
-// Audit log (US-11): who did what and when. Read only.
+// Audit log (US-10): who did what and when. Read only.
 const staff = useStaffStore()
 const f = reactive({ q: '', action: 'all', who: 'all', from: '', to: '' })
 

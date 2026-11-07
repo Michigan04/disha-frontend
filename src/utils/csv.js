@@ -1,4 +1,4 @@
-// CSV upload for the administrator (US-10): parse in the browser, check every row,
+// CSV upload for the administrator (US-09): parse in the browser, check every row,
 // and report rejected rows with their row number and reason. Nothing is sent anywhere.
 
 import { COURSES } from '../data/courses'

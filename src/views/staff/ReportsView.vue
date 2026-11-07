@@ -6,7 +6,7 @@ import Icon from '../../components/Icon.vue'
 import Kpi from '../../components/staff/Kpi.vue'
 import StackBar from '../../components/staff/StackBar.vue'
 
-// Outcome reporting (US-12) and the program progress overview (US-14). Totals only.
+// Outcome reporting (US-11) and the program progress overview (US-13). Totals only.
 const staff = useStaffStore()
 const level = ref('all')
 const rows = computed(() => staff.rows.filter((r) => level.value === 'all' || r.level === level.value))
