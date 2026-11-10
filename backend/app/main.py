@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from .bootstrap import initialize
@@ -52,6 +53,10 @@ for r in (auth, student, staff, admin, chat):
 
 @app.get("/api/health", tags=["System"], summary="Is the API up and can it reach the database?")
 def health():
-    with engine.connect() as conn:
-        conn.execute(text("select 1"))
-    return {"status": "ok"}
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("select 1"))
+    except Exception as exc:  # report it instead of crashing the (serverless) process
+        return JSONResponse({"status": "error", "database": "unreachable", "error": type(exc).__name__,
+                             "host": engine.url.host}, status_code=503)
+    return {"status": "ok", "database": engine.url.host}
