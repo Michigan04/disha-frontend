@@ -12,8 +12,8 @@ from datetime import date, datetime, timezone
 from decimal import Decimal
 
 from sqlalchemy import (
-    JSON, Boolean, Date, DateTime, Enum, ForeignKey, Index, Integer, Numeric, String, Text,
-    UniqueConstraint,
+    JSON, BigInteger, Boolean, Date, DateTime, Enum, ForeignKey, Index, Integer, Numeric, SmallInteger, String,
+    Text, UniqueConstraint, text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -190,23 +190,21 @@ def pg_enum(cls, name):
 
 class User(Base, Timestamps):
     __tablename__ = "users"
+    __table_args__ = (Index("ix_users_email_lower", text("lower(email)"), postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
     email: Mapped[str] = mapped_column(String(255), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     full_name: Mapped[str] = mapped_column(String(255))
-    role: Mapped[UserRole] = mapped_column(pg_enum(UserRole, "user_role"), index=True)
+    role: Mapped[UserRole] = mapped_column(pg_enum(UserRole, "user_role"))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    staff_profile: Mapped["StaffProfile | None"] = relationship(back_populates="user", uselist=False)
+    staff_profile: Mapped["StaffProfile | None"] = relationship(back_populates="user", uselist=False, lazy="joined")
     student: Mapped["Student | None"] = relationship(back_populates="user", uselist=False, foreign_keys="Student.user_id")
 
 
 class Student(Base, Timestamps):
     __tablename__ = "students"
-    __table_args__ = (
-        Index("ix_students_academic_level", "academic_level"),
-        Index("ix_students_assigned_staff", "assigned_staff_id"),
-    )
+    __table_args__ = (Index("ix_students_assigned_staff", "assigned_staff_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
     student_identifier: Mapped[str] = mapped_column(String(32), unique=True)
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), unique=True)
@@ -225,13 +223,14 @@ class Student(Base, Timestamps):
 
 class StudentAssignment(Base):
     __tablename__ = "student_assignments"
+    __table_args__ = (Index("ix_student_assignments_student_id", "student_id", postgresql_using="hash"), Index("ix_student_assignments_staff_user_id", "staff_user_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
-    staff_user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
+    staff_user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
     assigned_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
     assigned_at: Mapped[datetime] = mapped_column(DateTime, default=now_naive)
     unassigned_at: Mapped[datetime | None] = mapped_column(DateTime)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     reason: Mapped[str | None] = mapped_column(Text)  # extension
 
 
@@ -274,7 +273,7 @@ class Registration(Base, Timestamps):
     __tablename__ = "registrations"
     __table_args__ = (UniqueConstraint("student_id", "course_id", "academic_term_id", name="uq_registration_student_course_term"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     course_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("courses.id"))
     academic_term_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("academic_terms.id"))
     status: Mapped[RegistrationStatus] = mapped_column(pg_enum(RegistrationStatus, "registration_status"), default=RegistrationStatus.pending)
@@ -284,8 +283,9 @@ class Registration(Base, Timestamps):
 
 class RegistrationValidationLog(Base, Timestamps):
     __tablename__ = "registration_validation_logs"
+    __table_args__ = (Index("ix_registration_validation_logs_student_id", "student_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     academic_term_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("academic_terms.id"))
     requested_courses: Mapped[list | dict] = mapped_column(JSON)
     validation_result: Mapped[list | dict] = mapped_column(JSON)
@@ -295,7 +295,7 @@ class CourseResult(Base):
     __tablename__ = "course_results"
     __table_args__ = (UniqueConstraint("student_id", "course_id", "academic_term_id", name="uq_result_student_course_term"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     course_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("courses.id"))
     academic_term_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("academic_terms.id"))
     grade: Mapped[str | None] = mapped_column(String(4))
@@ -327,7 +327,7 @@ class StudentMilestone(Base):
     __tablename__ = "student_milestones"
     __table_args__ = (UniqueConstraint("student_id", "milestone_id", name="uq_student_milestone"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     milestone_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("academic_milestones.id"))
     status: Mapped[MilestoneStatus] = mapped_column(pg_enum(MilestoneStatus, "milestone_status"), default=MilestoneStatus.not_started)
     completed_at: Mapped[datetime | None] = mapped_column(DateTime)
@@ -336,8 +336,9 @@ class StudentMilestone(Base):
 
 class Project(Base, Timestamps):
     __tablename__ = "projects"
+    __table_args__ = (Index("ix_projects_student_id", "student_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     title: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(Text)
     status: Mapped[ProjectStatus] = mapped_column(pg_enum(ProjectStatus, "project_status"), default=ProjectStatus.not_started)
@@ -366,11 +367,12 @@ class RiskRule(Base, Timestamps):
 
 class RiskAssessment(Base):
     __tablename__ = "risk_assessments"
+    __table_args__ = (Index("ix_risk_assessments_student_date", "student_id", "assessment_date"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     risk_score: Mapped[Decimal] = mapped_column(Numeric(5, 2))
-    risk_level: Mapped[RiskLevel] = mapped_column(pg_enum(RiskLevel, "risk_level"), index=True)
-    assessment_date: Mapped[datetime] = mapped_column(TZ, default=now_tz, index=True)
+    risk_level: Mapped[RiskLevel] = mapped_column(pg_enum(RiskLevel, "risk_level"))
+    assessment_date: Mapped[datetime] = mapped_column(TZ, default=now_tz)
     assessment_version: Mapped[str] = mapped_column(String(16), default="v1")
     summary: Mapped[str | None] = mapped_column(Text)
     data_completeness_note: Mapped[str | None] = mapped_column(Text)
@@ -380,8 +382,9 @@ class RiskAssessment(Base):
 
 class RiskFactor(Base):
     __tablename__ = "risk_factors"
+    __table_args__ = (Index("ix_risk_factors_assessment_id", "assessment_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    assessment_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("risk_assessments.id"), index=True)
+    assessment_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("risk_assessments.id"))
     rule_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("risk_rules.id"))
     factor_name: Mapped[str] = mapped_column(String(255))
     observed_value: Mapped[Decimal | None] = mapped_column(Numeric(8, 2))
@@ -398,8 +401,9 @@ class RiskFactor(Base):
 
 class Intervention(Base, Timestamps):
     __tablename__ = "interventions"
+    __table_args__ = (Index("ix_interventions_student_id", "student_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     staff_user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
     intervention_type: Mapped[InterventionType] = mapped_column(pg_enum(InterventionType, "intervention_type"))
     description: Mapped[str] = mapped_column(Text)
@@ -408,13 +412,14 @@ class Intervention(Base, Timestamps):
     follow_up_date: Mapped[date | None] = mapped_column(Date, index=True)
     completed_at: Mapped[datetime | None] = mapped_column(DateTime)
 
-    detail: Mapped["InterventionDetail | None"] = relationship(back_populates="intervention", uselist=False, cascade="all, delete-orphan")
+    detail: Mapped["InterventionDetail | None"] = relationship(back_populates="intervention", uselist=False, cascade="all, delete-orphan", lazy="joined")
 
 
 class InterventionHistory(Base):
     __tablename__ = "intervention_history"
+    __table_args__ = (Index("ix_intervention_history_intervention_id", "intervention_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    intervention_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("interventions.id"), index=True)
+    intervention_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("interventions.id"))
     changed_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
     changed_at: Mapped[datetime] = mapped_column(DateTime, default=now_naive)
     field_changed: Mapped[str] = mapped_column(Text)
@@ -426,24 +431,26 @@ class InterventionHistory(Base):
 
 class Notification(Base):
     __tablename__ = "notifications"
+    __table_args__ = (Index("ix_notifications_user_created", "user_id", "created_at"), Index("ix_notifications_dedupe_key", "dedupe_key", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
     student_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("students.id"))
     notification_type: Mapped[NotificationType] = mapped_column(pg_enum(NotificationType, "notification_type"))
     title: Mapped[str] = mapped_column(String(255))
     message: Mapped[str] = mapped_column(Text)
     severity: Mapped[Severity] = mapped_column(pg_enum(Severity, "severity"), default=Severity.info)
-    is_read: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
-    dedupe_key: Mapped[str | None] = mapped_column(String(255), index=True)
-    created_at: Mapped[datetime] = mapped_column(TZ, default=now_tz, index=True)
+    is_read: Mapped[bool] = mapped_column(Boolean, default=False)
+    dedupe_key: Mapped[str | None] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(TZ, default=now_tz)
 
     deliveries: Mapped[list["NotificationDelivery"]] = relationship(cascade="all, delete-orphan")
 
 
 class NotificationDelivery(Base):
     __tablename__ = "notification_deliveries"
+    __table_args__ = (Index("ix_notification_deliveries_notification_id", "notification_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    notification_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("notifications.id"), index=True)
+    notification_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("notifications.id"))
     channel: Mapped[DeliveryChannel] = mapped_column(pg_enum(DeliveryChannel, "delivery_channel"))
     delivery_status: Mapped[DeliveryStatus] = mapped_column(pg_enum(DeliveryStatus, "delivery_status"), default=DeliveryStatus.pending)
     attempt_count: Mapped[int] = mapped_column(Integer, default=0)
@@ -455,11 +462,12 @@ class NotificationDelivery(Base):
 
 class AuditLog(Base):
     __tablename__ = "audit_logs"
+    __table_args__ = (Index("ix_audit_logs_action", "action", postgresql_using="hash"), Index("ix_audit_logs_entity_id", "entity_id", postgresql_using="hash"),)
     id: Mapped[uuid.UUID] = UUID_PK()
     actor_user_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
-    action: Mapped[str] = mapped_column(String(64), index=True)
-    entity_type: Mapped[str] = mapped_column(String(64), index=True)
-    entity_id: Mapped[str | None] = mapped_column(String(64), index=True)
+    action: Mapped[str] = mapped_column(String(64))
+    entity_type: Mapped[str] = mapped_column(String(64))
+    entity_id: Mapped[str | None] = mapped_column(String(64))
     before_data: Mapped[dict | list | None] = mapped_column(JSON)
     after_data: Mapped[dict | list | None] = mapped_column(JSON)
     ip_address: Mapped[str | None] = mapped_column(String(64))
@@ -512,7 +520,7 @@ class AssessmentScore(Base):
     __tablename__ = "assessment_scores"
     __table_args__ = (UniqueConstraint("student_id", "course_id", "academic_term_id", "kind", "week", name="uq_assessment_score"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     course_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("courses.id"))
     academic_term_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("academic_terms.id"))
     kind: Mapped[str] = mapped_column(String(16))  # assignment | quiz1 | quiz2 | oppe1 | oppe2 | endterm
@@ -536,7 +544,7 @@ class OppeEligibility(Base):
     __tablename__ = "oppe_eligibility"
     __table_args__ = (UniqueConstraint("student_id", "oppe_exam_id", name="uq_oppe_eligibility"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     oppe_exam_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("oppe_exams.id"))
     criteria: Mapped[list] = mapped_column(JSON)
     if_not_eligible: Mapped[str | None] = mapped_column(Text)
@@ -544,10 +552,11 @@ class OppeEligibility(Base):
 
 class Meeting(Base):
     __tablename__ = "meetings"
+    __table_args__ = (Index("ix_meetings_user_end", "user_id", "end_at"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
     title: Mapped[str] = mapped_column(String(255))
-    start_at: Mapped[datetime] = mapped_column(TZ, index=True)
+    start_at: Mapped[datetime] = mapped_column(TZ)
     end_at: Mapped[datetime] = mapped_column(TZ)
     link: Mapped[str | None] = mapped_column(String(512))
     organizer: Mapped[str | None] = mapped_column(String(255))
@@ -560,7 +569,7 @@ class StudyPlanProgress(Base):
     __tablename__ = "study_plan_progress"
     __table_args__ = (UniqueConstraint("student_id", "course_id", "task_key", name="uq_study_plan_task"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     course_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("courses.id"))
     task_key: Mapped[str] = mapped_column(String(32))
     done_at: Mapped[datetime] = mapped_column(TZ, default=now_tz)
@@ -595,7 +604,7 @@ class SharedSuggestion(Base):
     __tablename__ = "shared_suggestions"
     __table_args__ = (UniqueConstraint("student_id", "action_key", name="uq_shared_suggestion"),)
     id: Mapped[uuid.UUID] = UUID_PK()
-    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), index=True)
+    student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"))
     action_key: Mapped[str] = mapped_column(String(128))
     shared_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime] = mapped_column(TZ, default=now_tz)
@@ -622,3 +631,21 @@ class SystemJob(Base):
     detail: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(16), default="pending")  # pending | running | succeeded | failed
     run_at: Mapped[datetime] = mapped_column(TZ, default=now_tz, index=True)
+
+
+class DataVersion(Base):
+    """A single row whose version goes up with every committed change. API responses
+    use it in their ETag, so an unchanged page is answered with 304 Not Modified."""
+    __tablename__ = "data_version"
+    id: Mapped[int] = mapped_column(SmallInteger, primary_key=True, default=1)
+    version: Mapped[int] = mapped_column(BigInteger, default=0)
+
+
+class RiskSnapshot(Base):
+    """How many students were at each risk level in a given week of a term (the
+    Overview trend). A few rows per week instead of history for every student."""
+    __tablename__ = "risk_snapshots"
+    term_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("academic_terms.id"), primary_key=True)
+    week: Mapped[int] = mapped_column(SmallInteger, primary_key=True)
+    level: Mapped[RiskLevel] = mapped_column(pg_enum(RiskLevel, "risk_level"), primary_key=True)
+    students: Mapped[int] = mapped_column(Integer)

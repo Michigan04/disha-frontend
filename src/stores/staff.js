@@ -8,7 +8,7 @@ import { at, startOfDay } from '../utils/dates'
 import { riskWith, summarize } from '../utils/staff'
 import { useAuthStore } from './auth'
 
-// Everything on the staff side, loaded from GET /api/staff/bootstrap.
+// Everything on the staff side, loaded from GET /api/staff/bootstrap (services/loader.js).
 // Each action shows its change on the page straight away, sends it to the backend,
 // then reloads so the page matches what was saved. If the backend refuses, the
 // reload undoes the change and `error` says why.
@@ -21,6 +21,7 @@ const empty = () => ({
   rules: { version: 0, effective: '', highFails: 2, lowFails: 1, oppeMin: 40, milestones: {} },
   ruleHistory: [], imports: [], jobs: [], users: [], audit: [],
   llmEnabled: true, shared: {}, lastRecalc: null,
+  riskTrend: { labels: [], high: [], low: [], none: [] }, freshness: [], model: null, aiSamples: [],
   loaded: false, error: '',
 })
 
@@ -65,7 +66,9 @@ export const useStaffStore = defineStore('staff', {
   },
   actions: {
     async load() {
-      const data = await api.get('/staff/bootstrap')
+      this.apply((await api.fresh('/staff/bootstrap')).data)
+    },
+    apply(data) {
       this.$patch((s) => {
         Object.assign(s, data)
         s.loaded = true
@@ -167,6 +170,11 @@ export const useStaffStore = defineStore('staff', {
     async confirmImport(importId) {
       const res = await this.save(api.post(`/imports/${importId}/commit`))
       return res?.import || null
+    },
+    flagSample(id, flagged) {
+      const sample = this.aiSamples.find((x) => x.id === id)
+      if (sample) sample.flagged = flagged
+      return this.save(api.put(`/admin/ai-samples/${id}`, { flagged }))
     },
     setLLM(on) {
       this.llmEnabled = on

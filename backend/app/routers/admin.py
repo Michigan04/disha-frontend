@@ -1,10 +1,10 @@
 """Administrator pages: rules, data uploads, users, audit log, system settings."""
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import PlainTextResponse
-from sqlalchemy import func, select
+from sqlalchemy import Text, cast, delete, func, select
 from sqlalchemy.orm import Session
 
 from .. import models as m
@@ -102,6 +102,9 @@ async def validate_import(category: schemas.ImportCategory = Form(...), file: Up
         validated_rows={"terms": result["terms"], "rows": [{k: v for k, v in r.items() if k != "course"} for r in result["accepted"]]},
         row_errors=result["rejected"],
     )
+    # Checks that were never confirmed are dropped after a day (they hold every row).
+    db.execute(delete(m.DataImport).where(m.DataImport.status == m.ImportStatus.validated,
+                                          m.DataImport.created_at < m.now_naive() - timedelta(days=1)))
     db.add(row)
     db.commit()
     return {"importId": str(row.id), **result}
@@ -196,11 +199,16 @@ def audit_log(
         q = q.where(m.AuditLog.created_at >= since.replace(tzinfo=None))
     if until:
         q = q.where(m.AuditLog.created_at <= until.replace(tzinfo=None))
-    names = staffdata.user_names(db)
-    rows = [staffdata.audit_out(a, names) for a in db.scalars(q.order_by(m.AuditLog.created_at.desc())).all()]
     if search:
-        rows = [r for r in rows if search.lower() in f"{r['who']} {r['action']} {r['details']}".lower()]
-    return {"total": len(rows), "items": rows[offset:offset + limit]}
+        like = f"%{search.strip()}%"
+        actors = select(m.User.id).where(m.User.full_name.ilike(like))
+        q = q.where(m.AuditLog.action.ilike(like) | cast(m.AuditLog.after_data, Text).ilike(like)
+                    | m.AuditLog.actor_user_id.in_(actors))
+    # Count and page in the database, not in Python: the log grows with every sign-in.
+    total = db.scalar(select(func.count()).select_from(q.subquery()))
+    names = staffdata.user_names(db)
+    page = db.scalars(q.order_by(m.AuditLog.created_at.desc()).offset(offset).limit(limit)).all()
+    return {"total": total, "items": [staffdata.audit_out(a, names) for a in page]}
 
 
 @router.put("/admin/settings/llm", tags=["Admin"], summary="Switch the language model for student messages on or off")
@@ -210,6 +218,20 @@ def set_llm(body: schemas.LlmIn, user: m.User = Depends(admin_only), db: Session
           "Language model for student messages switched off: students now see the rule-based reasons.", entity_type="setting", entity_id="llm_enabled")
     db.commit()
     return {"enabled": body.enabled}
+
+
+@router.put("/admin/ai-samples/{sample_id}", tags=["Admin"], summary="Flag a sample AI message as wrong, or clear the flag")
+def flag_ai_sample(sample_id: int, body: schemas.FlagIn, user: m.User = Depends(admin_only), db: Session = Depends(get_db)):
+    samples = [dict(x) for x in records.get_setting(db, "ai_review_samples", []) or []]
+    sample = next((x for x in samples if x.get("id") == sample_id), None)
+    if sample is None:
+        raise HTTPException(404, "Sample message not found.")
+    sample["flagged"] = body.flagged
+    records.set_setting(db, "ai_review_samples", samples, user.id)
+    audit(db, user, "AI review", f"Sample message {'flagged' if body.flagged else 'unflagged'}: {sample['to']}",
+          entity_type="setting", entity_id="ai_review_samples")
+    db.commit()
+    return sample
 
 
 @router.get("/admin/jobs", tags=["Admin"], summary="Recent system jobs")

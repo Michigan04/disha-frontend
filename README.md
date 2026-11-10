@@ -53,7 +53,7 @@ One Vercel project serves both parts: the built frontend from `dist/`, and the F
 
    It applies the migrations and seeds the demo accounts and cohort. Running it again is safe. Do the same after adding a new migration.
 3. **Import the repository in Vercel** (Add New… → Project). Leave the detected settings; `vercel.json` sets the Vite build, the `dist` folder and the Python function.
-4. **Give the project the database URL**: either connect Neon under the project's **Storage** tab (Vercel then adds `POSTGRES_URL`, which the backend uses), or add `DATABASE_URL` (the pooled URL) under Settings → Environment Variables. Recommended: a `JWT_SECRET`. On Vercel the backend already defaults `USE_NULL_POOL=true`, `AUTO_MIGRATE=false` and `AUTO_SEED=false`; `.env.vercel` lists the rest. Optionally `VITE_GOOGLE_CLIENT_ID`.
+4. **Give the project the database URL**: either connect Neon under the project's **Storage** tab (Vercel then adds `POSTGRES_URL`, which the backend uses), or add `DATABASE_URL` (the pooled URL) under Settings → Environment Variables. Recommended: a `JWT_SECRET`. On Vercel the backend already keeps one pooled connection per warm instance and defaults `AUTO_MIGRATE=false` and `AUTO_SEED=false`; `.env.vercel` lists the rest. Optionally `VITE_GOOGLE_CLIENT_ID`.
 5. **Deploy.** Every push to `main` redeploys. Check `https://<your-project>.vercel.app/api/health`: it answers `{"status":"ok", ...}` when the function can reach Neon, and names the problem otherwise (for example `"host": "localhost"` means no database URL is set).
 
 If you use Google Calendar, add the Vercel URL to the OAuth client's **Authorised JavaScript origins**.
@@ -204,6 +204,15 @@ When `OLLAMA_MODEL` is empty, or the administrator switches the language model o
 4. Put the client ID in `VITE_GOOGLE_CLIENT_ID`.
 
 The app signs in with Google Identity Services and asks for the read-only scope `calendar.readonly`. It then reads the next 30 days of events from the student's primary calendar, including the Meet link. It never writes to the calendar. Without a client ID, **Connect Google Calendar** simulates a connection with the sample meetings.
+
+## Speed and storage
+
+Every page reads its data from the API after sign-in (`src/services/loader.js`): first `GET /api/auth/me` (the session is checked against the database), then reference data and the student record or staff dashboard. It refreshes every 30 seconds and when the tab comes back into view.
+
+- **ETags and 304s.** A one-row counter (`data_version`) goes up with every committed change. GET responses carry an ETag hashed from it, so a refresh with nothing new is answered `304 Not Modified` after two small queries, and the page is not re-rendered. A process also keeps the last built response, so repeat reads skip the table queries. Responses over 1 KB are gzipped.
+- **Few queries per request.** Settings are read once per request, and one-to-one relations (staff profiles, intervention details) are joined, not loaded row by row. The staff dashboard went from 77 queries to 32 on a cold read (2 when cached).
+- **Indexes.** HASH indexes for columns only compared with `=` (UUID foreign keys, `lower(email)` for sign-in, audit action and entity, notification dedupe key): a 4-byte hash per row instead of the full key. Composite B-trees where a query filters and sorts (`meetings (user_id, end_at)`, `risk_assessments (student_id, assessment_date)`, `notifications (user_id, created_at)`). Indexes that only repeated a unique constraint, or covered columns with a handful of values, were dropped (86 → 73).
+- **Compact storage for a 1 GB database.** A risk recalculation stores a new assessment only when a student's level, score or reasons change; weekly totals go to `risk_snapshots`. Applied uploads keep only their summary, unconfirmed checks are removed after a day, and JSON and long text use lz4 compression. Measured on the demo data: about 8.4 KB per student including indexes, so roughly 85,000 students fit in 1 GB with headroom.
 
 ## Project structure
 

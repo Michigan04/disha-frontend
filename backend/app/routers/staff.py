@@ -3,15 +3,16 @@ import uuid
 from collections import defaultdict
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .. import models as m
 from .. import schemas
+from ..cache import cached_json
 from ..database import get_db
 from ..deps import case_staff, require, staff_any
-from ..services import academics, records, staffdata
+from ..services import academics, records, risk, staffdata
 from ..services.staffdata import audit
 from .student import risk_assessment_out
 
@@ -47,15 +48,45 @@ def _shared(db: Session) -> dict:
     return dict(out)
 
 
+def _month(d) -> str:
+    return d.strftime("%b %Y") if d else "Never"
+
+
+def freshness(db: Session) -> list[dict]:
+    """When each kind of data was last loaded, read from the tables themselves."""
+    active = db.scalar(select(m.AcademicTerm).where(m.AcademicTerm.is_active))
+    term_order = select(m.AcademicTerm.name).order_by(m.AcademicTerm.start_date.desc()).limit(1)
+    results = db.scalar(term_order.where(m.AcademicTerm.id.in_(select(m.CourseResult.academic_term_id))))
+    regs = db.scalar(term_order.where(m.AcademicTerm.id.in_(select(m.Registration.academic_term_id))))
+    week = db.scalar(select(func.max(m.AssessmentScore.week)).where(
+        m.AssessmentScore.academic_term_id == active.id, m.AssessmentScore.kind == "assignment")) if active else None
+    current = int(records.get_setting(db, "current_week", 1) or 1)
+    project = db.scalar(select(func.max(m.Project.updated_at)))
+    project_ok = bool(project and active and project.date() >= active.start_date)
+    return [
+        {"label": "Term results", "last": results or "None", "ok": bool(results), "note": "Latest finished term"},
+        {"label": "Course registrations", "last": regs or "None", "ok": bool(active and regs == active.name),
+         "note": "Current term" if active and regs == active.name else "Not loaded for the current term"},
+        {"label": "Weekly assignment scores", "last": f"{active.name}, week {week}" if week else "None",
+         "ok": bool(week and week >= current - 1), "note": "Up to date" if week and week >= current - 1 else f"Behind: this is week {current}"},
+        {"label": "Project stages", "last": _month(project), "ok": project_ok,
+         "note": "Updated this term" if project_ok else "Not updated this term"},
+    ]
+
+
 def _last_recalc(db: Session):
     value = records.get_setting(db, "last_recalculated_at")
     return datetime.fromisoformat(value) if value else None
 
 
 @router.get("/bootstrap", summary="Everything the staff portal shows, in one call")
-def bootstrap(user: m.User = Depends(staff_any), db: Session = Depends(get_db)):
+def bootstrap(request: Request, user: m.User = Depends(staff_any), db: Session = Depends(get_db)):
     """Students with their staff-only details, interventions, rules, imports, jobs and
-    (administrators only) the user list and audit log."""
+    (administrators only) the user list and audit log. Answers 304 when nothing changed."""
+    return cached_json(request, db, f"bootstrap:{user.id}", lambda: build_bootstrap(db, user))
+
+
+def build_bootstrap(db: Session, user: m.User) -> dict:
     role = records.ROLE_OUT[user.role]
     ref = records.reference(db)
     rules = records.current_rules(db)
@@ -76,6 +107,10 @@ def bootstrap(user: m.User = Depends(staff_any), db: Session = Depends(get_db)):
         "llmEnabled": bool(records.get_setting(db, "llm_enabled", True)),
         "shared": _shared(db),
         "lastRecalc": _last_recalc(db),
+        "riskTrend": risk.risk_trend(db),
+        "freshness": freshness(db) if role == "admin" else [],
+        "model": records.get_setting(db, "prediction_model", None),
+        "aiSamples": records.get_setting(db, "ai_review_samples", []) if role == "admin" else [],
     }
     if role == "admin":
         out["users"] = [staffdata.account_out(u) for u in db.scalars(

@@ -23,7 +23,7 @@ from . import models as m
 from .config import BACKEND_DIR, get_settings
 from .database import Base, SessionLocal, engine
 from .security import store_password
-from .services import academics, records, risk, staffdata
+from .services import academics, extras, records, risk, staffdata
 
 DATA_FILE = BACKEND_DIR / "seed" / "demo_data.json"
 TERM_STARTS = {"Jan": 1, "May": 5, "Sep": 9}
@@ -101,6 +101,8 @@ class Seeder:
         else:
             self.db.flush()
             risk.recalculate(self.db)
+        self.db.flush()
+        extras.ensure_extras(self.db)
 
     # ----- reference data -----
 

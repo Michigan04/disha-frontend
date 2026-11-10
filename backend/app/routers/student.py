@@ -1,12 +1,13 @@
 """What a signed-in user sees about themselves: reference data, their record, meetings."""
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from .. import models as m
 from .. import schemas
+from ..cache import cached_json
 from ..database import get_db
 from ..deps import current_user, require
 from ..services import academics, records
@@ -31,13 +32,14 @@ def course_by_slug(db: Session, slug: str) -> m.Course:
 
 @router.get("/reference", tags=["Reference"],
             summary="Course catalogue, program rules, staff directory and course content")
-def reference(_: m.User = Depends(current_user), db: Session = Depends(get_db)):
-    return records.reference(db)
+def reference(request: Request, _: m.User = Depends(current_user), db: Session = Depends(get_db)):
+    return cached_json(request, db, "reference", lambda: records.reference(db))
 
 
 @router.get("/me/student", summary="The signed-in student's record: attempts, OPPEs, meetings, support")
-def my_record(user: m.User = Depends(student_only), db: Session = Depends(get_db)):
-    return records.load_students(db, [own_student(db, user).id])[0]
+def my_record(request: Request, user: m.User = Depends(student_only), db: Session = Depends(get_db)):
+    return cached_json(request, db, f"student:{user.id}",
+                       lambda: records.load_students(db, [own_student(db, user).id])[0])
 
 
 @router.get("/me/risk", summary="The signed-in student's latest stored risk assessment and its factors")
@@ -62,10 +64,12 @@ def risk_assessment_out(db: Session, student_id: uuid.UUID) -> dict | None:
 
 
 @router.get("/me/meetings", tags=["Meetings"], summary="Upcoming meetings for the signed-in user (student or staff)")
-def my_meetings(user: m.User = Depends(current_user), db: Session = Depends(get_db)):
-    rows = db.scalars(select(m.Meeting).where(m.Meeting.user_id == user.id, m.Meeting.end_at >= m.now_tz())
-                      .order_by(m.Meeting.start_at)).all()
-    return [records.meeting_out(r) for r in rows]
+def my_meetings(request: Request, user: m.User = Depends(current_user), db: Session = Depends(get_db)):
+    def build():
+        rows = db.scalars(select(m.Meeting).where(m.Meeting.user_id == user.id, m.Meeting.end_at >= m.now_tz())
+                          .order_by(m.Meeting.start_at)).all()
+        return [records.meeting_out(r) for r in rows]
+    return cached_json(request, db, f"meetings:{user.id}", build)
 
 
 STARTED = "_started"  # marker row: the student has saved this plan at least once

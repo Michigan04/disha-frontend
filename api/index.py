@@ -12,8 +12,8 @@ Environment variables (Vercel → Settings → Environment Variables):
   DATABASE_URL    Neon pooled connection string. Not needed when the Neon
                   integration is connected: its POSTGRES_URL is used instead.
   JWT_SECRET      optional; derived from DATABASE_URL when unset.
-On Vercel (VERCEL=1) USE_NULL_POOL defaults to true and AUTO_MIGRATE / AUTO_SEED
-to false. Optional: SHOW_DEMO_ACCOUNTS, DEMO_PASSWORD, HASH_PASSWORDS, OLLAMA_*.
+On Vercel (VERCEL=1) each warm instance keeps one pooled connection, and
+AUTO_MIGRATE / AUTO_SEED default to false. Optional: SHOW_DEMO_ACCOUNTS, DEMO_PASSWORD, HASH_PASSWORDS, OLLAMA_*.
 """
 import json
 import logging

@@ -145,6 +145,9 @@ def commit(db: Session, row: m.DataImport) -> int:
                 week_now = max(week_now, week)
         db.flush()
     records.set_setting(db, "current_week", week_now)
+    # The rows now live in their own tables; keep only the summary (saves space).
+    row.validated_rows = {"terms": (row.validated_rows or {}).get("terms", [])}
+    row.row_errors = (row.row_errors or [])[:200]
     row.status = m.ImportStatus.committed
     row.completed_at = m.now_naive()
     return len(accepted)

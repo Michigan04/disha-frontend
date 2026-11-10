@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { ensureData } from '../services/loader'
 import StudentLayout from '../layouts/StudentLayout.vue'
 import DashboardView from '../views/DashboardView.vue'
 
@@ -48,7 +49,7 @@ const router = createRouter({
 })
 
 // Each page says which roles may open it; the most specific rule wins.
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const auth = useAuthStore()
   if (to.meta.public) {
     if (!auth.user) return true
@@ -57,6 +58,10 @@ router.beforeEach((to) => {
   if (!auth.user) return { path: '/login', query: to.fullPath === '/' ? {} : { redirect: to.fullPath } }
   const roles = [...to.matched].reverse().find((m) => m.meta.roles)?.meta.roles
   if (roles && !roles.includes(auth.role)) return auth.home
+  // Load the user's data from the API before the first page shows (App.vue shows
+  // progress or the error). The session check can sign the user out.
+  await ensureData()
+  if (!auth.user) return { path: '/login' }
   return true
 })
 

@@ -20,9 +20,12 @@ class Settings(BaseSettings):
     # Vercel's Neon integration sets POSTGRES_URL; DATABASE_URL wins when both exist.
     database_url: str = Field("postgresql+psycopg://postgres:postgres@localhost:5432/disha",
                               validation_alias=AliasChoices("DATABASE_URL", "POSTGRES_URL"))
-    # True on Vercel/Neon so SQLAlchemy does not keep a connection pool
-    # (Neon's pooler handles pooling; SQLAlchemy's pool would exhaust the limit).
-    use_null_pool: bool = ON_VERCEL
+    # Connection pool per process. On Vercel a warm instance keeps one connection
+    # (plus a few for bursts) to Neon's pooler; USE_NULL_POOL=true opens a fresh
+    # connection for every request instead.
+    use_null_pool: bool = False
+    db_pool_size: int = 1 if ON_VERCEL else 5
+    db_max_overflow: int = 4 if ON_VERCEL else 10
 
     @field_validator("database_url")
     @classmethod

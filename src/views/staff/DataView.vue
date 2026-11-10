@@ -86,19 +86,11 @@ function cancel() {
   if (input.value) input.value.value = ''
 }
 
-const FRESHNESS = computed(() => [
-  { label: 'Term results', last: 'May 2026', ok: true, note: 'Latest finished term' },
-  { label: 'Course registrations', last: 'Sep 2026', ok: true, note: 'Current term' },
-  { label: 'Weekly assignment scores', last: staff.imports.find((i) => i.category === 'Weekly assignment scores')?.term === 'Sep 2026' ? 'Sep 2026, week 7' : 'Sep 2026', ok: true, note: 'Up to date' },
-  { label: 'Project stages', last: 'May 2026', ok: false, note: 'Not updated this term' },
-])
-
+// Freshness, sample messages and the model come from GET /api/staff/bootstrap.
 const JOB = { succeeded: { label: 'Succeeded', cls: 'ok' }, failed: { label: 'Failed', cls: 'high' }, pending: { label: 'Scheduled', cls: 'route' }, running: { label: 'Running', cls: 'low' } }
 
-const SAMPLES = ref([
-  { id: 1, to: 'A Low-risk student, Statistics II', text: 'You are close to passing Statistics II. Students who passed after one failed attempt usually did two timed past papers before each quiz. This week, try the Week 7 practice set.', flagged: false },
-  { id: 2, to: 'A High-risk student, Python', text: 'Your OPPE 1 eligibility depends on your weekly assignment average. Weeks 8 and 9 still count towards OPPE 2, so submitting both can make you eligible.', flagged: false },
-])
+// "81%" from 0.81
+const accuracyPct = computed(() => (staff.model?.accuracy != null ? Math.round(staff.model.accuracy * 100) : null))
 </script>
 
 <template>
@@ -194,7 +186,7 @@ const SAMPLES = ref([
       <section class="panel" aria-labelledby="fresh-h">
         <div class="panel-head"><h2 id="fresh-h">Data freshness</h2></div>
         <ul class="fresh">
-          <li v-for="d in FRESHNESS" :key="d.label" :class="{ stale: !d.ok }">
+          <li v-for="d in staff.freshness" :key="d.label" :class="{ stale: !d.ok }">
             <span class="dot"></span>
             <span class="fm"><strong>{{ d.label }}</strong><span class="muted">{{ d.note }}</span></span>
             <span class="chip" :class="d.ok ? 'ok' : 'low'">{{ d.last }}</span>
@@ -217,12 +209,12 @@ const SAMPLES = ref([
         <div class="panel-head"><h2 id="ai-h">AI components</h2></div>
         <div class="model">
           <div>
-            <strong>Score prediction model</strong>
-            <span class="muted">Version 0.3 · recorded with every risk assessment</span>
+            <strong>{{ staff.model?.name || 'Score prediction model' }}</strong>
+            <span class="muted">Version {{ staff.model?.version || 'unknown' }} · recorded with every risk assessment</span>
           </div>
-          <div class="acc" role="img" aria-label="81 percent accurate last term">
-            <svg viewBox="0 0 36 36" width="56" height="56"><circle cx="18" cy="18" r="15" fill="none" stroke="var(--line)" stroke-width="5" /><circle cx="18" cy="18" r="15" fill="none" stroke="var(--ok)" stroke-width="5" stroke-dasharray="94.2" :stroke-dashoffset="94.2 * 0.19" transform="rotate(-90 18 18)" stroke-linecap="round" /></svg>
-            <span><b class="num">81%</b> right about pass or fail last term</span>
+          <div v-if="accuracyPct != null" class="acc" role="img" :aria-label="`${accuracyPct} percent accurate in ${staff.model.measuredOn}`">
+            <svg viewBox="0 0 36 36" width="56" height="56"><circle cx="18" cy="18" r="15" fill="none" stroke="var(--line)" stroke-width="5" /><circle cx="18" cy="18" r="15" fill="none" stroke="var(--ok)" stroke-width="5" stroke-dasharray="94.2" :stroke-dashoffset="94.2 * (1 - staff.model.accuracy)" transform="rotate(-90 18 18)" stroke-linecap="round" /></svg>
+            <span><b class="num">{{ accuracyPct }}%</b> right about pass or fail in {{ staff.model.measuredOn }}</span>
           </div>
         </div>
         <div class="llm">
@@ -236,10 +228,10 @@ const SAMPLES = ref([
         </div>
         <h3>Review a sample of messages</h3>
         <ul class="samples">
-          <li v-for="m in SAMPLES" :key="m.id" :class="{ flagged: m.flagged }">
+          <li v-for="m in staff.aiSamples" :key="m.id" :class="{ flagged: m.flagged }">
             <span class="muted to">To: {{ m.to }}</span>
             <p>{{ m.text }}</p>
-            <button type="button" class="flag" :aria-pressed="m.flagged" @click="m.flagged = !m.flagged; staff.log('AI review', `Sample message ${m.flagged ? 'flagged' : 'unflagged'}: ${m.to}`)">
+            <button type="button" class="flag" :aria-pressed="m.flagged" @click="staff.flagSample(m.id, !m.flagged)">
               <Icon name="flag" :size="15" /> {{ m.flagged ? 'Flagged for review' : 'Flag as wrong' }}
             </button>
           </li>

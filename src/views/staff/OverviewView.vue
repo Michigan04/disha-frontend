@@ -48,20 +48,20 @@ const byCourse = computed(() => {
 // Risk colours, shared by every chart on this page (see utils/viz.js)
 const C = { none: VIZ.good, low: VIZ.warning, high: VIZ.critical, pred: VIZ.pred }
 
-// Weekly counts this term (sample history ending at today's numbers)
+// Weekly counts this term, stored at each risk recalculation (risk_snapshots)
 const trend = computed(() => {
-  const h = high.value.length
-  const l = low.value.length
+  const t = staff.riskTrend
+  const has = t.labels.length > 0
   return {
-    labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+    labels: has ? t.labels : ['Now'],
     series: [
-      { name: 'Low', color: C.low, values: [l + 4, l + 4, l + 3, l + 2, l + 2, l + 1, l] },
-      { name: 'High', color: C.high, values: [h - 3, h - 3, h - 2, h - 2, h - 2, h - 2, h] },
+      { name: 'Low', color: C.low, values: has ? t.low : [low.value.length] },
+      { name: 'High', color: C.high, values: has ? t.high : [high.value.length] },
     ],
   }
 })
 const signed = (n) => (n > 0 ? `+${n}` : n < 0 ? `\u2212${-n}` : '0')
-const change = (vals) => vals.at(-1) - vals[0]
+const change = (vals) => (vals.length ? vals.at(-1) - vals[0] : 0)
 
 // Risk mix of the whole cohort
 const riskParts = computed(() => [

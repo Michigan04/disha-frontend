@@ -143,6 +143,10 @@ class UserCreate(BaseModel):
     courseId: str | None = Field(None, description="Course slug, for instructors")
 
 
+class FlagIn(BaseModel):
+    flagged: bool
+
+
 class LlmIn(BaseModel):
     enabled: bool
 

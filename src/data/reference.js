@@ -2,11 +2,12 @@
 // program rules, staff directory and course content. The modules in this folder export
 // empty reactive containers; loadReference() fills them once the user has signed in,
 // so pages keep reading COURSES[id], STAFF[id], LEVEL_RULES[level] and so on.
+// services/loader.js calls it after sign-in and keeps it fresh.
 
 import { api } from '../services/api'
-import { COURSES, LEVEL_COURSES } from './courses'
+import { COURSES, LEVEL_COURSES, TERM_OUTCOMES } from './courses'
 import { GRADE_POINTS, LEVEL_RULES, RISK_RULES } from './rules'
-import { INSTRUCTOR_FOR, PERMISSIONS, STAFF, STAFF_EVENTS, SUPPORT_STAFF } from './staff'
+import { INSTRUCTOR_FOR, PERMISSIONS, STAFF, SUPPORT_STAFF } from './staff'
 import { SUGGESTED_ACTIONS } from './actions'
 import { COURSE_GUIDES } from './guides'
 import { STUDY_PLANS } from './plans'
@@ -25,6 +26,7 @@ function fill(target, source) {
 export function applyReference(ref) {
   fill(COURSES, ref.courses)
   fill(LEVEL_COURSES, ref.levelCourses)
+  fill(TERM_OUTCOMES, ref.outcomes)
   fill(GRADE_POINTS, ref.gradePoints)
   fill(LEVEL_RULES, ref.levelRules)
   fill(RISK_RULES, ref.riskRules)
@@ -43,10 +45,5 @@ export function applyReference(ref) {
 }
 
 export async function loadReference() {
-  applyReference(await api.get('/reference'))
-}
-
-/** Today's and upcoming meetings for a signed-in staff member. */
-export async function loadStaffEvents(staffId) {
-  STAFF_EVENTS[staffId] = await api.get('/me/meetings')
+  applyReference((await api.fresh('/reference')).data)
 }

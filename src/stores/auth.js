@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ROLES } from '../data/accounts'
 import { api, clearSession, readSession, saveSession } from '../services/api'
+import { resetData } from '../services/loader'
 
 // Sign-in. The backend checks the password and issues a token; the token and the
 // signed-in user are kept in this browser (local storage, or the tab if "remember me"
@@ -18,6 +19,7 @@ export const useAuthStore = defineStore('auth', {
     async login(email, password, remember = true) {
       try {
         const res = await api.post('/auth/login', { email: email.trim(), password })
+        resetData()
         saveSession(res.access_token, res.user, remember)
         this.user = res.user
         return null
@@ -28,6 +30,7 @@ export const useAuthStore = defineStore('auth', {
     logout() {
       this.user = null
       clearSession()
+      resetData()
     },
   },
 })

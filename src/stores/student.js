@@ -6,7 +6,8 @@ import {
 } from '../utils/progress'
 import { LEVEL_RULES } from '../data/rules'
 
-// The signed-in student's record (GET /api/me/student) and everything worked out from it.
+// The signed-in student's record (GET /api/me/student, loaded by services/loader.js)
+// and everything worked out from it.
 export const useStudentStore = defineStore('student', {
   state: () => ({ student: null }),
   getters: {
@@ -24,7 +25,10 @@ export const useStudentStore = defineStore('student', {
   },
   actions: {
     async load() {
-      this.student = await api.get('/me/student')
+      this.apply((await api.fresh('/me/student')).data)
+    },
+    apply(student) {
+      this.student = student
     },
     clear() {
       this.student = null

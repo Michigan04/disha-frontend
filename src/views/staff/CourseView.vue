@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useStaffStore } from '../../stores/staff'
 import { STAFF, staffEvents } from '../../data/staff'
-import { COURSES } from '../../data/courses'
+import { COURSES, TERM_OUTCOMES } from '../../data/courses'
 import { OUTCOMES } from '../../data/actions'
 import { formatDate, greeting } from '../../utils/dates'
 import Icon from '../../components/Icon.vue'
@@ -46,13 +46,8 @@ const bins = computed(() => {
 })
 const binMax = computed(() => Math.max(1, ...bins.value.map((b) => b.n)))
 
-const LAST_TERM = [
-  { label: 'Weekly assignments (40 or more)', pct: 82 },
-  { label: 'Quiz 1 (40 or more)', pct: 71 },
-  { label: 'OPPE 1 passed', pct: 58 },
-  { label: 'OPPE 2 passed', pct: 64 },
-  { label: 'End-term exam (40 or more)', pct: 73 },
-]
+// Last term's results by component for this course (course_content "outcomes")
+const lastTerm = computed(() => TERM_OUTCOMES[course.value?.id] || { term: '', parts: [] })
 
 const open = ref(null)
 const saved = ref('')
@@ -127,10 +122,10 @@ function save(rec) {
       <section class="panel" aria-labelledby="comp-h">
         <div class="panel-head">
           <h2 id="comp-h">Last term by component</h2>
-          <span class="muted small">May 2026, sample</span>
+          <span class="muted small">{{ lastTerm.term }}</span>
         </div>
         <ul class="comp">
-          <li v-for="c in LAST_TERM" :key="c.label">
+          <li v-for="c in lastTerm.parts" :key="c.label">
             <div class="ct"><span>{{ c.label }}</span><strong class="num">{{ c.pct }}%</strong></div>
             <div class="cb"><span :class="{ weak: c.pct < 65 }" :style="{ width: `${c.pct}%` }"></span></div>
           </li>

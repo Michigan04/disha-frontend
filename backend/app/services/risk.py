@@ -2,13 +2,20 @@
 stores it as a risk assessment with its factors (DBML tables risk_assessments and
 risk_factors). Also keeps student_milestones in step and alerts staff about new
 High-risk students.
+
+Storage: a new assessment row is written only when a student's level, score,
+reasons or data note changed, so the history grows with real changes rather than
+with every recalculation. Weekly counts per level go to risk_snapshots.
 """
 from __future__ import annotations
 
 import uuid
 from decimal import Decimal
 
+from collections import Counter
+
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from .. import models as m
@@ -58,19 +65,22 @@ def recalculate(db: Session, when=None) -> list[dict]:
     actions = ref["suggestedActions"]
     when = when or m.now_tz()
 
-    latest = {}
-    for a in db.scalars(select(m.RiskAssessment).order_by(m.RiskAssessment.assessment_date)).all():
-        latest[a.student_id] = a
+    # Latest assessment per student: one index scan on (student_id, assessment_date).
+    latest = {a.student_id: a for a in db.scalars(
+        select(m.RiskAssessment).distinct(m.RiskAssessment.student_id)
+        .order_by(m.RiskAssessment.student_id, m.RiskAssessment.assessment_date.desc())).all()}
     milestone_rows = db.scalars(select(m.AcademicMilestone).where(m.AcademicMilestone.is_active).order_by(m.AcademicMilestone.sequence_order)).all()
     student_ms = {(x.student_id, x.milestone_id): x for x in db.scalars(select(m.StudentMilestone)).all()}
 
     changes = []
+    levels = Counter()
     for s in students:
         sid = uuid.UUID(s["id"])
         prev = latest.get(sid)
         mt = dict(meta[s["id"]])
         mt["dataIssue"] = _data_note(s, ref, prev.data_completeness_note if prev else None)
         level = academics.risk_with(s, rules, ref)["level"]
+        levels[level] += 1
         why = academics.reasons(s, mt, rules, ref)
 
         assessment = m.RiskAssessment(
@@ -93,7 +103,10 @@ def recalculate(db: Session, when=None) -> list[dict]:
                 recommended_action=suggestion, points_contributed=min(points, Decimal(100)),
             ))
         assessment.risk_score = min(score, Decimal(100))
-        db.add(assessment)
+        unchanged = prev is not None and (prev.risk_level, prev.risk_score, prev.summary, prev.data_completeness_note) == (
+            assessment.risk_level, assessment.risk_score, assessment.summary, assessment.data_completeness_note)
+        if not unchanged:
+            db.add(assessment)
 
         before = records.RISK_OUT[prev.risk_level] if prev else None
         if before is not None and before != level:
@@ -103,9 +116,32 @@ def recalculate(db: Session, when=None) -> list[dict]:
 
         _sync_milestones(db, sid, s, rules, ref, milestone_rows, student_ms, when)
 
+    record_snapshot(db, levels)
     records.set_setting(db, "last_recalculated_at", when.isoformat())
     db.flush()
     return changes
+
+
+def record_snapshot(db: Session, levels: Counter) -> None:
+    """Store this week's count per risk level (replacing an earlier count this week)."""
+    term = db.scalar(select(m.AcademicTerm).where(m.AcademicTerm.is_active))
+    if term is None:
+        return
+    week = int(records.get_setting(db, "current_week", 1) or 1)
+    for level in ("high", "low", "none"):
+        stmt = insert(m.RiskSnapshot).values(term_id=term.id, week=week, level=records.RISK_IN[level], students=levels[level])
+        db.execute(stmt.on_conflict_do_update(index_elements=["term_id", "week", "level"], set_={"students": stmt.excluded.students}))
+
+
+def risk_trend(db: Session) -> dict:
+    """Weekly counts for the active term, for the Overview chart."""
+    term = db.scalar(select(m.AcademicTerm).where(m.AcademicTerm.is_active))
+    rows = db.scalars(select(m.RiskSnapshot).where(m.RiskSnapshot.term_id == term.id).order_by(m.RiskSnapshot.week)).all() if term else []
+    weeks = sorted({r.week for r in rows})
+    by = {(r.week, records.RISK_OUT[r.level]): r.students for r in rows}
+    return {"term": term.name if term else None, "labels": [f"W{w}" for w in weeks],
+            "high": [by.get((w, "high"), 0) for w in weeks], "low": [by.get((w, "low"), 0) for w in weeks],
+            "none": [by.get((w, "none"), 0) for w in weeks]}
 
 
 def _alert_new_high(db: Session, sid, student: dict, meta: dict, when) -> None:

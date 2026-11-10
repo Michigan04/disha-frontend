@@ -27,10 +27,18 @@ def migrate() -> None:
 
 
 def seed() -> bool:
+    """Seed an empty database; for an existing one, add any newer demo data."""
     from .seed import seed_if_empty
+    from .services.extras import ensure_extras
 
     with SessionLocal() as db:
-        return seed_if_empty(db)
+        seeded = seed_if_empty(db)
+        if not seeded:
+            added = ensure_extras(db)
+            db.commit()
+            if added:
+                log.warning("Added demo data: %s", ", ".join(added))
+        return seeded
 
 
 def initialize(force: bool = False) -> None:

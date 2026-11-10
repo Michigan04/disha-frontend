@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
@@ -49,8 +50,10 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware, allow_origins=get_settings().cors_list, allow_credentials=True,
-    allow_methods=["*"], allow_headers=["*"],
+    allow_methods=["*"], allow_headers=["*"], expose_headers=["ETag"],
 )
+# JSON compresses about 6:1; the staff dashboard drops from ~100 KB to ~15 KB.
+app.add_middleware(GZipMiddleware, minimum_size=1024)
 for r in (auth, student, staff, admin, chat):
     app.include_router(r.router)
 

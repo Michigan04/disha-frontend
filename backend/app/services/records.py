@@ -34,16 +34,26 @@ def utc(dt: datetime | None) -> datetime | None:
 
 # ---------- Settings ----------
 
+def _settings(db: Session) -> dict:
+    """All policy settings, read in one query and kept for the rest of this request."""
+    cache = db.info.get("settings")
+    if cache is None:
+        cache = db.info["settings"] = {r.key: r for r in db.scalars(select(m.PolicySetting)).all()}
+    return cache
+
+
 def get_setting(db: Session, key: str, default=None):
-    row = db.scalar(select(m.PolicySetting).where(m.PolicySetting.key == key))
+    row = _settings(db).get(key)
     return default if row is None else row.value
 
 
 def set_setting(db: Session, key: str, value, user_id=None, description: str | None = None):
-    row = db.scalar(select(m.PolicySetting).where(m.PolicySetting.key == key))
+    cache = _settings(db)
+    row = cache.get(key)
     if row is None:
         row = m.PolicySetting(key=key, value=value, description=description, updated_by=user_id)
         db.add(row)
+        cache[key] = row
     else:
         row.value = value
         row.updated_by = user_id
@@ -111,7 +121,7 @@ def reference(db: Session) -> dict:
     for c in courses:
         level_courses[c.academic_level.value].append(c.slug)
 
-    content: dict[str, dict] = {"guide": {}, "plan": {}, "insight": {}, "scheme": {}}
+    content: dict[str, dict] = {"guide": {}, "plan": {}, "insight": {}, "scheme": {}, "outcomes": {}}
     for row in db.scalars(select(m.CourseContent)).all():
         if row.course_id in slug_of:
             content.setdefault(row.kind, {})[slug_of[row.course_id]] = row.data
@@ -137,6 +147,7 @@ def reference(db: Session) -> dict:
         "guides": content["guide"],
         "plans": content["plan"],
         "insights": content["insight"],
+        "outcomes": content["outcomes"],
         "staff": {str(u.id): staff_out(u, slug_of) for u in staff},
     }
 

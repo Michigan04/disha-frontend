@@ -13,8 +13,8 @@ const auth = useAuthStore()
 const router = useRouter()
 const calendar = useCalendar()
 
-// The signed-in student decides whose record is shown.
-watch(() => auth.user?.studentId, (id) => { if (id && id !== store.currentId) store.setStudent(id) }, { immediate: true })
+// The signed-in student's record is loaded from the API before this layout shows
+// (services/loader.js, called from the router).
 
 function signOut() {
   auth.logout()
@@ -32,7 +32,7 @@ const nav = [
 
 const initials = computed(() => store.student.name.split(' ').map((p) => p[0]).join(''))
 
-// Reload the calendar whenever the demo student changes.
+// Reload the calendar whenever the signed-in student changes.
 watch(() => store.student.id, () => calendar.load(store.student), { immediate: true })
 </script>
 

@@ -6,3 +6,5 @@ import { reactive } from 'vue'
 
 export const COURSES = reactive({})
 export const LEVEL_COURSES = reactive({})
+// TERM_OUTCOMES[id]   { term, parts: [{ label, pct }] }: last term's results by component
+export const TERM_OUTCOMES = reactive({})
