@@ -4,10 +4,25 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+
+  "functions": {
+    "api/index.py": {
+      "runtime": "vercel-python@3.0.7",
+      "maxDuration": 30,
+      "includeFiles": "backend/**"
+    }
+  },
+
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py" }
+  ],
+
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     }
   ]
 }

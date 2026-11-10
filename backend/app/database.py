@@ -1,9 +1,23 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy.pool import NullPool
 
 from .config import get_settings
 
-engine = create_engine(get_settings().database_url, pool_pre_ping=True)
+
+def _make_engine():
+    settings = get_settings()
+    url = settings.database_url
+    # Neon (and other serverless PG) works best with NullPool: each request
+    # gets a fresh connection through Neon's connection pooler, so SQLAlchemy's
+    # own pool would create extra idle connections that exceed the free-tier
+    # limit. NullPool disables the pool entirely.
+    if settings.use_null_pool:
+        return create_engine(url, poolclass=NullPool)
+    return create_engine(url, pool_pre_ping=True, pool_size=5, max_overflow=10)
+
+
+engine = _make_engine()
 SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
 
 
