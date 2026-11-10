@@ -1,18 +1,19 @@
 // "Ask Disha" assistant.
 //
-// Every reply is a JSON object that follows RESPONSE_SCHEMA. The backend asks the LLM
-// (for example Ollama with `format` set to this schema) to answer in this shape; the
-// frontend validates it and renders each field. Without VITE_CHAT_API_URL, a built-in
-// responder answers common questions from the student's own data, in the same JSON shape.
+// Every reply is a JSON object that follows RESPONSE_SCHEMA. The backend (POST /api/chat)
+// asks the LLM (Ollama with `format` set to this schema) to answer in this shape; the
+// frontend validates it and renders each field. When the backend has no model configured,
+// or the administrator has switched it off, a built-in responder answers common questions
+// from the student's own data, in the same JSON shape.
 
+import { reactive } from 'vue'
 import { COURSES } from '../data/courses'
 import { GRADE_POINTS, LEVEL_RULES, RISK_RULES } from '../data/rules'
 import { PAST_STUDENT_INSIGHTS } from '../data/insights'
 import { formatDate, formatTime, relativeDay } from '../utils/dates'
 import { meets, oppeStatus } from '../utils/progress'
 import { predict } from '../utils/predict'
-
-const API_URL = import.meta.env.VITE_CHAT_API_URL
+import { api } from './api'
 
 export const RESPONSE_SCHEMA = {
   type: 'object',
@@ -40,7 +41,18 @@ export const SYSTEM_PROMPT = [
   'Keep "answer" under three sentences, in plain words. Use routes from: /, /progress, /courses, /courses/<id>, /oppe, /meetings.',
 ].join(' ')
 
-export const usingLiveModel = Boolean(API_URL)
+// Whether the backend will answer with a live language model (GET /api/chat/status).
+export const chatState = reactive({ live: false, model: null, checked: false })
+
+export async function checkChatStatus() {
+  try {
+    Object.assign(chatState, await api.get('/chat/status'))
+  } catch {
+    chatState.live = false
+  }
+  chatState.checked = true
+  return chatState.live
+}
 
 // The context sent with every question, also shown to the student on the Ask Disha page.
 export function buildContext(store) {
@@ -103,20 +115,21 @@ export function validateResponse(raw) {
 }
 
 export async function ask(question, history, store) {
-  if (API_URL) {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+  if (!chatState.checked) await checkChatStatus()
+  if (chatState.live) {
+    try {
+      const data = await api.post('/chat', {
         system: SYSTEM_PROMPT,
         messages: [...history, { role: 'user', content: question }],
         context: buildContext(store),
         response_schema: RESPONSE_SCHEMA,
-      }),
-    })
-    if (!res.ok) throw new Error('The assistant is not reachable right now. Try again in a minute.')
-    const data = await res.json()
-    return validateResponse(data.response ?? data.message ?? data)
+      })
+      return validateResponse(data.response ?? data.message ?? data)
+    } catch (err) {
+      // 503: no model, or switched off since the status check. Use the built-in replies.
+      if (err.status !== 503) throw new Error(err.status ? err.message : 'The assistant is not reachable right now. Try again in a minute.')
+      chatState.live = false
+    }
   }
   await new Promise((r) => setTimeout(r, 650))
   return validateResponse(localReply(question, store))

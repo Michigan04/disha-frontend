@@ -1,11 +1,14 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useStaffStore } from '../../stores/staff'
-import { CATEGORIES, SAMPLE_FILES, parseCsv, templateCsv, validate } from '../../utils/csv'
+import { CATEGORIES, SAMPLE_FILES } from '../../utils/csv'
 import { formatDate, formatTime, relativeDay } from '../../utils/dates'
+import { api } from '../../services/api'
 import Icon from '../../components/Icon.vue'
 
-// Data uploads (US-09) and system status (US-15). Files are read in the browser only.
+// Data uploads (US-09) and system status (US-15). The server checks every row
+// (POST /api/imports/validate); nothing counts until the administrator confirms
+// (POST /api/imports/:id/commit), which also recalculates risk.
 const staff = useStaffStore()
 const cat = ref('scores')
 const fileName = ref('')
@@ -13,6 +16,7 @@ const result = ref(null)
 const error = ref('')
 const over = ref(false)
 const done = ref(null)
+const busy = ref(false)
 const input = ref(null)
 
 async function readFile(file) {
@@ -21,23 +25,27 @@ async function readFile(file) {
   done.value = null
   if (!/\.csv$/i.test(file.name)) return (error.value = 'Choose a .csv file.')
   if (file.size > 5 * 1024 * 1024) return (error.value = 'That file is over 5 MB. Split it into smaller files.')
-  check(file.name, await file.text())
+  await check(file)
 }
 
-function check(name, text) {
-  fileName.value = name
-  const res = validate(parseCsv(text), cat.value)
-  if (res.error) {
-    result.value = null
-    error.value = res.error
-  } else result.value = res
+async function check(file) {
+  fileName.value = file.name
+  result.value = null
+  busy.value = true
+  try {
+    result.value = await api.upload('/imports/validate', { category: cat.value, file })
+  } catch (err) {
+    error.value = err.message
+  } finally {
+    busy.value = false
+  }
 }
 
 function useSample() {
   cat.value = 'scores'
   done.value = null
   error.value = ''
-  check('sample_week8_scores.csv', SAMPLE_FILES.scores)
+  check(new File([SAMPLE_FILES.scores], 'sample_week8_scores.csv', { type: 'text/csv' }))
 }
 
 function onDrop(e) {
@@ -45,22 +53,29 @@ function onDrop(e) {
   readFile(e.dataTransfer.files[0])
 }
 
-function download() {
+async function download() {
+  error.value = ''
   try {
-    const blob = new Blob([templateCsv(cat.value)], { type: 'text/csv' })
-    const url = URL.createObjectURL(blob)
+    const text = await api.text(`/imports/template/${cat.value}`)
+    const url = URL.createObjectURL(new Blob([text], { type: 'text/csv' }))
     const a = document.createElement('a')
     a.href = url
     a.download = `disha_template_${cat.value}.csv`
     a.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
-  } catch {
-    error.value = 'The template could not be downloaded in this browser.'
+  } catch (err) {
+    error.value = err.message || 'The template could not be downloaded in this browser.'
   }
 }
 
-function confirm() {
-  done.value = staff.confirmImport(fileName.value, result.value)
+async function confirm() {
+  if (!result.value?.importId || busy.value) return
+  busy.value = true
+  const id = result.value.importId
+  const imported = await staff.confirmImport(id)
+  busy.value = false
+  if (!imported) return (error.value = staff.error || 'The upload could not be applied.')
+  done.value = imported
   result.value = null
   if (input.value) input.value.value = ''
 }
@@ -124,7 +139,7 @@ const SAMPLES = ref([
           </label>
           <button type="button" class="btn quiet" @click="useSample"><Icon name="file" :size="18" /> Try a sample file</button>
         </div>
-        <p class="muted small">Checked in this browser. Nothing is uploaded in the demo.</p>
+        <p class="muted small">{{ busy ? 'Checking every row…' : 'The server checks every row. Nothing counts until you confirm.' }}</p>
       </div>
       <p v-if="error" class="err" role="alert"><Icon name="alert" :size="18" /> {{ error }}</p>
 
@@ -153,12 +168,12 @@ const SAMPLES = ref([
           </ul>
         </div>
         <div class="c-actions">
-          <button class="btn" type="button" :disabled="!result.accepted.length" @click="confirm"><Icon name="check" :size="18" /> Import {{ result.accepted.length }} rows and recalculate risk</button>
+          <button class="btn" type="button" :disabled="!result.accepted.length || busy" @click="confirm"><Icon name="check" :size="18" /> {{ busy ? 'Importing…' : `Import ${result.accepted.length} rows and recalculate risk` }}</button>
           <button class="btn quiet" type="button" @click="cancel">Cancel</button>
         </div>
       </div>
 
-      <p v-if="done" class="toast" role="status"><Icon name="check" :size="18" /> Imported {{ done.accepted }} rows from {{ done.file }}. Risk recalculation has started; see System status below.</p>
+      <p v-if="done" class="toast" role="status"><Icon name="check" :size="18" /> Imported {{ done.accepted }} rows from {{ done.file }}. Risk has been recalculated; see System status below.</p>
     </section>
 
     <div class="grid">

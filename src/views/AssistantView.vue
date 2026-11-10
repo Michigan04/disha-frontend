@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStudentStore } from '../stores/student'
-import { ask, buildContext, RESPONSE_SCHEMA, usingLiveModel } from '../services/chat'
+import { ask, buildContext, chatState, checkChatStatus, RESPONSE_SCHEMA } from '../services/chat'
 import JsonViewer from '../components/JsonViewer.vue'
 import Icon from '../components/Icon.vue'
 import AiMark from '../components/AiMark.vue'
@@ -61,6 +61,7 @@ function onKey(e) {
 }
 
 onMounted(() => {
+  checkChatStatus()
   if (route.query.q) send(String(route.query.q))
 })
 </script>
@@ -159,7 +160,7 @@ onMounted(() => {
           <ul class="fields">
             <li v-for="(v, k) in RESPONSE_SCHEMA.properties" :key="k"><code>{{ k }}</code></li>
           </ul>
-          <p class="muted small">{{ usingLiveModel ? 'Answers come from the language model on your server.' : 'Demo mode: answers come from a built-in responder that uses the same format.' }}</p>
+          <p class="muted small">{{ chatState.live ? 'Answers come from the language model on the Disha server.' : 'Built-in mode: no language model is switched on, so a built-in responder answers in the same format.' }}</p>
         </section>
       </aside>
     </div>

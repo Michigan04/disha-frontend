@@ -1,8 +1,9 @@
 <script setup>
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { ACCOUNTS, DEMO_PASSWORD, ROLES } from '../data/accounts'
+import { ROLES } from '../data/accounts'
+import { api } from '../services/api'
 import { initials } from '../utils/staff'
 import Icon from '../components/Icon.vue'
 import BrandMark from '../components/BrandMark.vue'
@@ -20,12 +21,22 @@ const error = ref('')
 const busy = ref(false)
 const submitBtn = ref(null)
 
-const accounts = computed(() => ACCOUNTS.filter((a) => a.role === role.value))
+// Demo accounts come from the backend (empty when SHOW_DEMO_ACCOUNTS=false).
+const demo = ref({ password: null, accounts: [] })
+const accounts = computed(() => demo.value.accounts.filter((a) => a.role === role.value))
+
+onMounted(async () => {
+  try {
+    demo.value = await api.get('/auth/demo-accounts')
+  } catch {
+    /* backend unreachable: the form still works, the error shows on sign-in */
+  }
+})
 const ROLE_TABS = Object.entries(ROLES).map(([key, v]) => ({ key, label: v.label }))
 
 function use(a) {
   email.value = a.email
-  password.value = DEMO_PASSWORD
+  password.value = demo.value.password || ''
   error.value = ''
   nextTick(() => submitBtn.value?.focus())
 }
@@ -36,8 +47,7 @@ async function submit() {
   if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) return (error.value = 'That does not look like an email address.')
   if (!password.value) return (error.value = 'Enter your password.')
   busy.value = true
-  await new Promise((r) => setTimeout(r, 350))
-  const msg = auth.login(email.value, password.value, remember.value)
+  const msg = await auth.login(email.value, password.value, remember.value)
   busy.value = false
   if (msg) return (error.value = msg)
   const target = typeof route.query.redirect === 'string' ? route.query.redirect : auth.home
@@ -128,10 +138,10 @@ async function submit() {
           </button>
         </form>
 
-        <section class="demo" aria-labelledby="demo-h">
+        <section v-if="demo.accounts.length" class="demo" aria-labelledby="demo-h">
           <div class="demo-head">
             <h2 id="demo-h">Demo accounts</h2>
-            <span class="chip"><Icon name="lock" :size="14" /> Password: <code>{{ DEMO_PASSWORD }}</code></span>
+            <span v-if="demo.password" class="chip"><Icon name="lock" :size="14" /> Password: <code>{{ demo.password }}</code></span>
           </div>
           <ul>
             <li v-for="a in accounts" :key="a.email">
@@ -146,7 +156,7 @@ async function submit() {
             </li>
           </ul>
         </section>
-        <p class="note">Demo only: sign-in is checked in this browser. In the full platform the backend checks the password and each role’s access.</p>
+        <p class="note">The Disha server checks your password and enforces each role’s access on every request.</p>
       </div>
     </main>
   </div>

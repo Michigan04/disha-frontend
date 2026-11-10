@@ -165,7 +165,7 @@ function attemptResult(a) {
         :plan="plan"
         :insight="insight"
         :current-week="current?.week ?? 1"
-        :storage-key="`disha.plan.${store.student.id}.${course.id}`"
+        :course-id="course.id"
       />
     </div>
 

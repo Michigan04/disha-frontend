@@ -2,15 +2,31 @@
 
 Frontend for the **Student Risk Identification and Intervention Platform** (IITM BS, Software Engineering, Team 026): a **sign-in page**, the **student portal**, and a **staff portal** for support staff, course instructors and administrators.
 
-Built with **Vue 3, Vite, Vue Router and Pinia**. This is **frontend only**: it runs entirely on built-in sample data, with no backend, database or API calls, as Milestone 2 requires. Sign-in is checked in the browser against demo accounts. Two environment variables switch on the live chatbot and Google Calendar when the backend is ready.
+Built with **Vue 3, Vite, Vue Router and Pinia** on the frontend and **FastAPI, SQLAlchemy, Alembic and PostgreSQL** in `backend/`. The backend checks passwords, enforces every role's permissions, stores all records (assignments, interventions, rules, imports, study plans, audit log) and answers the chatbot. Swagger UI for the API is at `http://localhost:8000/docs`.
 
 ## Run it
 
-You need **Node.js 18 or later** and npm.
+You need **Node.js 20 or later**, **Python 3.12 or later** and **PostgreSQL**.
+
+**Backend** (first time):
+
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate        # macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env             # then set DATABASE_URL and JWT_SECRET
+createdb disha                   # or create the database in pgAdmin
+uvicorn app.main:app --reload    # http://localhost:8000, docs at /docs
+```
+
+On start-up the backend applies the Alembic migrations and, if the database is empty, seeds the demo accounts and the 60-student cohort (`AUTO_MIGRATE`, `AUTO_SEED`, `SEED_DEMO_DATA` in `backend/.env`).
+
+**Frontend**, in a second terminal from the project folder:
 
 ```bash
 npm install
-npm run dev        # opens on http://localhost:5173
+npm run dev        # http://localhost:5173; /api is forwarded to http://localhost:8000
 ```
 
 To build for production:
@@ -20,7 +36,7 @@ npm run build      # output goes to dist/
 npm run preview    # serves dist/ on http://localhost:4173
 ```
 
-The app uses hash routes (`/#/oppe`), so the built `dist/` folder works on any static host without server configuration.
+The app uses hash routes (`/#/oppe`). If the frontend and API are on different hosts, set `VITE_API_URL` (for example `https://api.example.com/api`) and add the frontend's address to `CORS_ORIGINS` in the backend.
 
 ## Deploy on Vercel
 
@@ -28,14 +44,14 @@ The repo is ready for Vercel: `vercel.json` sets the Vite framework, `npm ci`, `
 
 1. In the Vercel dashboard choose **Add New… → Project** and import this GitHub repository.
 2. Leave the detected settings as they are (Framework **Vite**, Root Directory `./`). Vercel reads the build settings from `vercel.json`.
-3. Optional: under **Environment Variables**, add `VITE_CHAT_API_URL` and/or `VITE_GOOGLE_CLIENT_ID` (see below). Without them the app runs on its built-in sample data.
+3. Under **Environment Variables**, add the backend values from `.env.vercel` (`DATABASE_URL` for a Neon database, `USE_NULL_POOL=true`, `JWT_SECRET`, `CORS_ORIGINS`, ...). `api/index.py` runs the FastAPI app as a Python function for every `/api/...` request. Optionally add `VITE_GOOGLE_CLIENT_ID` (see below).
 4. Click **Deploy**. Every push to `main` redeploys automatically.
 
 If you use Google Calendar, add the Vercel URL (for example `https://your-project.vercel.app`) to the OAuth client's **Authorised JavaScript origins**.
 
 ## Sign in
 
-The app opens on the sign-in page. Pick a role, click a demo account to fill in the form, and press **Sign in**. Every demo account uses the password **`disha123`**. **Sign out** is at the bottom of the side menu (top right on a phone).
+The app opens on the sign-in page. Pick a role, click a demo account to fill in the form, and press **Sign in**. Every demo account uses the password **`disha123`** (`DEMO_PASSWORD`). The sign-in page lists the accounts from `GET /api/auth/demo-accounts`; set `SHOW_DEMO_ACCOUNTS=false` to hide them. **Sign out** is at the bottom of the side menu (top right on a phone).
 
 | Role | Email | Lands on | What you will see |
 |---|---|---|---|
@@ -46,7 +62,7 @@ The app opens on the sign-in page. Pick a role, click a demo account to fill in 
 | Course instructor | `kavya@disha.demo` | My course | Students referred to Programming in Python, course totals |
 | Administrator | `admin@disha.demo` | Staff overview | Everything: at-risk list, assigning, interventions, reports, data upload, rules, users, audit log |
 
-Each role can open only its own pages. A student who types a staff address, or support staff who open the rules page, are sent back to their own home page.
+Each role can open only its own pages. A student who types a staff address, or support staff who open the rules page, are sent back to their own home page, and the API refuses the request (403) whatever the browser does.
 
 ### The three demo students
 
@@ -127,16 +143,21 @@ The rules live in `src/utils/progress.js` (`risk()`) and `src/data/rules.js`. Th
 
 ## Connecting the real services
 
-Copy `.env.example` to `.env` and fill in either value. Restart `npm run dev` afterwards.
+Copy `.env.example` to `.env` to set the frontend values, and `backend/.env.example` to `backend/.env` for the backend. Restart the servers afterwards.
 
 ```bash
-VITE_CHAT_API_URL=http://localhost:8000/api/chat
+# .env (frontend)
+VITE_API_URL=                    # leave empty when the API is served at /api
 VITE_GOOGLE_CLIENT_ID=1234567890-abc.apps.googleusercontent.com
+
+# backend/.env
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b         # empty = built-in replies
 ```
 
 ### Chatbot (feature 2 and 7)
 
-The frontend sends a POST request to `VITE_CHAT_API_URL`:
+The Ask Disha page first asks `GET /api/chat/status` whether a live model will answer. If so, it sends a POST request to `/api/chat`, and the backend passes it to Ollama with `format` set to the schema, so the model replies in it:
 
 ```json
 {
@@ -147,7 +168,7 @@ The frontend sends a POST request to `VITE_CHAT_API_URL`:
 }
 ```
 
-The backend must return one JSON object in this shape (either directly, or as `{ "response": ... }`):
+The backend returns `{ "response": ... }` holding one JSON object in this shape:
 
 ```json
 {
@@ -164,36 +185,7 @@ The backend must return one JSON object in this shape (either directly, or as `{
 
 `RESPONSE_SCHEMA` in `src/services/chat.js` is the full JSON Schema. `validateResponse()` rejects replies that do not match it, and only allows in-app routes in action buttons.
 
-An example backend endpoint using a local model through **Ollama**, whose `format` option makes the model reply in the schema (FastAPI):
-
-```python
-import json, httpx
-from fastapi import FastAPI
-from pydantic import BaseModel
-
-app = FastAPI()
-
-class ChatRequest(BaseModel):
-    system: str
-    messages: list[dict]
-    context: dict
-    response_schema: dict
-
-@app.post("/api/chat")
-def chat(req: ChatRequest):
-    # In production, build `context` from the database for the logged-in student
-    # instead of trusting what the browser sends.
-    messages = [{"role": "system", "content": req.system + "\n\nStudent context:\n" + json.dumps(req.context)}, *req.messages]
-    r = httpx.post(
-        "http://localhost:11434/api/chat",
-        json={"model": "llama3.1:8b", "messages": messages, "format": req.response_schema,
-              "stream": False, "options": {"temperature": 0.2}},
-        timeout=120,
-    )
-    return {"response": json.loads(r.json()["message"]["content"])}
-```
-
-Without `VITE_CHAT_API_URL`, a built-in responder answers common questions (CGPA, a target CGPA, OPPE eligibility, failed courses, terms and milestones, meetings, registration, weekly focus) from the demo student's data, in the same JSON format.
+When `OLLAMA_MODEL` is empty, or the administrator switches the language model off on **Data and system**, the backend answers 503 and a built-in responder answers common questions (CGPA, a target CGPA, OPPE eligibility, failed courses, terms and milestones, meetings, registration, weekly focus) from the demo student's data, in the same JSON format.
 
 ### Google Calendar (feature 6)
 
@@ -250,8 +242,8 @@ src/
 
 - All names, grades, statistics and meetings are sample data.
 - **How the prediction works (sample model):** parts already marked (weekly assignments, Quiz 1) count at the student's real score; a missed OPPE counts as 0; each part still to come is estimated from the assignment average and Quiz 1, adjusted by how last term's students with similar scores did. The likely range narrows as more results come in. In the full platform this comes from the backend's model; the grading weights in `schemes.js` are sample values.
-- Study plan ticks are kept in the browser's local storage only.
-- **Sign-in is a demo.** The browser checks the email and password against `src/data/accounts.js`, and the router hides pages a role may not open. In the full platform the backend checks passwords (institute single sign-on) and enforces every permission on the server; hiding pages in the browser is not security.
-- Staff changes (assignments, interventions, outcomes, rules, imports, settings) last until the page is reloaded. In the full platform they are saved by the backend.
+- Study plan ticks are saved per student on the server (`/api/me/study-plan/:courseId`).
+- **Sign-in:** the backend checks the email and password and issues a JWT (`JWT_SECRET`, `JWT_EXPIRE_MINUTES`); every endpoint checks the role again. Passwords are stored as plain text while `HASH_PASSWORDS=false`; set it to `true` before real use (existing passwords are upgraded to PBKDF2 at the next sign-in).
+- Staff changes (assignments, interventions, outcomes, rules, imports, settings) are saved by the backend and written to the audit log.
 - The interface is responsive from 360 px phones to wide screens, works with the keyboard, has visible focus outlines, and turns off motion for people who prefer reduced motion.
-- The milestone and eligibility rules are sample values in `src/data`; in the full platform they come from the administrator's settings.
+- The milestone and risk rules are stored in the database as versioned settings; the administrator edits them on **Rules and access**.

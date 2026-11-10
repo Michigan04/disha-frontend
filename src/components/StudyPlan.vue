@@ -1,37 +1,53 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import Icon from './Icon.vue'
+import { api } from '../services/api'
 
 // A week-by-week plan for clearing a course the student failed before.
-// Ticked tasks are remembered in this browser only.
+// Ticked tasks are saved on the server (GET/PUT /api/me/study-plan/:courseId).
 const props = defineProps({
   plan: { type: Object, required: true },
   insight: { type: Object, default: null },
   currentWeek: { type: Number, required: true },
-  storageKey: { type: String, required: true },
+  courseId: { type: String, required: true },
 })
 
-function load() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(props.storageKey) || 'null')
-    if (Array.isArray(saved)) return saved
-  } catch {
-    /* storage unavailable */
-  }
-  // Default: tasks in past weeks are done.
-  return props.plan.weeks.filter((w) => w.w < props.currentWeek).flatMap((w) => w.tasks.map((_, i) => `${w.w}-${i}`))
-}
+// Until the student saves the plan once, tasks in past weeks count as done.
+const pastWeeks = () => props.plan.weeks.filter((w) => w.w < props.currentWeek).flatMap((w) => w.tasks.map((_, i) => `${w.w}-${i}`))
 
-const done = reactive(new Set(load()))
+const done = reactive(new Set(pastWeeks()))
 const open = ref(props.currentWeek)
+const saveError = ref('')
+
+onMounted(async () => {
+  try {
+    const res = await api.get(`/me/study-plan/${props.courseId}`)
+    if (Array.isArray(res?.done)) {
+      done.clear()
+      res.done.forEach((k) => done.add(k))
+    }
+  } catch {
+    /* keep the default ticks; saving will report a problem */
+  }
+})
+
+// Saves run one after another so a slow request never overwrites a newer one.
+let queue = Promise.resolve()
+function persist() {
+  const snapshot = [...done]
+  queue = queue.then(async () => {
+    try {
+      await api.put(`/me/study-plan/${props.courseId}`, { done: snapshot })
+      saveError.value = ''
+    } catch (err) {
+      saveError.value = `Your ticks could not be saved: ${err.message}`
+    }
+  })
+}
 
 function toggle(id) {
   done.has(id) ? done.delete(id) : done.add(id)
-  try {
-    localStorage.setItem(props.storageKey, JSON.stringify([...done]))
-  } catch {
-    /* storage unavailable: ticks last for this visit */
-  }
+  persist()
 }
 
 const total = computed(() => props.plan.weeks.reduce((s, w) => s + w.tasks.length, 0))
@@ -66,6 +82,8 @@ const C = 2 * Math.PI * R
         <span>of {{ insight.failedOnce }} students who failed once passed next time with a plan like this</span>
       </div>
     </div>
+
+    <p v-if="saveError" class="save-err" role="alert">{{ saveError }}</p>
 
     <ol class="weeks">
       <li v-for="w in plan.weeks" :key="w.w" :class="{ past: w.w < currentWeek, now: w.w === currentWeek, complete: weekDone(w), isopen: open === w.w }">
@@ -110,6 +128,14 @@ const C = 2 * Math.PI * R
 </template>
 
 <style scoped>
+.save-err {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--high-soft);
+  color: var(--high);
+  font-size: 0.9rem;
+}
 .plan {
   display: flex;
   flex-direction: column;
