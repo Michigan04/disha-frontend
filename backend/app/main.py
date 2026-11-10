@@ -2,6 +2,7 @@
 
 Swagger UI is at /docs, ReDoc at /redoc, the OpenAPI document at /openapi.json.
 """
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -17,7 +18,10 @@ from .routers import admin, auth, chat, staff, student
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    initialize()
+    # On Vercel (VERCEL=1) api/index.py does this once per cold start and catches
+    # errors; a failing lifespan would take the whole function down.
+    if not os.environ.get("VERCEL"):
+        initialize()
     yield
 
 
