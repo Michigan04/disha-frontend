@@ -13,7 +13,9 @@ def _make_engine():
     # own pool would create extra idle connections that exceed the free-tier
     # limit. NullPool disables the pool entirely.
     if settings.use_null_pool:
-        return create_engine(url, poolclass=NullPool)
+        # prepare_threshold=None: no server-side prepared statements, which a
+        # transaction-mode pooler (Neon's -pooler host, PgBouncer) may not keep.
+        return create_engine(url, poolclass=NullPool, connect_args={"prepare_threshold": None})
     return create_engine(url, pool_pre_ping=True, pool_size=5, max_overflow=10)
 
 

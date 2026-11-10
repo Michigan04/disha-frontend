@@ -1,27 +1,35 @@
-"""Vercel serverless handler for the Disha FastAPI backend.
+"""Vercel serverless entry point for the Disha FastAPI backend.
 
-Vercel runs this file as a Python 3.12 Function when any request matches
-the /api/** route defined in vercel.json.  It simply imports the FastAPI app
-and hands the ASGI request to Mangum, which translates between the AWS Lambda /
-Vercel Function calling convention and ASGI.
+Vercel's Python runtime serves the ASGI app named `app` in this file for every
+request that vercel.json rewrites here (/api/...). The FastAPI routes already
+start with /api, so paths arrive unchanged.
 
-Environment variables required on Vercel:
-  DATABASE_URL   – Neon connection string (postgresql+psycopg://...?sslmode=require)
-  USE_NULL_POOL  – true   (NullPool is required for Neon serverless)
-  JWT_SECRET     – long random string
-  CORS_ORIGINS   – your Vercel frontend URL, e.g. https://my-app.vercel.app
-  AUTO_MIGRATE   – true (runs alembic upgrade head on first cold start)
-  AUTO_SEED      – true (seeds the DB if it is empty)
-  SEED_DEMO_DATA – true / false
-  HASH_PASSWORDS – false (plain text; change to true for production)
-  SHOW_DEMO_ACCOUNTS – true / false
+Set up the Neon database once before the first deploy (see README, "Deploy on
+Vercel"): `python -m app.bootstrap` from the backend folder with DATABASE_URL
+pointing at Neon. Keep AUTO_MIGRATE and AUTO_SEED false on Vercel so cold starts
+do not run migrations.
 
-Optional:
-  OLLAMA_URL / OLLAMA_MODEL – leave empty to use the built-in rule-based chat
+Environment variables (Vercel → Settings → Environment Variables):
+  DATABASE_URL    Neon pooled connection string (postgresql://...-pooler...?sslmode=require)
+  USE_NULL_POOL   true
+  JWT_SECRET      long random string
+  AUTO_MIGRATE    false
+  AUTO_SEED       false
+  Optional: SHOW_DEMO_ACCOUNTS, DEMO_PASSWORD, HASH_PASSWORDS, OLLAMA_URL, OLLAMA_MODEL
 """
+import logging
+import sys
+from pathlib import Path
 
-from mangum import Mangum
+# The backend package lives in ../backend (bundled through vercel.json "includeFiles").
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
 
-from app.main import app  # noqa: F401 – imports the FastAPI app and runs lifespan
+from app.bootstrap import initialize  # noqa: E402
+from app.main import app  # noqa: E402,F401  (the ASGI app Vercel serves)
 
-handler = Mangum(app, lifespan="auto")
+# Runs only when AUTO_MIGRATE / AUTO_SEED are true. The runtime may not send
+# ASGI lifespan events, so do it here; both steps are safe to repeat.
+try:
+    initialize()
+except Exception:  # keep serving; /api/health will show the database problem
+    logging.getLogger("disha").exception("Database initialisation failed")

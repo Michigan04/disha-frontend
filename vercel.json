@@ -7,9 +7,9 @@
 
   "functions": {
     "api/index.py": {
-      "runtime": "vercel-python@3.0.7",
       "maxDuration": 30,
-      "includeFiles": "backend/**"
+      "includeFiles": "backend/**",
+      "excludeFiles": "{node_modules,dist,src,public,backend/.venv}/**"
     }
   },
 

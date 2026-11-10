@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
@@ -16,6 +17,16 @@ class Settings(BaseSettings):
     # Set true on Vercel/Neon so SQLAlchemy does not keep a connection pool
     # (Neon's pooler handles pooling; SQLAlchemy's pool would exhaust the limit).
     use_null_pool: bool = False
+
+    @field_validator("database_url")
+    @classmethod
+    def _use_psycopg(cls, url: str) -> str:
+        """Accept the plain URL Neon shows (postgres:// or postgresql://) and use psycopg 3."""
+        url = url.strip()
+        for prefix in ("postgres://", "postgresql://"):
+            if url.startswith(prefix):
+                return "postgresql+psycopg://" + url[len(prefix):]
+        return url
 
     # --- Auth ---
     jwt_secret: str = "change-me"

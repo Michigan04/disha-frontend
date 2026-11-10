@@ -2,41 +2,21 @@
 
 Swagger UI is at /docs, ReDoc at /redoc, the OpenAPI document at /openapi.json.
 """
-import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
-from .config import BACKEND_DIR, get_settings
-from .database import SessionLocal, engine
+from .bootstrap import initialize
+from .config import get_settings
+from .database import engine
 from .routers import admin, auth, chat, staff, student
-
-log = logging.getLogger("disha")
-
-
-def migrate() -> None:
-    from alembic import command
-    from alembic.config import Config
-
-    cfg = Config(str(BACKEND_DIR / "alembic.ini"))
-    cfg.set_main_option("script_location", str(BACKEND_DIR / "alembic"))
-    cfg.attributes["configure_logger"] = False
-    command.upgrade(cfg, "head")
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    settings = get_settings()
-    if settings.auto_migrate:
-        migrate()
-    if settings.auto_seed:
-        from .seed import seed_if_empty
-
-        with SessionLocal() as db:
-            if seed_if_empty(db):
-                log.warning("Empty database seeded. Sign in as %s", settings.default_admin_email)
+    initialize()
     yield
 
 

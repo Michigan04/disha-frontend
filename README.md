@@ -38,16 +38,25 @@ npm run preview    # serves dist/ on http://localhost:4173
 
 The app uses hash routes (`/#/oppe`). If the frontend and API are on different hosts, set `VITE_API_URL` (for example `https://api.example.com/api`) and add the frontend's address to `CORS_ORIGINS` in the backend.
 
-## Deploy on Vercel
+## Deploy on Vercel (with Neon)
 
-The repo is ready for Vercel: `vercel.json` sets the Vite framework, `npm ci`, `npm run build` and the `dist` output folder, and `package.json` asks for Node 20 or later (Vercel uses its newest supported version).
+One Vercel project serves both parts: the built frontend from `dist/`, and the FastAPI backend as a Python function (`api/index.py`) for every `/api/...` request. Python packages come from `requirements.txt` at the project root.
 
-1. In the Vercel dashboard choose **Add New… → Project** and import this GitHub repository.
-2. Leave the detected settings as they are (Framework **Vite**, Root Directory `./`). Vercel reads the build settings from `vercel.json`.
-3. Under **Environment Variables**, add the backend values from `.env.vercel` (`DATABASE_URL` for a Neon database, `USE_NULL_POOL=true`, `JWT_SECRET`, `CORS_ORIGINS`, ...). `api/index.py` runs the FastAPI app as a Python function for every `/api/...` request. Optionally add `VITE_GOOGLE_CLIENT_ID` (see below).
-4. Click **Deploy**. Every push to `main` redeploys automatically.
+1. **Create the database.** In [Neon](https://neon.tech) create a project and copy the **pooled** connection string (Dashboard → Connect, "Connection pooling" on; the host contains `-pooler`).
+2. **Set up the tables and demo data once**, from your machine:
 
-If you use Google Calendar, add the Vercel URL (for example `https://your-project.vercel.app`) to the OAuth client's **Authorised JavaScript origins**.
+   ```bash
+   cd backend
+   # PowerShell:  $env:DATABASE_URL="postgresql://...-pooler...neon.tech/neondb?sslmode=require"
+   DATABASE_URL="postgresql://...-pooler...neon.tech/neondb?sslmode=require" python -m app.bootstrap
+   ```
+
+   It applies the migrations and seeds the demo accounts and cohort. Running it again is safe. Do the same after adding a new migration.
+3. **Import the repository in Vercel** (Add New… → Project). Leave the detected settings; `vercel.json` sets the Vite build, the `dist` folder and the Python function.
+4. **Add the environment variables** listed in `.env.vercel` under Settings → Environment Variables: at least `DATABASE_URL`, `USE_NULL_POOL=true`, `JWT_SECRET`, `AUTO_MIGRATE=false` and `AUTO_SEED=false`. Optionally `VITE_GOOGLE_CLIENT_ID`.
+5. **Deploy.** Every push to `main` redeploys. Check `https://<your-project>.vercel.app/api/health`: it answers `{"status":"ok"}` when the function can reach Neon.
+
+If you use Google Calendar, add the Vercel URL to the OAuth client's **Authorised JavaScript origins**.
 
 ## Sign in
 

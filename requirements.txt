@@ -1,0 +1,11 @@
+# Python dependencies for the Vercel function (api/index.py). Vercel installs
+# these at build time. Keep in sync with backend/requirements.txt (which adds
+# uvicorn for local development).
+fastapi>=0.115
+sqlalchemy>=2.0.36
+psycopg[binary]>=3.2
+alembic>=1.14
+pydantic-settings>=2.6
+pyjwt>=2.9
+python-multipart>=0.0.17
+httpx>=0.27
