@@ -27,19 +27,26 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
 
 log = logging.getLogger("disha")
 
-try:
-    from app.bootstrap import initialize
-    from app.main import app  # the ASGI app Vercel serves
-except Exception as exc:  # show why in the response instead of a bare FUNCTION_INVOCATION_FAILED
-    log.exception("The backend could not start")
-    _reason = f"{type(exc).__name__}: {exc}"
 
-    async def app(scope, receive, send):  # minimal ASGI app
+def _startup_error(reason: str):
+    """A minimal ASGI app that says why the backend could not start."""
+    body = json.dumps({"status": "error", "detail": "The backend could not start.", "reason": reason}).encode()
+
+    async def error_app(scope, receive, send):
         if scope["type"] != "http":
             return
-        body = json.dumps({"status": "error", "detail": "The backend could not start.", "reason": _reason}).encode()
         await send({"type": "http.response.start", "status": 500, "headers": [(b"content-type", b"application/json")]})
         await send({"type": "http.response.body", "body": body})
+
+    return error_app
+
+
+try:
+    from app.bootstrap import initialize
+    from app.main import app as _backend
+except Exception as exc:  # show why in the response instead of a bare FUNCTION_INVOCATION_FAILED
+    log.exception("The backend could not start")
+    _backend = _startup_error(f"{type(exc).__name__}: {exc}")
 else:
     # Runs only when AUTO_MIGRATE / AUTO_SEED are true. The runtime may not send
     # ASGI lifespan events, so do it here; both steps are safe to repeat.
@@ -47,3 +54,6 @@ else:
         initialize()
     except Exception:  # keep serving; /api/health shows the database problem
         log.exception("Database initialisation failed")
+
+# Vercel finds the function by this top-level `app` assignment: keep it at module level.
+app = _backend
