@@ -1,6 +1,7 @@
 """Disha API. Run from the backend folder:  uvicorn app.main:app --reload
 
-Swagger UI is at /docs, ReDoc at /redoc, the OpenAPI document at /openapi.json.
+Swagger UI is at /api/docs, ReDoc at /api/redoc, the OpenAPI document at /api/openapi.json
+(under /api so they also work on Vercel, which only sends /api/... to the backend).
 """
 import os
 from contextlib import asynccontextmanager
@@ -8,7 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import text
 
 from .bootstrap import initialize
@@ -47,6 +48,7 @@ app = FastAPI(
     description="Backend for **Disha**, the Student Risk Identification and Intervention Platform (IITM BS, Team 026).",
     openapi_tags=TAGS,
     lifespan=lifespan,
+    docs_url="/api/docs", redoc_url="/api/redoc", openapi_url="/api/openapi.json",
 )
 app.add_middleware(
     CORSMiddleware, allow_origins=get_settings().cors_list, allow_credentials=True,
@@ -56,6 +58,11 @@ app.add_middleware(
 app.add_middleware(GZipMiddleware, minimum_size=1024)
 for r in (auth, student, staff, admin, chat):
     app.include_router(r.router)
+
+
+@app.get("/docs", include_in_schema=False)
+def old_docs_link():
+    return RedirectResponse("/api/docs")
 
 
 @app.get("/api/health", tags=["System"], summary="Is the API up and can it reach the database?")

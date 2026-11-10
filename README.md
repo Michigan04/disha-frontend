@@ -2,7 +2,7 @@
 
 Frontend for the **Student Risk Identification and Intervention Platform** (IITM BS, Software Engineering, Team 026): a **sign-in page**, the **student portal**, and a **staff portal** for support staff, course instructors and administrators.
 
-Built with **Vue 3, Vite, Vue Router and Pinia** on the frontend and **FastAPI, SQLAlchemy, Alembic and PostgreSQL** in `backend/`. The backend checks passwords, enforces every role's permissions, stores all records (assignments, interventions, rules, imports, study plans, audit log) and answers the chatbot. Swagger UI for the API is at `http://localhost:8000/docs`.
+Built with **Vue 3, Vite, Vue Router and Pinia** on the frontend and **FastAPI, SQLAlchemy, Alembic and PostgreSQL** in `backend/`. The backend checks passwords, enforces every role's permissions, stores all records (assignments, interventions, rules, imports, study plans, audit log) and answers the chatbot. Swagger UI for the API is at `http://localhost:8000/api/docs` locally and `https://<your-app>.vercel.app/api/docs` when deployed (ReDoc at `/api/redoc`).
 
 ## Run it
 
@@ -17,7 +17,7 @@ python -m venv .venv
 pip install -r requirements.txt
 cp .env.example .env             # then set DATABASE_URL and JWT_SECRET
 createdb disha                   # or create the database in pgAdmin
-uvicorn app.main:app --reload    # http://localhost:8000, docs at /docs
+uvicorn app.main:app --reload    # http://localhost:8000, Swagger UI at /api/docs
 ```
 
 On start-up the backend applies the Alembic migrations and, if the database is empty, seeds the demo accounts and the 60-student cohort (`AUTO_MIGRATE`, `AUTO_SEED`, `SEED_DEMO_DATA` in `backend/.env`).
