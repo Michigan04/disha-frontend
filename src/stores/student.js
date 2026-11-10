@@ -1,28 +1,15 @@
 import { defineStore } from 'pinia'
-import { buildStudents } from '../data/students'
+import { api } from '../services/api'
 import {
   cgpa, completed, courseList, currentCourses, currentTermLabel, currentTermNumber,
   milestones, nextMilestone, risk, termSummaries,
 } from '../utils/progress'
 import { LEVEL_RULES } from '../data/rules'
 
-const KEY = 'disha.demoStudent'
-
-function readSaved() {
-  try {
-    return localStorage.getItem(KEY)
-  } catch {
-    return null
-  }
-}
-
+// The signed-in student's record (GET /api/me/student) and everything worked out from it.
 export const useStudentStore = defineStore('student', {
-  state: () => ({
-    students: buildStudents(),
-    currentId: readSaved() || 'ananya',
-  }),
+  state: () => ({ student: null }),
   getters: {
-    student: (s) => s.students.find((x) => x.id === s.currentId) || s.students[0],
     rule() { return LEVEL_RULES[this.student.level] },
     termNumber() { return currentTermNumber(this.student) },
     termLabel() { return currentTermLabel(this.student) },
@@ -36,13 +23,11 @@ export const useStudentStore = defineStore('student', {
     risk() { return risk(this.student) },
   },
   actions: {
-    setStudent(id) {
-      this.currentId = id
-      try {
-        localStorage.setItem(KEY, id)
-      } catch {
-        /* storage unavailable: the choice lasts for this visit only */
-      }
+    async load() {
+      this.student = await api.get('/me/student')
+    },
+    clear() {
+      this.student = null
     },
   },
 })

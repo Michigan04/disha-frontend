@@ -1,18 +1,10 @@
 import { defineStore } from 'pinia'
-import { DEMO_PASSWORD, ROLES, findAccount } from '../data/accounts'
+import { ROLES } from '../data/accounts'
+import { api, clearSession, readSession, saveSession } from '../services/api'
 
-// Demo sign-in. The session is the account's email, kept in this browser only.
-// In the full platform the backend checks the password and issues the session.
-const KEY = 'disha.session'
-
-function readSession() {
-  try {
-    return findAccount(localStorage.getItem(KEY) || sessionStorage.getItem(KEY))
-  } catch {
-    return null
-  }
-}
-
+// Sign-in. The backend checks the password and issues a token; the token and the
+// signed-in user are kept in this browser (local storage, or the tab if "remember me"
+// is off). Every permission is enforced again on the server.
 export const useAuthStore = defineStore('auth', {
   state: () => ({ user: readSession() }),
   getters: {
@@ -22,25 +14,20 @@ export const useAuthStore = defineStore('auth', {
     roleLabel: (s) => (s.user ? ROLES[s.user.role].label : ''),
   },
   actions: {
-    login(email, password, remember = true) {
-      const account = findAccount(email)
-      if (!account || password !== DEMO_PASSWORD) return 'That email and password do not match a demo account.'
-      this.user = account
+    /** Returns null when signed in, otherwise the message to show. */
+    async login(email, password, remember = true) {
       try {
-        ;(remember ? localStorage : sessionStorage).setItem(KEY, account.email)
-      } catch {
-        /* storage unavailable: signed in for this visit only */
+        const res = await api.post('/auth/login', { email: email.trim(), password })
+        saveSession(res.access_token, res.user, remember)
+        this.user = res.user
+        return null
+      } catch (err) {
+        return err.message
       }
-      return null
     },
     logout() {
       this.user = null
-      try {
-        localStorage.removeItem(KEY)
-        sessionStorage.removeItem(KEY)
-      } catch {
-        /* nothing to clear */
-      }
+      clearSession()
     },
   },
 })

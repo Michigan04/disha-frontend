@@ -1,0 +1,7415 @@
+{
+ "generatedAt": "2026-11-10T00:20:12.762Z",
+ "courses": {
+  "math1": {
+   "id": "math1",
+   "name": "Mathematics for Data Science I",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "stats1": {
+   "id": "stats1",
+   "name": "Statistics for Data Science I",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "ct": {
+   "id": "ct",
+   "name": "Computational Thinking",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "eng1": {
+   "id": "eng1",
+   "name": "English I",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "math2": {
+   "id": "math2",
+   "name": "Mathematics for Data Science II",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "stats2": {
+   "id": "stats2",
+   "name": "Statistics for Data Science II",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "python": {
+   "id": "python",
+   "name": "Programming in Python",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4,
+   "oppe": true
+  },
+  "eng2": {
+   "id": "eng2",
+   "name": "English II",
+   "level": "foundation",
+   "type": "course",
+   "credits": 4
+  },
+  "dbms": {
+   "id": "dbms",
+   "name": "Database Management Systems",
+   "level": "diploma",
+   "type": "course",
+   "credits": 4
+  },
+  "pdsa": {
+   "id": "pdsa",
+   "name": "Programming, Data Structures and Algorithms using Python",
+   "level": "diploma",
+   "type": "course",
+   "credits": 4,
+   "oppe": true
+  },
+  "mad1": {
+   "id": "mad1",
+   "name": "Modern Application Development I",
+   "level": "diploma",
+   "type": "course",
+   "credits": 4
+  },
+  "mad1p": {
+   "id": "mad1p",
+   "name": "Modern Application Development I Project",
+   "level": "diploma",
+   "type": "project",
+   "credits": 2
+  },
+  "sc": {
+   "id": "sc",
+   "name": "System Commands",
+   "level": "diploma",
+   "type": "course",
+   "credits": 3,
+   "oppe": true
+  },
+  "java": {
+   "id": "java",
+   "name": "Programming Concepts using Java",
+   "level": "diploma",
+   "type": "course",
+   "credits": 4,
+   "oppe": true
+  },
+  "mad2": {
+   "id": "mad2",
+   "name": "Modern Application Development II",
+   "level": "diploma",
+   "type": "course",
+   "credits": 4
+  },
+  "mad2p": {
+   "id": "mad2p",
+   "name": "Modern Application Development II Project",
+   "level": "diploma",
+   "type": "project",
+   "credits": 2
+  }
+ },
+ "levelCourses": {
+  "foundation": [
+   "math1",
+   "stats1",
+   "ct",
+   "eng1",
+   "math2",
+   "stats2",
+   "python",
+   "eng2"
+  ],
+  "diploma": [
+   "dbms",
+   "pdsa",
+   "mad1",
+   "mad1p",
+   "sc",
+   "java",
+   "mad2",
+   "mad2p"
+  ]
+ },
+ "courseCodes": {
+  "BSMA1001": "math1",
+  "BSMA1002": "stats1",
+  "BSCS1001": "ct",
+  "BSHS1001": "eng1",
+  "BSMA1003": "math2",
+  "BSMA1004": "stats2",
+  "BSCS1002": "python",
+  "BSHS1002": "eng2",
+  "BSCS2001": "dbms",
+  "BSCS2002": "pdsa",
+  "BSCS2003": "mad1",
+  "BSCS2003P": "mad1p",
+  "BSSE2001": "sc",
+  "BSCS2005": "java",
+  "BSCS2006": "mad2",
+  "BSCS2006P": "mad2p"
+ },
+ "gradePoints": {
+  "S": 10,
+  "A": 9,
+  "B": 8,
+  "C": 7,
+  "D": 6,
+  "E": 4,
+  "U": 0
+ },
+ "levelRules": {
+  "foundation": {
+   "label": "Foundation",
+   "limitTerms": 9,
+   "unit": "courses",
+   "milestones": [
+    {
+     "byTerm": 4,
+     "courses": 4
+    },
+    {
+     "byTerm": 6,
+     "courses": 6
+    },
+    {
+     "byTerm": 9,
+     "courses": 8
+    }
+   ]
+  },
+  "diploma": {
+   "label": "Diploma",
+   "limitTerms": 12,
+   "unit": "courses and projects",
+   "milestones": [
+    {
+     "byTerm": 3,
+     "courses": 3,
+     "projects": 1
+    },
+    {
+     "byTerm": 6,
+     "courses": 6,
+     "projects": 2
+    },
+    {
+     "byTerm": 9,
+     "courses": 9,
+     "projects": 3
+    },
+    {
+     "byTerm": 12,
+     "courses": 12,
+     "projects": 4
+    }
+   ]
+  }
+ },
+ "riskRules": {
+  "high": {
+   "label": "High risk",
+   "rule": "Failed the same course twice",
+   "support": "Instructor support"
+  },
+  "low": {
+   "label": "Low risk",
+   "rule": "Failed a course once",
+   "support": "Guidance from past students"
+  },
+  "none": {
+   "label": "On track",
+   "rule": "No course failed",
+   "support": ""
+  }
+ },
+ "staff": {
+  "neha": {
+   "id": "neha",
+   "name": "Neha Kulkarni",
+   "role": "support",
+   "title": "Academic advisor",
+   "capacity": 12
+  },
+  "arjun": {
+   "id": "arjun",
+   "name": "Arjun Das",
+   "role": "support",
+   "title": "Support TA",
+   "capacity": 8
+  },
+  "fatima": {
+   "id": "fatima",
+   "name": "Fatima Sheikh",
+   "role": "support",
+   "title": "Academic advisor",
+   "capacity": 12
+  },
+  "kavya": {
+   "id": "kavya",
+   "name": "Prof. Kavya Menon",
+   "role": "instructor",
+   "title": "Course instructor, Programming in Python",
+   "courseId": "python"
+  },
+  "rohan": {
+   "id": "rohan",
+   "name": "Dr. Rohan Gupta",
+   "role": "instructor",
+   "title": "Course instructor, Statistics for Data Science II",
+   "courseId": "stats2"
+  },
+  "suresh": {
+   "id": "suresh",
+   "name": "Suresh Pillai",
+   "role": "admin",
+   "title": "Program administrator"
+  }
+ },
+ "permissions": [
+  {
+   "key": "own_record",
+   "label": "See own progress, risk and study plan",
+   "roles": [
+    "student"
+   ]
+  },
+  {
+   "key": "risk_list",
+   "label": "See the at-risk student list",
+   "roles": [
+    "support",
+    "admin"
+   ]
+  },
+  {
+   "key": "profile",
+   "label": "Open student profiles",
+   "roles": [
+    "support",
+    "admin"
+   ]
+  },
+  {
+   "key": "log",
+   "label": "Log interventions and follow-ups",
+   "roles": [
+    "support",
+    "admin"
+   ]
+  },
+  {
+   "key": "referrals",
+   "label": "See students referred to own course",
+   "roles": [
+    "instructor"
+   ]
+  },
+  {
+   "key": "record_support",
+   "label": "Record support offered on a referral",
+   "roles": [
+    "instructor"
+   ]
+  },
+  {
+   "key": "assign",
+   "label": "Assign students to staff",
+   "roles": [
+    "admin"
+   ]
+  },
+  {
+   "key": "reports",
+   "label": "See outcome reports",
+   "roles": [
+    "admin"
+   ]
+  },
+  {
+   "key": "rules",
+   "label": "Edit milestone and risk rules",
+   "roles": [
+    "admin"
+   ]
+  },
+  {
+   "key": "upload",
+   "label": "Upload academic data",
+   "roles": [
+    "admin"
+   ]
+  },
+  {
+   "key": "audit",
+   "label": "See the full audit log",
+   "roles": [
+    "admin"
+   ]
+  },
+  {
+   "key": "users",
+   "label": "Manage users and roles",
+   "roles": [
+    "admin"
+   ]
+  }
+ ],
+ "staffEvents": {
+  "neha": [
+   {
+    "id": "n1",
+    "title": "Follow-up call: Rohit Bansal",
+    "start": "2026-11-10T01:15:00.000Z",
+    "end": "2026-11-10T01:35:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Neha Kulkarni"
+   },
+   {
+    "id": "n2",
+    "title": "Case review with Prof. Kavya Menon",
+    "start": "2026-11-10T02:50:00.000Z",
+    "end": "2026-11-10T03:20:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Support team"
+   },
+   {
+    "id": "n3",
+    "title": "Weekly risk review",
+    "start": "2026-11-11T05:30:00.000Z",
+    "end": "2026-11-11T06:30:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Suresh Pillai"
+   }
+  ],
+  "arjun": [],
+  "fatima": [],
+  "kavya": [
+   {
+    "id": "k1",
+    "title": "Mock OPPE briefing for referred students",
+    "start": "2026-11-10T01:50:00.000Z",
+    "end": "2026-11-10T02:35:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Prof. Kavya Menon"
+   },
+   {
+    "id": "k2",
+    "title": "Check-in with Rahul Verma",
+    "start": "2026-11-12T13:00:00.000Z",
+    "end": "2026-11-12T13:30:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Prof. Kavya Menon"
+   }
+  ],
+  "rohan": [],
+  "suresh": [
+   {
+    "id": "s1",
+    "title": "Weekly risk review with the support team",
+    "start": "2026-11-10T01:35:00.000Z",
+    "end": "2026-11-10T02:20:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Suresh Pillai"
+   },
+   {
+    "id": "s2",
+    "title": "Week 8 assignment scores: import window opens",
+    "start": "2026-11-10T04:20:00.000Z",
+    "end": "2026-11-10T04:50:00.000Z",
+    "link": "",
+    "organizer": "Program office",
+    "location": "Data and system"
+   },
+   {
+    "id": "s3",
+    "title": "Rules review: Diploma project milestones",
+    "start": "2026-11-12T09:30:00.000Z",
+    "end": "2026-11-12T10:30:00.000Z",
+    "link": "https://meet.google.com/",
+    "organizer": "Program office"
+   }
+  ]
+ },
+ "accounts": [
+  {
+   "email": "ananya@disha.demo",
+   "name": "Ananya Rao",
+   "role": "student",
+   "studentId": "ananya",
+   "note": "Low risk: failed Statistics II once"
+  },
+  {
+   "email": "rahul@disha.demo",
+   "name": "Rahul Verma",
+   "role": "student",
+   "studentId": "rahul",
+   "note": "High risk: failed Python twice"
+  },
+  {
+   "email": "karthik@disha.demo",
+   "name": "Karthik Iyer",
+   "role": "student",
+   "studentId": "karthik",
+   "note": "On track, Diploma"
+  },
+  {
+   "email": "neha@disha.demo",
+   "name": "Neha Kulkarni",
+   "role": "support",
+   "staffId": "neha",
+   "note": "Academic advisor with her own caseload"
+  },
+  {
+   "email": "kavya@disha.demo",
+   "name": "Prof. Kavya Menon",
+   "role": "instructor",
+   "staffId": "kavya",
+   "courseId": "python",
+   "note": "Instructor, Programming in Python"
+  },
+  {
+   "email": "admin@disha.demo",
+   "name": "Suresh Pillai",
+   "role": "admin",
+   "staffId": "suresh",
+   "note": "Program administrator: sees everything"
+  }
+ ],
+ "guides": {
+  "stats2": {
+   "lastTerm": "May 2026",
+   "students": 1240,
+   "passRate": 74,
+   "hours": {
+    "top": 9,
+    "passed": 6.5,
+    "notPassed": 3
+   },
+   "weeks": [
+    {
+     "w": 1,
+     "topic": "Multiple random variables",
+     "load": 1
+    },
+    {
+     "w": 2,
+     "topic": "Independence",
+     "load": 1
+    },
+    {
+     "w": 3,
+     "topic": "Expectation",
+     "load": 2
+    },
+    {
+     "w": 4,
+     "topic": "Variance and covariance",
+     "load": 2
+    },
+    {
+     "w": 5,
+     "topic": "Inequalities",
+     "load": 2
+    },
+    {
+     "w": 6,
+     "topic": "Continuous random variables",
+     "load": 3
+    },
+    {
+     "w": 7,
+     "topic": "Joint continuous distributions",
+     "load": 3
+    },
+    {
+     "w": 8,
+     "topic": "Sampling and the CLT",
+     "load": 2
+    },
+    {
+     "w": 9,
+     "topic": "Estimation (MoM and MLE)",
+     "load": 3
+    },
+    {
+     "w": 10,
+     "topic": "Bayesian estimation",
+     "load": 2
+    },
+    {
+     "w": 11,
+     "topic": "Hypothesis testing",
+     "load": 3
+    },
+    {
+     "w": 12,
+     "topic": "Revision",
+     "load": 1
+    }
+   ],
+   "habits": [
+    {
+     "text": "Submitted every graded assignment before the deadline",
+     "share": 91
+    },
+    {
+     "text": "Solved at least two past quiz papers, timed",
+     "share": 76
+    },
+    {
+     "text": "Kept a one-page formula sheet and updated it weekly",
+     "share": 63
+    },
+    {
+     "text": "Attended live sessions in the hardest weeks",
+     "share": 58
+    }
+   ],
+   "slips": [
+    "Leaving practice questions until quiz week",
+    "Memorising formulas without derivations",
+    "Skipping the timed past papers"
+   ],
+   "resources": [
+    {
+     "type": "practice",
+     "title": "Previous quiz and end-term papers"
+    },
+    {
+     "type": "video",
+     "title": "Recap videos for weeks 6, 7 and 9"
+    },
+    {
+     "type": "notes",
+     "title": "Distributions formula sheet"
+    }
+   ]
+  },
+  "python": {
+   "lastTerm": "May 2026",
+   "students": 2310,
+   "passRate": 69,
+   "hours": {
+    "top": 10,
+    "passed": 7,
+    "notPassed": 3.5
+   },
+   "weeks": [
+    {
+     "w": 1,
+     "topic": "Variables and expressions",
+     "load": 1
+    },
+    {
+     "w": 2,
+     "topic": "Conditions",
+     "load": 1
+    },
+    {
+     "w": 3,
+     "topic": "Loops",
+     "load": 2
+    },
+    {
+     "w": 4,
+     "topic": "Strings",
+     "load": 2
+    },
+    {
+     "w": 5,
+     "topic": "Lists",
+     "load": 2
+    },
+    {
+     "w": 6,
+     "topic": "Functions",
+     "load": 3
+    },
+    {
+     "w": 7,
+     "topic": "Dictionaries and sets",
+     "load": 3
+    },
+    {
+     "w": 8,
+     "topic": "OPPE 1 practice",
+     "load": 3
+    },
+    {
+     "w": 9,
+     "topic": "File handling",
+     "load": 2
+    },
+    {
+     "w": 10,
+     "topic": "Exceptions and modules",
+     "load": 2
+    },
+    {
+     "w": 11,
+     "topic": "OPPE 2 practice",
+     "load": 3
+    },
+    {
+     "w": 12,
+     "topic": "Revision",
+     "load": 1
+    }
+   ],
+   "habits": [
+    {
+     "text": "Coded on the online IDE at least four days a week",
+     "share": 88
+    },
+    {
+     "text": "Took the mock OPPE at least once",
+     "share": 81
+    },
+    {
+     "text": "Finished programming assignments early in the week",
+     "share": 72
+    },
+    {
+     "text": "Debugged their own errors before asking for help",
+     "share": 54
+    }
+   ],
+   "slips": [
+    "Reading solutions instead of typing code",
+    "First attempt at an OPPE-style problem on exam day",
+    "Ignoring file handling and dictionaries"
+   ],
+   "resources": [
+    {
+     "type": "practice",
+     "title": "OPPE-style problem sets with test cases"
+    },
+    {
+     "type": "video",
+     "title": "Debugging walkthroughs"
+    },
+    {
+     "type": "notes",
+     "title": "Python syntax cheat sheet"
+    }
+   ]
+  },
+  "java": {
+   "lastTerm": "May 2026",
+   "students": 980,
+   "passRate": 81,
+   "hours": {
+    "top": 9,
+    "passed": 6,
+    "notPassed": 3
+   },
+   "weeks": [
+    {
+     "w": 1,
+     "topic": "Classes and objects",
+     "load": 1
+    },
+    {
+     "w": 2,
+     "topic": "Constructors and scope",
+     "load": 1
+    },
+    {
+     "w": 3,
+     "topic": "Inheritance",
+     "load": 2
+    },
+    {
+     "w": 4,
+     "topic": "Polymorphism",
+     "load": 2
+    },
+    {
+     "w": 5,
+     "topic": "Abstract classes and interfaces",
+     "load": 3
+    },
+    {
+     "w": 6,
+     "topic": "Exceptions",
+     "load": 2
+    },
+    {
+     "w": 7,
+     "topic": "Generics",
+     "load": 3
+    },
+    {
+     "w": 8,
+     "topic": "Collections",
+     "load": 3
+    },
+    {
+     "w": 9,
+     "topic": "OPPE practice",
+     "load": 3
+    },
+    {
+     "w": 10,
+     "topic": "Streams",
+     "load": 2
+    },
+    {
+     "w": 11,
+     "topic": "Concurrency",
+     "load": 3
+    },
+    {
+     "w": 12,
+     "topic": "Revision",
+     "load": 1
+    }
+   ],
+   "habits": [
+    {
+     "text": "Wrote and ran code for every lecture example",
+     "share": 86
+    },
+    {
+     "text": "Solved the practice OPPE twice",
+     "share": 79
+    },
+    {
+     "text": "Revised generics and collections together",
+     "share": 61
+    },
+    {
+     "text": "Joined at least one doubt session a fortnight",
+     "share": 47
+    }
+   ],
+   "slips": [
+    "Confusing interfaces with abstract classes",
+    "Not practising with the exam IDE",
+    "Skipping concurrency until the end"
+   ],
+   "resources": [
+    {
+     "type": "practice",
+     "title": "Practice OPPE with hidden test cases"
+    },
+    {
+     "type": "video",
+     "title": "Generics and collections recap"
+    },
+    {
+     "type": "notes",
+     "title": "Java collections comparison chart"
+    }
+   ]
+  },
+  "mad2": {
+   "lastTerm": "May 2026",
+   "students": 760,
+   "passRate": 84,
+   "hours": {
+    "top": 11,
+    "passed": 8,
+    "notPassed": 4
+   },
+   "weeks": [
+    {
+     "w": 1,
+     "topic": "JavaScript essentials",
+     "load": 1
+    },
+    {
+     "w": 2,
+     "topic": "Vue basics",
+     "load": 2
+    },
+    {
+     "w": 3,
+     "topic": "Components",
+     "load": 2
+    },
+    {
+     "w": 4,
+     "topic": "Routing",
+     "load": 2
+    },
+    {
+     "w": 5,
+     "topic": "State management",
+     "load": 3
+    },
+    {
+     "w": 6,
+     "topic": "REST APIs",
+     "load": 2
+    },
+    {
+     "w": 7,
+     "topic": "Token authentication",
+     "load": 3
+    },
+    {
+     "w": 8,
+     "topic": "Caching with Redis",
+     "load": 2
+    },
+    {
+     "w": 9,
+     "topic": "Background jobs",
+     "load": 3
+    },
+    {
+     "w": 10,
+     "topic": "Testing",
+     "load": 2
+    },
+    {
+     "w": 11,
+     "topic": "Performance",
+     "load": 2
+    },
+    {
+     "w": 12,
+     "topic": "Project wrap-up",
+     "load": 3
+    }
+   ],
+   "habits": [
+    {
+     "text": "Started the project before Week 6",
+     "share": 83
+    },
+    {
+     "text": "Built each week’s concept into the project the same week",
+     "share": 70
+    },
+    {
+     "text": "Committed code to Git every few days",
+     "share": 66
+    },
+    {
+     "text": "Booked the project viva slot early",
+     "share": 52
+    }
+   ],
+   "slips": [
+    "Starting the project after Quiz 1",
+    "Leaving background jobs to the last week",
+    "No README for the viva"
+   ],
+   "resources": [
+    {
+     "type": "practice",
+     "title": "Sample project with marking rubric"
+    },
+    {
+     "type": "video",
+     "title": "Authentication and caching walkthrough"
+    },
+    {
+     "type": "notes",
+     "title": "Viva checklist"
+    }
+   ]
+  }
+ },
+ "plans": {
+  "stats2": {
+   "goal": "Pass with a C or better",
+   "hoursPerWeek": 8,
+   "weeks": [
+    {
+     "w": 1,
+     "focus": "Multiple random variables",
+     "hours": 6,
+     "tasks": [
+      "Redo the May-term Week 1 assignment",
+      "Make a joint PMF practice table (10 questions)",
+      "Watch the joint distributions recap"
+     ]
+    },
+    {
+     "w": 2,
+     "focus": "Independence",
+     "hours": 6,
+     "tasks": [
+      "Redo the May-term Week 2 assignment",
+      "Solve 8 conditional probability problems",
+      "Note 3 mistakes from your last attempt"
+     ]
+    },
+    {
+     "w": 3,
+     "focus": "Expectation",
+     "hours": 7,
+     "tasks": [
+      "Submit the Week 3 graded assignment",
+      "Practice set: expectation of functions",
+      "Join the live session"
+     ]
+    },
+    {
+     "w": 4,
+     "focus": "Variance and covariance",
+     "hours": 7,
+     "tasks": [
+      "Submit the Week 4 graded assignment",
+      "Solve 10 covariance problems",
+      "Add variance rules to your formula sheet"
+     ]
+    },
+    {
+     "w": 5,
+     "focus": "Inequalities",
+     "hours": 7,
+     "tasks": [
+      "Submit the Week 5 graded assignment",
+      "Markov and Chebyshev drill (6 questions)",
+      "Revise weeks 1 to 4"
+     ]
+    },
+    {
+     "w": 6,
+     "focus": "Continuous random variables, Quiz 1",
+     "hours": 9,
+     "checkpoint": "Quiz 1",
+     "tasks": [
+      "Two past Quiz 1 papers, timed",
+      "6 PDF and CDF problems",
+      "Go through every mistake"
+     ]
+    },
+    {
+     "w": 7,
+     "focus": "Joint continuous distributions",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 7 graded assignment",
+      "8 joint density problems",
+      "Join the doubt session"
+     ]
+    },
+    {
+     "w": 8,
+     "focus": "Sampling and the CLT",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 8 graded assignment",
+      "8 CLT problems",
+      "Watch the sampling distributions recap"
+     ]
+    },
+    {
+     "w": 9,
+     "focus": "Estimation (MoM and MLE)",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 9 graded assignment",
+      "6 MLE problems",
+      "One table: MoM vs MLE"
+     ]
+    },
+    {
+     "w": 10,
+     "focus": "Bayesian estimation, Quiz 2",
+     "hours": 9,
+     "checkpoint": "Quiz 2",
+     "tasks": [
+      "Two past Quiz 2 papers, timed",
+      "Revise weeks 5 to 9",
+      "Go through every mistake"
+     ]
+    },
+    {
+     "w": 11,
+     "focus": "Hypothesis testing",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 11 graded assignment",
+      "Draw a flowchart for choosing a test",
+      "10 hypothesis test problems"
+     ]
+    },
+    {
+     "w": 12,
+     "focus": "End-term preparation",
+     "hours": 10,
+     "checkpoint": "End term",
+     "tasks": [
+      "Two full past papers, timed",
+      "Finish your formula sheet",
+      "Read your mistake notes"
+     ]
+    }
+   ]
+  },
+  "python": {
+   "goal": "Clear both OPPEs and pass the course",
+   "hoursPerWeek": 9,
+   "weeks": [
+    {
+     "w": 1,
+     "focus": "Variables and expressions",
+     "hours": 6,
+     "tasks": [
+      "One timed problem a day on the online IDE",
+      "Redo the Week 1 programming assignment",
+      "Type out, do not copy, every example"
+     ]
+    },
+    {
+     "w": 2,
+     "focus": "Conditions",
+     "hours": 6,
+     "tasks": [
+      "Submit the Week 2 graded assignment",
+      "10 if/else problems with edge cases",
+      "Read your last OPPE attempt’s errors"
+     ]
+    },
+    {
+     "w": 3,
+     "focus": "Loops",
+     "hours": 7,
+     "tasks": [
+      "Submit the Week 3 graded assignment",
+      "8 nested-loop problems",
+      "Join the doubt session"
+     ]
+    },
+    {
+     "w": 4,
+     "focus": "Strings",
+     "hours": 7,
+     "tasks": [
+      "Submit the Week 4 graded assignment",
+      "10 string manipulation problems",
+      "Weekly check-in with your instructor"
+     ]
+    },
+    {
+     "w": 5,
+     "focus": "Lists",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 5 graded assignment",
+      "8 list problems, timed",
+      "Weekly check-in with your instructor"
+     ]
+    },
+    {
+     "w": 6,
+     "focus": "Functions",
+     "hours": 8,
+     "checkpoint": "Quiz 1",
+     "tasks": [
+      "Submit the Week 6 graded assignment",
+      "Rewrite 5 old solutions as functions",
+      "Quiz 1 revision"
+     ]
+    },
+    {
+     "w": 7,
+     "focus": "Dictionaries and sets",
+     "hours": 9,
+     "tasks": [
+      "Submit the Week 7 graded assignment",
+      "10 dictionary problems",
+      "Weekly check-in with your instructor"
+     ]
+    },
+    {
+     "w": 8,
+     "focus": "OPPE 1 practice",
+     "hours": 10,
+     "checkpoint": "OPPE 1",
+     "tasks": [
+      "Mock OPPE under exam conditions",
+      "Fix every error type from the mock",
+      "Practise on the exam IDE"
+     ]
+    },
+    {
+     "w": 9,
+     "focus": "File handling",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 9 graded assignment",
+      "6 file read/write problems",
+      "Weekly check-in with your instructor"
+     ]
+    },
+    {
+     "w": 10,
+     "focus": "Exceptions and modules",
+     "hours": 8,
+     "tasks": [
+      "Submit the Week 10 graded assignment",
+      "Add error handling to 3 old solutions",
+      "Second mock OPPE"
+     ]
+    },
+    {
+     "w": 11,
+     "focus": "OPPE 2 practice",
+     "hours": 10,
+     "checkpoint": "OPPE 2",
+     "tasks": [
+      "Two OPPE-style sets, timed",
+      "Review with the course TA",
+      "Rest the evening before"
+     ]
+    },
+    {
+     "w": 12,
+     "focus": "End-term preparation",
+     "hours": 9,
+     "checkpoint": "End term",
+     "tasks": [
+      "Two past end-term papers",
+      "Revise dictionaries and files",
+      "Read your mistake notes"
+     ]
+    }
+   ]
+  }
+ },
+ "insights": {
+  "stats2": {
+   "failedOnce": 186,
+   "passedNext": 132,
+   "whatHelped": [
+    {
+     "text": "Redid every weekly assignment from the failed term before Week 1",
+     "share": 78
+    },
+    {
+     "text": "Attended at least six live sessions during the term",
+     "share": 64
+    },
+    {
+     "text": "Solved two previous end-term papers under timed conditions",
+     "share": 59
+    },
+    {
+     "text": "Took no more than two other courses alongside the re-attempt",
+     "share": 55
+    }
+   ],
+   "plan": [
+    {
+     "when": "Weeks 1 to 3",
+     "what": "Revise probability and random variables using the failed term’s assignments."
+    },
+    {
+     "when": "Weeks 4 to 7",
+     "what": "Keep the weekly assignment average above 60 and bring doubts to live sessions."
+    },
+    {
+     "when": "Weeks 8 to 10",
+     "what": "Focus on hypothesis testing and estimation; attempt one past paper each week."
+    },
+    {
+     "when": "Weeks 11 and 12",
+     "what": "Two timed full papers and a review of mistakes before the end-term."
+    }
+   ]
+  },
+  "python": {
+   "failedOnce": 240,
+   "passedNext": 168,
+   "whatHelped": [
+    {
+     "text": "Practised OPPE-style problems on the online IDE every week",
+     "share": 84
+    },
+    {
+     "text": "Took the mock OPPE twice before the real one",
+     "share": 71
+    },
+    {
+     "text": "Joined doubt-clearing sessions for help with debugging",
+     "share": 58
+    },
+    {
+     "text": "Wrote code by hand for ten minutes a day before using the IDE",
+     "share": 41
+    }
+   ],
+   "plan": [
+    {
+     "when": "Weeks 1 to 4",
+     "what": "One OPPE-style problem a day, timed, without looking at notes."
+    },
+    {
+     "when": "Weeks 5 to 7",
+     "what": "Clear all weekly assignments early and attend one doubt session a week."
+    },
+    {
+     "when": "Weeks 8 and 9",
+     "what": "Two mock OPPEs, then fix every error type that appeared."
+    },
+    {
+     "when": "Week 10 onwards",
+     "what": "Revise file handling and dictionaries, the topics past students missed most."
+    }
+   ]
+  }
+ },
+ "gradeBands": [
+  {
+   "grade": "S",
+   "min": 90
+  },
+  {
+   "grade": "A",
+   "min": 80
+  },
+  {
+   "grade": "B",
+   "min": 70
+  },
+  {
+   "grade": "C",
+   "min": 60
+  },
+  {
+   "grade": "D",
+   "min": 50
+  },
+  {
+   "grade": "E",
+   "min": 40
+  },
+  {
+   "grade": "U",
+   "min": 0
+  }
+ ],
+ "schemes": {
+  "stats2": {
+   "parts": [
+    {
+     "key": "assignments",
+     "label": "Weekly assignments",
+     "weight": 10
+    },
+    {
+     "key": "quiz1",
+     "label": "Quiz 1",
+     "weight": 20
+    },
+    {
+     "key": "quiz2",
+     "label": "Quiz 2",
+     "weight": 20
+    },
+    {
+     "key": "endterm",
+     "label": "End-term exam",
+     "weight": 50
+    }
+   ],
+   "classAvg": {
+    "assignments": 66,
+    "quiz1": 57
+   },
+   "adjust": -2
+  },
+  "python": {
+   "parts": [
+    {
+     "key": "assignments",
+     "label": "Weekly assignments",
+     "weight": 10
+    },
+    {
+     "key": "quiz1",
+     "label": "Quiz 1",
+     "weight": 15
+    },
+    {
+     "key": "oppe1",
+     "label": "OPPE 1",
+     "weight": 20,
+     "oppe": "OPPE 1"
+    },
+    {
+     "key": "oppe2",
+     "label": "OPPE 2",
+     "weight": 15,
+     "oppe": "OPPE 2"
+    },
+    {
+     "key": "endterm",
+     "label": "End-term exam",
+     "weight": 40
+    }
+   ],
+   "classAvg": {
+    "assignments": 70,
+    "quiz1": 62
+   },
+   "adjust": 0
+  },
+  "java": {
+   "parts": [
+    {
+     "key": "assignments",
+     "label": "Weekly assignments",
+     "weight": 10
+    },
+    {
+     "key": "quiz1",
+     "label": "Quiz 1",
+     "weight": 15
+    },
+    {
+     "key": "oppe1",
+     "label": "OPPE 1",
+     "weight": 25,
+     "oppe": "OPPE 1"
+    },
+    {
+     "key": "endterm",
+     "label": "End-term exam",
+     "weight": 50
+    }
+   ],
+   "classAvg": {
+    "assignments": 72,
+    "quiz1": 65
+   },
+   "adjust": 0
+  },
+  "mad2": {
+   "parts": [
+    {
+     "key": "assignments",
+     "label": "Weekly assignments",
+     "weight": 20
+    },
+    {
+     "key": "quiz1",
+     "label": "Quiz 1",
+     "weight": 30
+    },
+    {
+     "key": "endterm",
+     "label": "End-term exam",
+     "weight": 50
+    }
+   ],
+   "classAvg": {
+    "assignments": 74,
+    "quiz1": 66
+   },
+   "adjust": 0
+  }
+ },
+ "defaultScheme": {
+  "parts": [
+   {
+    "key": "assignments",
+    "label": "Weekly assignments",
+    "weight": 10
+   },
+   {
+    "key": "quiz1",
+    "label": "Quiz 1",
+    "weight": 20
+   },
+   {
+    "key": "quiz2",
+    "label": "Quiz 2",
+    "weight": 20
+   },
+   {
+    "key": "endterm",
+    "label": "End-term exam",
+    "weight": 50
+   }
+  ],
+  "classAvg": {
+   "assignments": 68,
+   "quiz1": 60
+  },
+  "adjust": 0
+ },
+ "defaultOppeScheme": {
+  "parts": [
+   {
+    "key": "assignments",
+    "label": "Weekly assignments",
+    "weight": 10
+   },
+   {
+    "key": "quiz1",
+    "label": "Quiz 1",
+    "weight": 15
+   },
+   {
+    "key": "oppe1",
+    "label": "OPPE 1",
+    "weight": 25,
+    "oppe": "OPPE 1"
+   },
+   {
+    "key": "endterm",
+    "label": "End-term exam",
+    "weight": 50
+   }
+  ],
+  "classAvg": {
+   "assignments": 70,
+   "quiz1": 62
+  },
+  "adjust": 0
+ },
+ "suggestedActions": {
+  "failed_twice": [
+   {
+    "key": "refer",
+    "text": "Refer to the course instructor for weekly check-ins until the next OPPE or exam",
+    "cat": "academic"
+   },
+   {
+    "key": "load",
+    "text": "Agree a lighter course load for the next term",
+    "cat": "planning"
+   }
+  ],
+  "failed_once": [
+   {
+    "key": "plan",
+    "text": "Share the 12-week study plan and check that it has been opened",
+    "cat": "academic"
+   },
+   {
+    "key": "reg",
+    "text": "Confirm the student is registered for the re-attempt",
+    "cat": "admin"
+   }
+  ],
+  "oppe_not_eligible": [
+   {
+    "key": "oppe",
+    "text": "Share OPPE practice sets and the next OPPE date",
+    "cat": "academic"
+   },
+   {
+    "key": "count",
+    "text": "Explain which weekly assignments still count towards OPPE 2",
+    "cat": "planning"
+   }
+  ],
+  "low_prediction": [
+   {
+    "key": "doubt",
+    "text": "Suggest this week’s doubt-clearing sessions for the course",
+    "cat": "academic"
+   }
+  ],
+  "plan_inactive": [
+   {
+    "key": "nudge",
+    "text": "Send a reminder: the study plan has not been opened for a week",
+    "cat": "admin"
+   }
+  ],
+  "behind_milestone": [
+   {
+    "key": "milestone",
+    "text": "Plan the courses needed to meet the next milestone",
+    "cat": "planning"
+   }
+  ],
+  "data_issue": [
+   {
+    "key": "verify",
+    "text": "Ask the program office to confirm the record before contacting the student",
+    "cat": "admin"
+   }
+  ]
+ },
+ "students": [
+  {
+   "id": "ananya",
+   "name": "Ananya Rao",
+   "firstName": "Ananya",
+   "rollNo": "25f1000101",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "combinedLimit": null,
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "eng2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 64,
+     "quiz1": 58
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 72,
+     "quiz1": 66
+    }
+   ],
+   "oppe": [
+    {
+     "id": "py-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 72,
+       "final": true
+      },
+      {
+       "label": "Quiz 1 attended",
+       "required": true,
+       "actual": true,
+       "final": true
+      }
+     ]
+    },
+    {
+     "id": "py-oppe2",
+     "courseId": "python",
+     "title": "OPPE 2",
+     "date": "2026-12-10T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 6 of the first 9 weekly assignments",
+       "required": 40,
+       "actual": 70,
+       "final": false,
+       "finalOn": "2026-11-24T18:29:00.000Z"
+      },
+      {
+       "label": "OPPE 1 attempted",
+       "required": true,
+       "actual": null,
+       "final": false,
+       "finalOn": "2026-11-19T07:30:00.000Z"
+      }
+     ]
+    }
+   ],
+   "meetings": [
+    {
+     "id": "m0",
+     "title": "Programming in Python live session: dictionaries",
+     "start": "2026-11-10T01:30:00.000Z",
+     "end": "2026-11-10T02:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Python course team"
+    },
+    {
+     "id": "m1",
+     "title": "Statistics II live session: hypothesis testing",
+     "start": "2026-11-11T13:30:00.000Z",
+     "end": "2026-11-11T14:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Statistics II course team"
+    },
+    {
+     "id": "m2",
+     "title": "Programming in Python doubt-clearing session",
+     "start": "2026-11-13T14:30:00.000Z",
+     "end": "2026-11-13T15:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Python course TAs"
+    },
+    {
+     "id": "m3",
+     "title": "Python OPPE 1 mock test",
+     "start": "2026-11-16T04:30:00.000Z",
+     "end": "2026-11-16T06:00:00.000Z",
+     "link": "",
+     "organizer": "Exam cell",
+     "location": "Online exam portal"
+    },
+    {
+     "id": "m4",
+     "title": "Statistics II revision session",
+     "start": "2026-11-18T13:30:00.000Z",
+     "end": "2026-11-18T15:00:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Statistics II course team"
+    }
+   ]
+  },
+  {
+   "id": "rahul",
+   "name": "Rahul Verma",
+   "firstName": "Rahul",
+   "rollNo": "25f1000214",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "combinedLimit": null,
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 31,
+     "quiz1": 42
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 58,
+     "quiz1": 55
+    }
+   ],
+   "intervention": {
+    "courseId": "python",
+    "instructor": "Prof. Kavya Menon",
+    "role": "Course instructor, Programming in Python",
+    "status": "Session booked",
+    "meetingAt": "2026-11-12T13:00:00.000Z",
+    "link": "https://meet.google.com/",
+    "reason": "Programming in Python has not been cleared in two attempts.",
+    "plan": [
+     "A 30-minute check-in with the instructor every week until OPPE 2.",
+     "A set of 20 OPPE-style problems, reviewed by a course TA each Sunday.",
+     "A mock OPPE in Week 9 under exam conditions, with feedback the same day."
+    ]
+   },
+   "oppe": [
+    {
+     "id": "py-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 31,
+       "final": true
+      },
+      {
+       "label": "Quiz 1 attended",
+       "required": true,
+       "actual": true,
+       "final": true
+      }
+     ],
+     "ifNotEligible": "Weeks 8 and 9 still count towards OPPE 2. Bring your average up to 40 to sit OPPE 2."
+    },
+    {
+     "id": "py-oppe2",
+     "courseId": "python",
+     "title": "OPPE 2",
+     "date": "2026-12-10T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 6 of the first 9 weekly assignments",
+       "required": 40,
+       "actual": 36,
+       "final": false,
+       "finalOn": "2026-11-24T18:29:00.000Z"
+      }
+     ]
+    }
+   ],
+   "meetings": [
+    {
+     "id": "r0",
+     "title": "Python doubt-clearing with your course TA",
+     "start": "2026-11-10T01:00:00.000Z",
+     "end": "2026-11-10T01:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Python course TAs",
+     "important": true
+    },
+    {
+     "id": "r00",
+     "title": "Statistics II live session: sampling",
+     "start": "2026-11-10T03:20:00.000Z",
+     "end": "2026-11-10T04:20:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Statistics II course team"
+    },
+    {
+     "id": "r1",
+     "title": "Statistics II live session: hypothesis testing",
+     "start": "2026-11-11T13:30:00.000Z",
+     "end": "2026-11-11T14:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Statistics II course team"
+    },
+    {
+     "id": "r2",
+     "title": "Check-in with Prof. Kavya Menon",
+     "start": "2026-11-12T13:00:00.000Z",
+     "end": "2026-11-12T13:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Prof. Kavya Menon",
+     "important": true
+    },
+    {
+     "id": "r3",
+     "title": "Programming in Python doubt-clearing session",
+     "start": "2026-11-13T14:30:00.000Z",
+     "end": "2026-11-13T15:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Python course TAs"
+    },
+    {
+     "id": "r4",
+     "title": "Python OPPE 1 mock test",
+     "start": "2026-11-16T04:30:00.000Z",
+     "end": "2026-11-16T06:00:00.000Z",
+     "link": "",
+     "organizer": "Exam cell",
+     "location": "Online exam portal"
+    }
+   ]
+  },
+  {
+   "id": "karthik",
+   "name": "Karthik Iyer",
+   "firstName": "Karthik",
+   "rollNo": "24f2000377",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2024",
+   "combinedLimit": null,
+   "updatedAt": "2026-11-09T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "mad1p",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "sc",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "java",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 81,
+     "quiz1": 74
+    },
+    {
+     "courseId": "mad2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 77,
+     "quiz1": 70
+    }
+   ],
+   "oppe": [
+    {
+     "id": "java-oppe1",
+     "courseId": "java",
+     "title": "OPPE 1",
+     "date": "2026-11-22T08:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 81,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": [
+    {
+     "id": "k0",
+     "title": "MAD II project mentor call",
+     "start": "2026-11-10T01:55:00.000Z",
+     "end": "2026-11-10T02:25:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Project mentor"
+    },
+    {
+     "id": "k1",
+     "title": "Java live session: interfaces and generics",
+     "start": "2026-11-11T13:30:00.000Z",
+     "end": "2026-11-11T14:30:00.000Z",
+     "link": "https://meet.google.com/",
+     "organizer": "Java course team"
+    },
+    {
+     "id": "k2",
+     "title": "MAD II project viva slot booking opens",
+     "start": "2026-11-14T03:30:00.000Z",
+     "end": "2026-11-14T04:00:00.000Z",
+     "link": "",
+     "organizer": "Project team",
+     "location": "Student portal"
+    },
+    {
+     "id": "k3",
+     "title": "Java OPPE 1 mock test",
+     "start": "2026-11-19T08:30:00.000Z",
+     "end": "2026-11-19T10:00:00.000Z",
+     "link": "",
+     "organizer": "Exam cell",
+     "location": "Online exam portal"
+    }
+   ]
+  },
+  {
+   "id": "rohit-bansal",
+   "name": "Rohit Bansal",
+   "firstName": "Rohit",
+   "rollNo": "25f1100100",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 35,
+     "quiz1": 44
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59,
+     "quiz1": 65
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 35,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "priya-nair",
+   "name": "Priya Nair",
+   "firstName": "Priya",
+   "rollNo": "26f1101833",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 50,
+     "quiz1": 63
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 82,
+     "quiz1": 73
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 82,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "vikram-singh",
+   "name": "Vikram Singh",
+   "firstName": "Vikram",
+   "rollNo": "25f1103566",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "D"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 30,
+     "quiz1": 45
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 60,
+     "quiz1": 60
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "sneha-patil",
+   "name": "Sneha Patil",
+   "firstName": "Sneha",
+   "rollNo": "26f1105299",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 74,
+     "quiz1": 85
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 70,
+     "quiz1": 76
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "farhan-qureshi",
+   "name": "Farhan Qureshi",
+   "firstName": "Farhan",
+   "rollNo": "26f1107032",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59,
+     "quiz1": 42
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 84,
+     "quiz1": 54
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 59,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "meera-joshi",
+   "name": "Meera Joshi",
+   "firstName": "Meera",
+   "rollNo": "25f1108765",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 32,
+     "quiz1": 57
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 80,
+     "quiz1": 52
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 32,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "kabir-malhotra",
+   "name": "Kabir Malhotra",
+   "firstName": "Kabir",
+   "rollNo": "26f1110498",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 39,
+     "quiz1": 46
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 85,
+     "quiz1": 55
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 85,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "nandini-bose",
+   "name": "Nandini Bose",
+   "firstName": "Nandini",
+   "rollNo": "26f1112231",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "math1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 72,
+     "quiz1": 63
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 87,
+     "quiz1": 56
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "tanvi-deshmukh",
+   "name": "Tanvi Deshmukh",
+   "firstName": "Tanvi",
+   "rollNo": "25f1113964",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "S"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 61,
+     "quiz1": 62
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 64,
+     "quiz1": 85
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "harsh-agarwal",
+   "name": "Harsh Agarwal",
+   "firstName": "Harsh",
+   "rollNo": "26f1115697",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 40,
+     "quiz1": 34
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 86,
+     "quiz1": 78
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 86,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "zoya-mirza",
+   "name": "Zoya Mirza",
+   "firstName": "Zoya",
+   "rollNo": "26f1117430",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 71
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 65,
+     "quiz1": 62
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "aditya-chauhan",
+   "name": "Aditya Chauhan",
+   "firstName": "Aditya",
+   "rollNo": "25f1119163",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "python",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 39,
+     "quiz1": 47
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 83,
+     "quiz1": 77
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 39,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "ritika-saxena",
+   "name": "Ritika Saxena",
+   "firstName": "Ritika",
+   "rollNo": "26f1120896",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59,
+     "quiz1": 43
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 88,
+     "quiz1": 59
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 59,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "manav-thakur",
+   "name": "Manav Thakur",
+   "firstName": "Manav",
+   "rollNo": "26f1122629",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 85,
+     "quiz1": 63
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 78,
+     "quiz1": 68
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "ishita-banerjee",
+   "name": "Ishita Banerjee",
+   "firstName": "Ishita",
+   "rollNo": "25f1124362",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 69,
+     "quiz1": 64
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 67,
+     "quiz1": 69
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "pranav-hegde",
+   "name": "Pranav Hegde",
+   "firstName": "Pranav",
+   "rollNo": "26f1126095",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 86,
+     "quiz1": 59
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 90,
+     "quiz1": 81
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 90,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "simran-kaur",
+   "name": "Simran Kaur",
+   "firstName": "Simran",
+   "rollNo": "25f1127828",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 34,
+     "quiz1": 59
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 68,
+     "quiz1": 63
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 34,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "varun-bhat",
+   "name": "Varun Bhat",
+   "firstName": "Varun",
+   "rollNo": "26f1129561",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 49,
+     "quiz1": 66
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 91,
+     "quiz1": 83
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 91,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "anjali-mishra",
+   "name": "Anjali Mishra",
+   "firstName": "Anjali",
+   "rollNo": "26f1131294",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 73,
+     "quiz1": 52
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 64,
+     "quiz1": 65
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "yash-jain",
+   "name": "Yash Jain",
+   "firstName": "Yash",
+   "rollNo": "25f1133027",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 40,
+     "quiz1": 50
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 87,
+     "quiz1": 55
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "pooja-rawat",
+   "name": "Pooja Rawat",
+   "firstName": "Pooja",
+   "rollNo": "26f1134760",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 73,
+     "quiz1": 55
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 92,
+     "quiz1": 64
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 92,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "nikhil-shetty",
+   "name": "Nikhil Shetty",
+   "firstName": "Nikhil",
+   "rollNo": "25f1136493",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "D"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "S"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 60,
+     "quiz1": 42
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 88,
+     "quiz1": 50
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 60,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "sana-ansari",
+   "name": "Sana Ansari",
+   "firstName": "Sana",
+   "rollNo": "26f1138226",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "math1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 44,
+     "quiz1": 26
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 81,
+     "quiz1": 86
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "devansh-arora",
+   "name": "Devansh Arora",
+   "firstName": "Devansh",
+   "rollNo": "26f1139959",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 86,
+     "quiz1": 61
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59,
+     "quiz1": 86
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 59,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "kritika-rathore",
+   "name": "Kritika Rathore",
+   "firstName": "Kritika",
+   "rollNo": "25f1141692",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "E"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 64,
+     "quiz1": 43
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 72,
+     "quiz1": 83
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "omkar-pawar",
+   "name": "Omkar Pawar",
+   "firstName": "Omkar",
+   "rollNo": "26f1143425",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 60,
+     "quiz1": 88
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 60,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "lavanya-krishnan",
+   "name": "Lavanya Krishnan",
+   "firstName": "Lavanya",
+   "rollNo": "26f1145158",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 75,
+     "quiz1": 51
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 63,
+     "quiz1": 67
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "rehan-siddiqui",
+   "name": "Rehan Siddiqui",
+   "firstName": "Rehan",
+   "rollNo": "25f1146891",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "E"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 86,
+     "quiz1": 54
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 91,
+     "quiz1": 75
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 86,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "shruti-pandey",
+   "name": "Shruti Pandey",
+   "firstName": "Shruti",
+   "rollNo": "24f2148624",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2024",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "mad1",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "mad1p",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "sc",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 35,
+     "quiz1": 38
+    },
+    {
+     "courseId": "java",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 64,
+     "quiz1": 54
+    }
+   ],
+   "oppe": [
+    {
+     "id": "pdsa-oppe1",
+     "courseId": "pdsa",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 35,
+       "final": true
+      }
+     ]
+    },
+    {
+     "id": "java-oppe1",
+     "courseId": "java",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 64,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "tushar-goyal",
+   "name": "Tushar Goyal",
+   "firstName": "Tushar",
+   "rollNo": "25f2150357",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "pdsa",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "dbms",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "dbms",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 57,
+     "quiz1": 64
+    },
+    {
+     "courseId": "mad1p",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "bhavna-chawla",
+   "name": "Bhavna Chawla",
+   "firstName": "Bhavna",
+   "rollNo": "24f2152090",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2024",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "mad1p",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "sc",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 58,
+     "quiz1": 77
+    },
+    {
+     "courseId": "java",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 91,
+     "quiz1": 55
+    }
+   ],
+   "oppe": [
+    {
+     "id": "sc-oppe1",
+     "courseId": "sc",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 58,
+       "final": true
+      }
+     ]
+    },
+    {
+     "id": "java-oppe1",
+     "courseId": "java",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 91,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "gaurav-yadav",
+   "name": "Gaurav Yadav",
+   "firstName": "Gaurav",
+   "rollNo": "25f2153823",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "sc",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 36,
+     "quiz1": 48
+    },
+    {
+     "courseId": "mad1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 84,
+     "quiz1": 82
+    }
+   ],
+   "oppe": [
+    {
+     "id": "sc-oppe1",
+     "courseId": "sc",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 36,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "aishwarya-subramanian",
+   "name": "Aishwarya Subramanian",
+   "firstName": "Aishwarya",
+   "rollNo": "24f2155556",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2024",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "mad1p",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "java",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "java",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 60,
+     "quiz1": 64
+    },
+    {
+     "courseId": "sc",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 83,
+     "quiz1": 57
+    }
+   ],
+   "oppe": [
+    {
+     "id": "java-oppe1",
+     "courseId": "java",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 60,
+       "final": true
+      }
+     ]
+    },
+    {
+     "id": "sc-oppe1",
+     "courseId": "sc",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 83,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "imran-lone",
+   "name": "Imran Lone",
+   "firstName": "Imran",
+   "rollNo": "25f2157289",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 40,
+     "quiz1": 29
+    },
+    {
+     "courseId": "mad1p",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12
+    }
+   ],
+   "oppe": [
+    {
+     "id": "pdsa-oppe1",
+     "courseId": "pdsa",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 40,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "divya-prakash",
+   "name": "Divya Prakash",
+   "firstName": "Divya",
+   "rollNo": "25f2159022",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 85,
+     "quiz1": 80
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 71,
+     "quiz1": 73
+    }
+   ],
+   "oppe": [
+    {
+     "id": "pdsa-oppe1",
+     "courseId": "pdsa",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 71,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "kunal-sethi",
+   "name": "Kunal Sethi",
+   "firstName": "Kunal",
+   "rollNo": "24f2160755",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2024",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "mad1p",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "sc",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "sc",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 66,
+     "quiz1": 48
+    },
+    {
+     "courseId": "java",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 88,
+     "quiz1": 59
+    }
+   ],
+   "oppe": [
+    {
+     "id": "sc-oppe1",
+     "courseId": "sc",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 66,
+       "final": true
+      }
+     ]
+    },
+    {
+     "id": "java-oppe1",
+     "courseId": "java",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 88,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "megha-tripathi",
+   "name": "Megha Tripathi",
+   "firstName": "Megha",
+   "rollNo": "25f2162488",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "mad1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 86,
+     "quiz1": 84
+    },
+    {
+     "courseId": "mad1p",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "abhinav-dutta",
+   "name": "Abhinav Dutta",
+   "firstName": "Abhinav",
+   "rollNo": "26f1164221",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 60,
+     "quiz1": 57
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 66,
+     "quiz1": 54
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 66,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "riya-kapoor",
+   "name": "Riya Kapoor",
+   "firstName": "Riya",
+   "rollNo": "26f1165954",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 61,
+     "quiz1": 90
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 80,
+     "quiz1": 50
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "sameer-naik",
+   "name": "Sameer Naik",
+   "firstName": "Sameer",
+   "rollNo": "25f1167687",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "Jan 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 33,
+     "quiz1": 35
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 63,
+     "quiz1": 84
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 33,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "ankita-dubey",
+   "name": "Ankita Dubey",
+   "firstName": "Ankita",
+   "rollNo": "26f1169420",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 44,
+     "quiz1": 33
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 68,
+     "quiz1": 77
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 44,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "ishaan-kohli",
+   "name": "Ishaan Kohli",
+   "firstName": "Ishaan",
+   "rollNo": "26f1171153",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "python",
+     "term": "May 2026",
+     "grade": "U"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 48,
+     "quiz1": 46
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 68,
+     "quiz1": 57
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 48,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "arnav-choudhary",
+   "name": "Arnav Choudhary",
+   "firstName": "Arnav",
+   "rollNo": "26f1172886",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 80,
+     "quiz1": 89
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 62,
+     "quiz1": 72
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "tara-iyengar",
+   "name": "Tara Iyengar",
+   "firstName": "Tara",
+   "rollNo": "26f1174619",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 66,
+     "quiz1": 88
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 70,
+     "quiz1": 58
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 70,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "mohit-chandra",
+   "name": "Mohit Chandra",
+   "firstName": "Mohit",
+   "rollNo": "25f1176352",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 68,
+     "quiz1": 64
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 83,
+     "quiz1": 70
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 68,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "neelam-bhatt",
+   "name": "Neelam Bhatt",
+   "firstName": "Neelam",
+   "rollNo": "26f1178085",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59,
+     "quiz1": 58
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 75,
+     "quiz1": 78
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "siddhi-kamath",
+   "name": "Siddhi Kamath",
+   "firstName": "Siddhi",
+   "rollNo": "25f2179818",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "mad1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 87,
+     "quiz1": 56
+    },
+    {
+     "courseId": "mad1p",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "parth-shah",
+   "name": "Parth Shah",
+   "firstName": "Parth",
+   "rollNo": "26f1181551",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 83,
+     "quiz1": 68
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 72,
+     "quiz1": 60
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 72,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "ayesha-khan",
+   "name": "Ayesha Khan",
+   "firstName": "Ayesha",
+   "rollNo": "25f1183284",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 87,
+     "quiz1": 67
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 85,
+     "quiz1": 60
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 87,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "rishabh-tiwari",
+   "name": "Rishabh Tiwari",
+   "firstName": "Rishabh",
+   "rollNo": "24f2185017",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2024",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Jan 2026",
+     "grade": "S"
+    },
+    {
+     "courseId": "mad1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "mad1p",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "sc",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 64,
+     "quiz1": 90
+    },
+    {
+     "courseId": "java",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 65,
+     "quiz1": 67
+    }
+   ],
+   "oppe": [
+    {
+     "id": "sc-oppe1",
+     "courseId": "sc",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 64,
+       "final": true
+      }
+     ]
+    },
+    {
+     "id": "java-oppe1",
+     "courseId": "java",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 65,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "pallavi-desai",
+   "name": "Pallavi Desai",
+   "firstName": "Pallavi",
+   "rollNo": "26f1186750",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 82,
+     "quiz1": 88
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 61,
+     "quiz1": 74
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "vivek-rana",
+   "name": "Vivek Rana",
+   "firstName": "Vivek",
+   "rollNo": "26f1188483",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 66,
+     "quiz1": 90
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 74,
+     "quiz1": 63
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 74,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "juhi-saini",
+   "name": "Juhi Saini",
+   "firstName": "Juhi",
+   "rollNo": "25f2190216",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 59,
+     "quiz1": 84
+    },
+    {
+     "courseId": "pdsa",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 60,
+     "quiz1": 89
+    }
+   ],
+   "oppe": [
+    {
+     "id": "pdsa-oppe1",
+     "courseId": "pdsa",
+     "title": "OPPE 1",
+     "date": "2026-11-22T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 60,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "akash-mehra",
+   "name": "Akash Mehra",
+   "firstName": "Akash",
+   "rollNo": "25f1191949",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Sep 2025",
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Sep 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Sep 2025",
+     "grade": "A"
+    },
+    {
+     "courseId": "ct",
+     "term": "Sep 2025",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats2",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 84,
+     "quiz1": 70
+    },
+    {
+     "courseId": "eng2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 70,
+     "quiz1": 87
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 84,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "natasha-d-souza",
+   "name": "Natasha D’Souza",
+   "firstName": "Natasha",
+   "rollNo": "26f1193682",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "Jan 2026",
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "Jan 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "stats1",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "ct",
+     "term": "Jan 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "eng1",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "math2",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "stats2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 78,
+     "quiz1": 55
+    },
+    {
+     "courseId": "python",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 75,
+     "quiz1": 85
+    }
+   ],
+   "oppe": [
+    {
+     "id": "python-oppe1",
+     "courseId": "python",
+     "title": "OPPE 1",
+     "date": "2026-11-19T04:30:00.000Z",
+     "criteria": [
+      {
+       "label": "Average of the best 5 of the first 7 weekly assignments",
+       "required": 40,
+       "actual": 75,
+       "final": true
+      }
+     ]
+    }
+   ],
+   "meetings": []
+  },
+  {
+   "id": "uday-raghavan",
+   "name": "Uday Raghavan",
+   "firstName": "Uday",
+   "rollNo": "25f2195415",
+   "level": "diploma",
+   "program": "Diploma in Programming",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "Jan 2025",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "dbms",
+     "term": "May 2026",
+     "grade": "A"
+    },
+    {
+     "courseId": "pdsa",
+     "term": "May 2026",
+     "grade": "C"
+    },
+    {
+     "courseId": "mad1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 82,
+     "quiz1": 64
+    },
+    {
+     "courseId": "mad1p",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  },
+  {
+   "id": "komal-rajput",
+   "name": "Komal Rajput",
+   "firstName": "Komal",
+   "rollNo": "26f1197148",
+   "level": "foundation",
+   "program": "BS in Data Science and Applications",
+   "terms": [
+    "May 2026",
+    "Sep 2026"
+   ],
+   "admittedFrom": "May 2026",
+   "updatedAt": "2026-11-08T03:30:00.000Z",
+   "attempts": [
+    {
+     "courseId": "math1",
+     "term": "May 2026",
+     "grade": "B"
+    },
+    {
+     "courseId": "stats1",
+     "term": "May 2026",
+     "grade": "E"
+    },
+    {
+     "courseId": "ct",
+     "term": "May 2026",
+     "grade": "D"
+    },
+    {
+     "courseId": "eng1",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 75,
+     "quiz1": 67
+    },
+    {
+     "courseId": "math2",
+     "term": "Sep 2026",
+     "inProgress": true,
+     "week": 7,
+     "weeks": 12,
+     "assignmentAvg": 87,
+     "quiz1": 86
+    }
+   ],
+   "oppe": [],
+   "meetings": []
+  }
+ ],
+ "meta": {
+  "ananya": {
+   "owner": null,
+   "flaggedOn": "2026-09-28T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 18,
+    "total": 36,
+    "lastActive": "2026-11-09T15:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "rahul": {
+   "owner": "neha",
+   "flaggedOn": "2026-09-18T03:30:00.000Z",
+   "prevLevel": "high",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": [
+    {
+     "owner": "neha",
+     "at": "2026-09-19T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "New High-risk case"
+    }
+   ]
+  },
+  "karthik": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "rohit-bansal": {
+   "owner": "neha",
+   "flaggedOn": "2026-09-09T03:30:00.000Z",
+   "prevLevel": "high",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": [
+    {
+     "owner": "neha",
+     "at": "2026-09-10T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "New High-risk case"
+    }
+   ]
+  },
+  "priya-nair": {
+   "owner": null,
+   "flaggedOn": "2026-10-02T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 10,
+    "total": 36,
+    "lastActive": "2026-10-28T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "vikram-singh": {
+   "owner": null,
+   "flaggedOn": "2026-11-08T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "sneha-patil": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "farhan-qureshi": {
+   "owner": "fatima",
+   "flaggedOn": "2026-10-12T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 7,
+    "total": 36,
+    "lastActive": "2026-10-30T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "fatima",
+     "at": "2026-10-14T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "meera-joshi": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "kabir-malhotra": {
+   "owner": "neha",
+   "flaggedOn": "2026-09-09T03:30:00.000Z",
+   "prevLevel": "high",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": [
+    {
+     "owner": "neha",
+     "at": "2026-09-10T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "New High-risk case"
+    }
+   ]
+  },
+  "nandini-bose": {
+   "owner": "arjun",
+   "flaggedOn": "2026-10-21T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 22,
+    "total": 36,
+    "lastActive": "2026-10-31T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "arjun",
+     "at": "2026-10-23T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "tanvi-deshmukh": {
+   "owner": null,
+   "flaggedOn": "2026-09-14T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 10,
+    "total": 36,
+    "lastActive": "2026-11-07T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "harsh-agarwal": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "zoya-mirza": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": "Quiz 1 score missing for the current term",
+   "plan": null,
+   "ownerHistory": []
+  },
+  "aditya-chauhan": {
+   "owner": "arjun",
+   "flaggedOn": "2026-11-08T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": [
+    {
+     "owner": "arjun",
+     "at": "2026-11-08T08:18:00.000Z",
+     "by": "suresh",
+     "reason": "New High-risk case"
+    }
+   ]
+  },
+  "ritika-saxena": {
+   "owner": "neha",
+   "flaggedOn": "2026-09-28T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 6,
+    "total": 36,
+    "lastActive": "2026-11-07T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "neha",
+     "at": "2026-09-30T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "manav-thakur": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "ishita-banerjee": {
+   "owner": null,
+   "flaggedOn": "2026-10-25T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 17,
+    "total": 36,
+    "lastActive": "2026-11-09T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "pranav-hegde": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "simran-kaur": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "varun-bhat": {
+   "owner": "fatima",
+   "flaggedOn": "2026-10-23T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 22,
+    "total": 36,
+    "lastActive": "2026-11-03T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "fatima",
+     "at": "2026-10-25T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "anjali-mishra": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "yash-jain": {
+   "owner": null,
+   "flaggedOn": "2026-09-23T03:30:00.000Z",
+   "prevLevel": "high",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "pooja-rawat": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "nikhil-shetty": {
+   "owner": null,
+   "flaggedOn": "2026-09-24T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 14,
+    "total": 36,
+    "lastActive": "2026-11-07T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "sana-ansari": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "devansh-arora": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "kritika-rathore": {
+   "owner": "arjun",
+   "flaggedOn": "2026-09-25T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 21,
+    "total": 36,
+    "lastActive": "2026-11-05T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "arjun",
+     "at": "2026-09-27T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "omkar-pawar": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": "Two different grades uploaded for English II (May 2026)",
+   "plan": null,
+   "ownerHistory": []
+  },
+  "lavanya-krishnan": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "rehan-siddiqui": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "shruti-pandey": {
+   "owner": "fatima",
+   "flaggedOn": "2026-09-06T03:30:00.000Z",
+   "prevLevel": "high",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": [
+    {
+     "owner": "fatima",
+     "at": "2026-09-07T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "New High-risk case"
+    }
+   ]
+  },
+  "tushar-goyal": {
+   "owner": "neha",
+   "flaggedOn": "2026-09-27T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 12,
+    "total": 36,
+    "lastActive": "2026-11-10T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "neha",
+     "at": "2026-09-29T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "bhavna-chawla": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "gaurav-yadav": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "aishwarya-subramanian": {
+   "owner": null,
+   "flaggedOn": "2026-09-20T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 8,
+    "total": 36,
+    "lastActive": "2026-11-04T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "imran-lone": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "divya-prakash": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "kunal-sethi": {
+   "owner": "fatima",
+   "flaggedOn": "2026-10-05T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 12,
+    "total": 36,
+    "lastActive": "2026-10-30T14:30:00.000Z"
+   },
+   "ownerHistory": [
+    {
+     "owner": "fatima",
+     "at": "2026-10-07T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "Low risk, plan not started"
+    }
+   ]
+  },
+  "megha-tripathi": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "abhinav-dutta": {
+   "owner": null,
+   "flaggedOn": "2026-10-01T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 5,
+    "total": 36,
+    "lastActive": "2026-10-30T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "riya-kapoor": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "sameer-naik": {
+   "owner": "arjun",
+   "flaggedOn": "2026-09-21T03:30:00.000Z",
+   "prevLevel": "high",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": [
+    {
+     "owner": "arjun",
+     "at": "2026-09-22T03:30:00.000Z",
+     "by": "suresh",
+     "reason": "New High-risk case"
+    }
+   ]
+  },
+  "ankita-dubey": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "ishaan-kohli": {
+   "owner": null,
+   "flaggedOn": "2026-10-19T03:30:00.000Z",
+   "prevLevel": "low",
+   "dataIssue": null,
+   "plan": {
+    "done": 9,
+    "total": 36,
+    "lastActive": "2026-11-05T14:30:00.000Z"
+   },
+   "ownerHistory": []
+  },
+  "arnav-choudhary": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "tara-iyengar": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "mohit-chandra": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "neelam-bhatt": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "siddhi-kamath": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "parth-shah": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "ayesha-khan": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "rishabh-tiwari": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "pallavi-desai": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "vivek-rana": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "juhi-saini": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "akash-mehra": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "natasha-d-souza": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "uday-raghavan": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  },
+  "komal-rajput": {
+   "owner": null,
+   "flaggedOn": null,
+   "prevLevel": "none",
+   "dataIssue": null,
+   "plan": null,
+   "ownerHistory": []
+  }
+ },
+ "interventions": [
+  {
+   "id": "i1",
+   "referralTo": null,
+   "followUp": null,
+   "studentId": "rahul",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "email",
+   "at": "2026-09-20T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Shared the Python OPPE practice set and the dates for this term’s OPPEs.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i2",
+   "referralTo": "kavya",
+   "followUp": null,
+   "studentId": "rahul",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "referral",
+   "at": "2026-09-23T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Failed Programming in Python twice. Needs hands-on OPPE practice and weekly check-ins.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i3",
+   "referralTo": null,
+   "followUp": "2026-11-12T13:00:00.000Z",
+   "studentId": "rahul",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "meeting",
+   "at": "2026-11-05T13:00:00.000Z",
+   "by": "kavya",
+   "notes": "First check-in. Went through both OPPE attempts: loops and dictionaries are the gap. Set 20 practice problems.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i4",
+   "referralTo": null,
+   "followUp": null,
+   "studentId": "rohit-bansal",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "email",
+   "at": "2026-09-11T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Called about Programming in Python. Agreed to attend this week’s doubt session.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i5",
+   "referralTo": "kavya",
+   "followUp": "2026-11-10T07:30:00.000Z",
+   "studentId": "rohit-bansal",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "referral",
+   "at": "2026-09-15T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Referred to Prof. Kavya Menon: Programming in Python failed twice.",
+   "outcome": "no_response"
+  },
+  {
+   "id": "i6",
+   "referralTo": null,
+   "followUp": "2026-11-09T06:30:00.000Z",
+   "studentId": "farhan-qureshi",
+   "courseId": "python",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-10-15T05:30:00.000Z",
+   "by": "fatima",
+   "notes": "Shared the 12-week study plan for Programming in Python.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i7",
+   "referralTo": null,
+   "followUp": null,
+   "studentId": "kabir-malhotra",
+   "courseId": "ct",
+   "reason": "failed_twice",
+   "type": "email",
+   "at": "2026-09-11T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Called about Computational Thinking. Agreed to attend this week’s doubt session.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i8",
+   "referralTo": null,
+   "followUp": "2026-11-09T06:30:00.000Z",
+   "studentId": "kabir-malhotra",
+   "courseId": "ct",
+   "reason": "failed_twice",
+   "type": "meeting",
+   "at": "2026-09-15T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Planned the Computational Thinking re-attempt week by week with the student.",
+   "outcome": "escalated"
+  },
+  {
+   "id": "i9",
+   "referralTo": null,
+   "followUp": "2026-11-09T06:30:00.000Z",
+   "studentId": "kabir-malhotra",
+   "courseId": "ct",
+   "reason": "failed_twice",
+   "type": "email",
+   "at": "2026-11-09T06:30:00.000Z",
+   "by": "neha",
+   "notes": "No reply to two calls. Escalated to the program office (Neha Kulkarni).",
+   "outcome": "escalated"
+  },
+  {
+   "id": "i10",
+   "referralTo": null,
+   "followUp": "2026-11-07T06:30:00.000Z",
+   "studentId": "nandini-bose",
+   "courseId": "math1",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-10-24T05:30:00.000Z",
+   "by": "arjun",
+   "notes": "Shared the 12-week study plan for Mathematics for Data Science I.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i11",
+   "referralTo": null,
+   "followUp": "2026-11-06T06:30:00.000Z",
+   "studentId": "ritika-saxena",
+   "courseId": "python",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-10-01T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Shared the 12-week study plan for Programming in Python.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i12",
+   "referralTo": null,
+   "followUp": "2026-11-17T06:30:00.000Z",
+   "studentId": "varun-bhat",
+   "courseId": "ct",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-10-26T05:30:00.000Z",
+   "by": "fatima",
+   "notes": "Shared the 12-week study plan for Computational Thinking.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i13",
+   "referralTo": null,
+   "followUp": "2026-11-15T06:30:00.000Z",
+   "studentId": "kritika-rathore",
+   "courseId": "stats1",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-09-28T05:30:00.000Z",
+   "by": "arjun",
+   "notes": "Shared the 12-week study plan for Statistics for Data Science I.",
+   "outcome": "no_response"
+  },
+  {
+   "id": "i14",
+   "referralTo": null,
+   "followUp": null,
+   "studentId": "shruti-pandey",
+   "courseId": "pdsa",
+   "reason": "failed_twice",
+   "type": "call",
+   "at": "2026-09-08T05:30:00.000Z",
+   "by": "fatima",
+   "notes": "Called about Programming, Data Structures and Algorithms using Python. Agreed to attend this week’s doubt session.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i15",
+   "referralTo": null,
+   "followUp": "2026-11-07T06:30:00.000Z",
+   "studentId": "shruti-pandey",
+   "courseId": "pdsa",
+   "reason": "failed_twice",
+   "type": "meeting",
+   "at": "2026-09-12T05:30:00.000Z",
+   "by": "fatima",
+   "notes": "Planned the Programming, Data Structures and Algorithms using Python re-attempt week by week with the student.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i16",
+   "referralTo": null,
+   "followUp": "2026-11-12T06:30:00.000Z",
+   "studentId": "tushar-goyal",
+   "courseId": "dbms",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-09-30T05:30:00.000Z",
+   "by": "neha",
+   "notes": "Shared the 12-week study plan for Database Management Systems.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i17",
+   "referralTo": null,
+   "followUp": "2026-11-15T06:30:00.000Z",
+   "studentId": "kunal-sethi",
+   "courseId": "sc",
+   "reason": "failed_once",
+   "type": "email",
+   "at": "2026-10-08T05:30:00.000Z",
+   "by": "fatima",
+   "notes": "Shared the 12-week study plan for System Commands.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i18",
+   "referralTo": null,
+   "followUp": null,
+   "studentId": "sameer-naik",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "call",
+   "at": "2026-09-23T05:30:00.000Z",
+   "by": "arjun",
+   "notes": "Called about Programming in Python. Agreed to attend this week’s doubt session.",
+   "outcome": "in_progress"
+  },
+  {
+   "id": "i19",
+   "referralTo": "kavya",
+   "followUp": null,
+   "studentId": "sameer-naik",
+   "courseId": "python",
+   "reason": "failed_twice",
+   "type": "referral",
+   "at": "2026-09-27T05:30:00.000Z",
+   "by": "arjun",
+   "notes": "Referred to Prof. Kavya Menon: Programming in Python failed twice.",
+   "outcome": "resolved"
+  }
+ ],
+ "rules": {
+  "version": 2,
+  "effective": "Sep 2026",
+  "highFails": 2,
+  "lowFails": 1,
+  "oppeMin": 40,
+  "milestones": {
+   "foundation": [
+    {
+     "byTerm": 4,
+     "courses": 4
+    },
+    {
+     "byTerm": 6,
+     "courses": 6
+    },
+    {
+     "byTerm": 9,
+     "courses": 8
+    }
+   ],
+   "diploma": [
+    {
+     "byTerm": 3,
+     "courses": 3,
+     "projects": 1
+    },
+    {
+     "byTerm": 6,
+     "courses": 6,
+     "projects": 2
+    },
+    {
+     "byTerm": 9,
+     "courses": 9,
+     "projects": 3
+    },
+    {
+     "byTerm": 12,
+     "courses": 12,
+     "projects": 4
+    }
+   ]
+  }
+ },
+ "ruleHistory": [
+  {
+   "version": 1,
+   "effective": "Jan 2026",
+   "at": "2026-01-14T04:30:00.000Z",
+   "by": "Suresh Pillai",
+   "summary": "High: same course failed 3 times. Low: failed once. OPPE: assignment average 40.",
+   "reason": "First rules for the pilot term"
+  },
+  {
+   "version": 2,
+   "effective": "Sep 2026",
+   "at": "2026-09-09T04:30:00.000Z",
+   "by": "Suresh Pillai",
+   "summary": "High: same course failed twice. Low: failed once. OPPE: assignment average 40.",
+   "reason": "May 2026 policy: a second failed attempt now gets instructor support"
+  }
+ ],
+ "imports": [
+  {
+   "id": "imp3",
+   "file": "sep26_week7_scores.csv",
+   "category": "Weekly assignment scores",
+   "term": "Sep 2026",
+   "rows": 1290,
+   "accepted": 1284,
+   "rejected": 6,
+   "status": "succeeded",
+   "at": "2026-11-08T03:30:00.000Z",
+   "by": "Suresh Pillai"
+  },
+  {
+   "id": "imp2",
+   "file": "sep26_registrations.csv",
+   "category": "Course registrations",
+   "term": "Sep 2026",
+   "rows": 2410,
+   "accepted": 2410,
+   "rejected": 0,
+   "status": "succeeded",
+   "at": "2026-09-16T05:30:00.000Z",
+   "by": "Suresh Pillai"
+  },
+  {
+   "id": "imp1",
+   "file": "may26_results.csv",
+   "category": "Term results",
+   "term": "May 2026",
+   "rows": 5122,
+   "accepted": 5108,
+   "rejected": 14,
+   "status": "succeeded",
+   "at": "2026-09-11T04:30:00.000Z",
+   "by": "Suresh Pillai"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "j1",
+   "name": "Risk recalculation",
+   "detail": "Rule v2, from the week 7 scores import",
+   "status": "succeeded",
+   "at": "2026-11-08T03:35:00.000Z"
+  },
+  {
+   "id": "j2",
+   "name": "Alert: new High-risk students to staff",
+   "detail": "2 students, sent in the app and by email",
+   "status": "succeeded",
+   "at": "2026-11-08T03:40:00.000Z"
+  },
+  {
+   "id": "j3",
+   "name": "Email: OPPE 1 eligibility results",
+   "detail": "Mail server rejected 3 addresses that no longer exist",
+   "status": "failed",
+   "at": "2026-11-08T03:50:00.000Z"
+  },
+  {
+   "id": "j4",
+   "name": "Weekly study plan reminders to students",
+   "detail": "Scheduled for tomorrow, 8:00 am",
+   "status": "pending",
+   "at": "2026-11-11T02:30:00.000Z"
+  }
+ ],
+ "users": [
+  {
+   "email": "neha@disha.demo",
+   "name": "Neha Kulkarni",
+   "role": "support",
+   "title": "Academic advisor",
+   "active": true
+  },
+  {
+   "email": "arjun@disha.demo",
+   "name": "Arjun Das",
+   "role": "support",
+   "title": "Support TA",
+   "active": true
+  },
+  {
+   "email": "fatima@disha.demo",
+   "name": "Fatima Sheikh",
+   "role": "support",
+   "title": "Academic advisor",
+   "active": true
+  },
+  {
+   "email": "kavya@disha.demo",
+   "name": "Prof. Kavya Menon",
+   "role": "instructor",
+   "title": "Course instructor, Programming in Python",
+   "active": true
+  },
+  {
+   "email": "rohan@disha.demo",
+   "name": "Dr. Rohan Gupta",
+   "role": "instructor",
+   "title": "Course instructor, Statistics for Data Science II",
+   "active": true
+  },
+  {
+   "email": "suresh@disha.demo",
+   "name": "Suresh Pillai",
+   "role": "admin",
+   "title": "Program administrator",
+   "active": true
+  },
+  {
+   "email": "rakesh@disha.demo",
+   "name": "Rakesh Jha",
+   "role": "support",
+   "title": "Support TA (left in May 2026)",
+   "active": false
+  }
+ ],
+ "audit": [
+  {
+   "at": "2026-11-09T06:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "kabir-malhotra",
+   "details": "Email logged for Kabir Malhotra.",
+   "id": "a38"
+  },
+  {
+   "at": "2026-11-08T08:18:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "aditya-chauhan",
+   "details": "Aditya Chauhan assigned to Arjun Das. Reason: New High-risk case.",
+   "id": "a37"
+  },
+  {
+   "at": "2026-11-08T03:35:00.000Z",
+   "who": "System",
+   "action": "Risk recalculation",
+   "details": "Rules v2 on the week 7 scores import. 2 students moved to High risk.",
+   "id": "a36"
+  },
+  {
+   "at": "2026-11-08T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Data import",
+   "details": "Weekly assignment scores, Sep 2026: 1,284 rows accepted, 6 rejected (sep26_week7_scores.csv).",
+   "id": "a35"
+  },
+  {
+   "at": "2026-11-05T13:00:00.000Z",
+   "who": "Prof. Kavya Menon",
+   "action": "Intervention",
+   "studentId": "rahul",
+   "details": "Meeting logged for Rahul Verma.",
+   "id": "a34"
+  },
+  {
+   "at": "2026-10-26T05:30:00.000Z",
+   "who": "Fatima Sheikh",
+   "action": "Intervention",
+   "studentId": "varun-bhat",
+   "details": "Email logged for Varun Bhat.",
+   "id": "a33"
+  },
+  {
+   "at": "2026-10-25T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "varun-bhat",
+   "details": "Varun Bhat assigned to Fatima Sheikh. Reason: Low risk, plan not started.",
+   "id": "a32"
+  },
+  {
+   "at": "2026-10-24T05:30:00.000Z",
+   "who": "Arjun Das",
+   "action": "Intervention",
+   "studentId": "nandini-bose",
+   "details": "Email logged for Nandini Bose.",
+   "id": "a31"
+  },
+  {
+   "at": "2026-10-23T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "nandini-bose",
+   "details": "Nandini Bose assigned to Arjun Das. Reason: Low risk, plan not started.",
+   "id": "a30"
+  },
+  {
+   "at": "2026-10-15T05:30:00.000Z",
+   "who": "Fatima Sheikh",
+   "action": "Intervention",
+   "studentId": "farhan-qureshi",
+   "details": "Email logged for Farhan Qureshi.",
+   "id": "a29"
+  },
+  {
+   "at": "2026-10-14T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "farhan-qureshi",
+   "details": "Farhan Qureshi assigned to Fatima Sheikh. Reason: Low risk, plan not started.",
+   "id": "a28"
+  },
+  {
+   "at": "2026-10-08T05:30:00.000Z",
+   "who": "Fatima Sheikh",
+   "action": "Intervention",
+   "studentId": "kunal-sethi",
+   "details": "Email logged for Kunal Sethi.",
+   "id": "a27"
+  },
+  {
+   "at": "2026-10-07T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "kunal-sethi",
+   "details": "Kunal Sethi assigned to Fatima Sheikh. Reason: Low risk, plan not started.",
+   "id": "a26"
+  },
+  {
+   "at": "2026-10-01T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "ritika-saxena",
+   "details": "Email logged for Ritika Saxena.",
+   "id": "a25"
+  },
+  {
+   "at": "2026-09-30T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "tushar-goyal",
+   "details": "Email logged for Tushar Goyal.",
+   "id": "a24"
+  },
+  {
+   "at": "2026-09-30T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "ritika-saxena",
+   "details": "Ritika Saxena assigned to Neha Kulkarni. Reason: Low risk, plan not started.",
+   "id": "a23"
+  },
+  {
+   "at": "2026-09-29T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "tushar-goyal",
+   "details": "Tushar Goyal assigned to Neha Kulkarni. Reason: Low risk, plan not started.",
+   "id": "a22"
+  },
+  {
+   "at": "2026-09-28T05:30:00.000Z",
+   "who": "Arjun Das",
+   "action": "Intervention",
+   "studentId": "kritika-rathore",
+   "details": "Email logged for Kritika Rathore.",
+   "id": "a21"
+  },
+  {
+   "at": "2026-09-27T05:30:00.000Z",
+   "who": "Arjun Das",
+   "action": "Intervention",
+   "studentId": "sameer-naik",
+   "details": "Referral logged for Sameer Naik, referred to Prof. Kavya Menon.",
+   "id": "a20"
+  },
+  {
+   "at": "2026-09-27T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "kritika-rathore",
+   "details": "Kritika Rathore assigned to Arjun Das. Reason: Low risk, plan not started.",
+   "id": "a19"
+  },
+  {
+   "at": "2026-09-23T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "rahul",
+   "details": "Referral logged for Rahul Verma, referred to Prof. Kavya Menon.",
+   "id": "a18"
+  },
+  {
+   "at": "2026-09-23T05:30:00.000Z",
+   "who": "Arjun Das",
+   "action": "Intervention",
+   "studentId": "sameer-naik",
+   "details": "Call logged for Sameer Naik.",
+   "id": "a17"
+  },
+  {
+   "at": "2026-09-22T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "sameer-naik",
+   "details": "Sameer Naik assigned to Arjun Das. Reason: New High-risk case.",
+   "id": "a16"
+  },
+  {
+   "at": "2026-09-20T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "rahul",
+   "details": "Email logged for Rahul Verma.",
+   "id": "a15"
+  },
+  {
+   "at": "2026-09-19T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "rahul",
+   "details": "Rahul Verma assigned to Neha Kulkarni. Reason: New High-risk case.",
+   "id": "a14"
+  },
+  {
+   "at": "2026-09-16T05:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Data import",
+   "details": "Course registrations, Sep 2026: 2,410 rows accepted, 0 rejected (sep26_registrations.csv).",
+   "id": "a13"
+  },
+  {
+   "at": "2026-09-15T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "rohit-bansal",
+   "details": "Referral logged for Rohit Bansal, referred to Prof. Kavya Menon.",
+   "id": "a12"
+  },
+  {
+   "at": "2026-09-15T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "kabir-malhotra",
+   "details": "Meeting logged for Kabir Malhotra.",
+   "id": "a11"
+  },
+  {
+   "at": "2026-09-12T05:30:00.000Z",
+   "who": "Fatima Sheikh",
+   "action": "Intervention",
+   "studentId": "shruti-pandey",
+   "details": "Meeting logged for Shruti Pandey.",
+   "id": "a10"
+  },
+  {
+   "at": "2026-09-11T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "rohit-bansal",
+   "details": "Email logged for Rohit Bansal.",
+   "id": "a9"
+  },
+  {
+   "at": "2026-09-11T05:30:00.000Z",
+   "who": "Neha Kulkarni",
+   "action": "Intervention",
+   "studentId": "kabir-malhotra",
+   "details": "Email logged for Kabir Malhotra.",
+   "id": "a8"
+  },
+  {
+   "at": "2026-09-11T04:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Data import",
+   "details": "Term results, May 2026: 5,108 rows accepted, 14 rejected (may26_results.csv).",
+   "id": "a7"
+  },
+  {
+   "at": "2026-09-10T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "rohit-bansal",
+   "details": "Rohit Bansal assigned to Neha Kulkarni. Reason: New High-risk case.",
+   "id": "a6"
+  },
+  {
+   "at": "2026-09-10T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "kabir-malhotra",
+   "details": "Kabir Malhotra assigned to Neha Kulkarni. Reason: New High-risk case.",
+   "id": "a5"
+  },
+  {
+   "at": "2026-09-09T04:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Rule change",
+   "details": "Rules v2 from Sep 2026. High: same course failed twice. Low: failed once. OPPE: assignment average 40. Reason: May 2026 policy: a second failed attempt now gets instructor support.",
+   "id": "a4"
+  },
+  {
+   "at": "2026-09-08T05:30:00.000Z",
+   "who": "Fatima Sheikh",
+   "action": "Intervention",
+   "studentId": "shruti-pandey",
+   "details": "Call logged for Shruti Pandey.",
+   "id": "a3"
+  },
+  {
+   "at": "2026-09-07T03:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Assignment",
+   "studentId": "shruti-pandey",
+   "details": "Shruti Pandey assigned to Fatima Sheikh. Reason: New High-risk case.",
+   "id": "a2"
+  },
+  {
+   "at": "2026-01-14T04:30:00.000Z",
+   "who": "Suresh Pillai",
+   "action": "Rule change",
+   "details": "Rules v1 from Jan 2026. High: same course failed 3 times. Low: failed once. OPPE: assignment average 40. Reason: First rules for the pilot term.",
+   "id": "a1"
+  }
+ ]
+}

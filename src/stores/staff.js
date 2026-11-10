@@ -1,62 +1,31 @@
 import { defineStore } from 'pinia'
-import { buildCohort } from '../data/cohort'
 import { STAFF } from '../data/staff'
 import { LEVEL_RULES } from '../data/rules'
 import { COURSES } from '../data/courses'
+import { loadReference } from '../data/reference'
+import { api } from '../services/api'
 import { at, startOfDay } from '../utils/dates'
 import { riskWith, summarize } from '../utils/staff'
 import { useAuthStore } from './auth'
 
-// Everything on the staff side. Changes made here (assignments, interventions, rules,
-// imports) last until the page is reloaded; the full platform saves them in the backend.
-
-const copyMilestones = () => JSON.parse(JSON.stringify({ foundation: LEVEL_RULES.foundation.milestones, diploma: LEVEL_RULES.diploma.milestones }))
-
-function seed() {
-  const { students, meta, interventions } = buildCohort()
-  const rules = { version: 2, effective: 'Sep 2026', highFails: 2, lowFails: 1, oppeMin: 40, milestones: copyMilestones() }
-  const ruleHistory = [
-    { version: 1, effective: 'Jan 2026', at: at(-300, 10), by: 'Suresh Pillai', summary: 'High: same course failed 3 times. Low: failed once. OPPE: assignment average 40.', reason: 'First rules for the pilot term' },
-    { version: 2, effective: 'Sep 2026', at: at(-62, 10), by: 'Suresh Pillai', summary: 'High: same course failed twice. Low: failed once. OPPE: assignment average 40.', reason: 'May 2026 policy: a second failed attempt now gets instructor support' },
-  ]
-  const imports = [
-    { id: 'imp3', file: 'sep26_week7_scores.csv', category: 'Weekly assignment scores', term: 'Sep 2026', rows: 1290, accepted: 1284, rejected: 6, status: 'succeeded', at: at(-2, 9), by: 'Suresh Pillai' },
-    { id: 'imp2', file: 'sep26_registrations.csv', category: 'Course registrations', term: 'Sep 2026', rows: 2410, accepted: 2410, rejected: 0, status: 'succeeded', at: at(-55, 11), by: 'Suresh Pillai' },
-    { id: 'imp1', file: 'may26_results.csv', category: 'Term results', term: 'May 2026', rows: 5122, accepted: 5108, rejected: 14, status: 'succeeded', at: at(-60, 10), by: 'Suresh Pillai' },
-  ]
-  const jobs = [
-    { id: 'j1', name: 'Risk recalculation', detail: 'Rule v2, from the week 7 scores import', status: 'succeeded', at: at(-2, 9, 5) },
-    { id: 'j2', name: 'Alert: new High-risk students to staff', detail: '2 students, sent in the app and by email', status: 'succeeded', at: at(-2, 9, 10) },
-    { id: 'j3', name: 'Email: OPPE 1 eligibility results', detail: 'Mail server rejected 3 addresses that no longer exist', status: 'failed', at: at(-2, 9, 20) },
-    { id: 'j4', name: 'Weekly study plan reminders to students', detail: 'Scheduled for tomorrow, 8:00 am', status: 'pending', at: at(1, 8) },
-  ]
-  const users = [
-    ...Object.values(STAFF).map((s) => ({ email: `${s.id}@disha.demo`, name: s.name, role: s.role, title: s.title, active: true })),
-    { email: 'rakesh@disha.demo', name: 'Rakesh Jha', role: 'support', title: 'Support TA (left in May 2026)', active: false },
-  ]
-
-  // The audit log starts with the history behind the sample data.
-  const audit = []
-  const name = (id) => STAFF[id]?.name || id
-  for (const r of ruleHistory) audit.push({ at: r.at, who: r.by, action: 'Rule change', details: `Rules v${r.version} from ${r.effective}. ${r.summary} Reason: ${r.reason}.` })
-  for (const i of imports) audit.push({ at: i.at, who: i.by, action: 'Data import', details: `${i.category}, ${i.term}: ${i.accepted.toLocaleString('en-IN')} rows accepted, ${i.rejected} rejected (${i.file}).` })
-  audit.push({ at: at(-2, 9, 5), who: 'System', action: 'Risk recalculation', details: 'Rules v2 on the week 7 scores import. 2 students moved to High risk.' })
-  for (const s of students) {
-    for (const h of meta[s.id].ownerHistory) audit.push({ at: h.at, who: name(h.by), action: 'Assignment', studentId: s.id, details: `${s.name} assigned to ${name(h.owner)}. Reason: ${h.reason}.` })
-  }
-  for (const i of interventions) {
-    audit.push({ at: i.at, who: name(i.by), action: 'Intervention', studentId: i.studentId, details: `${cap(i.type)} logged for ${students.find((s) => s.id === i.studentId).name}${i.referralTo ? `, referred to ${name(i.referralTo)}` : ''}.` })
-  }
-  audit.sort((a, b) => b.at - a.at)
-  audit.forEach((e, n) => { e.id = `a${audit.length - n}` })
-
-  return { students, meta, interventions, rules, ruleHistory, imports, jobs, users, audit, llmEnabled: true, shared: {}, lastRecalc: at(-2, 9, 5) }
-}
+// Everything on the staff side, loaded from GET /api/staff/bootstrap.
+// Each action shows its change on the page straight away, sends it to the backend,
+// then reloads so the page matches what was saved. If the backend refuses, the
+// reload undoes the change and `error` says why.
 
 const cap = (s) => s[0].toUpperCase() + s.slice(1)
+const clone = (x) => JSON.parse(JSON.stringify(x))
+
+const empty = () => ({
+  students: [], meta: {}, interventions: [],
+  rules: { version: 0, effective: '', highFails: 2, lowFails: 1, oppeMin: 40, milestones: {} },
+  ruleHistory: [], imports: [], jobs: [], users: [], audit: [],
+  llmEnabled: true, shared: {}, lastRecalc: null,
+  loaded: false, error: '',
+})
 
 export const useStaffStore = defineStore('staff', {
-  state: seed,
+  state: empty,
   getters: {
     rows(s) {
       return s.students.map((st) => summarize(st, s.meta[st.id], s.rules))
@@ -95,28 +64,60 @@ export const useStaffStore = defineStore('staff', {
     },
   },
   actions: {
+    async load() {
+      const data = await api.get('/staff/bootstrap')
+      this.$patch((s) => {
+        Object.assign(s, data)
+        s.loaded = true
+      })
+    },
+    clear() {
+      this.$reset()
+    },
+    /** Send a change to the backend, then reload so the page shows what was saved. */
+    async save(request, { reference = false } = {}) {
+      this.error = ''
+      let result = null
+      try {
+        result = await request
+      } catch (err) {
+        this.error = err.message
+      }
+      try {
+        if (reference) await loadReference()
+        await this.load()
+      } catch (err) {
+        this.error = this.error || err.message
+      }
+      return result
+    },
     who() {
       return useAuthStore().user?.name || 'Unknown user'
     },
+    me() {
+      return useAuthStore().user?.staffId || null
+    },
+    // Shown at once; replaced by the saved entry on the reload.
     log(action, details, studentId = null) {
-      this.audit.unshift({ id: `a${this.audit.length + 1}`, at: new Date(), who: this.who(), action, details, studentId })
+      this.audit.unshift({ id: `new-${Date.now()}-${this.audit.length}`, at: new Date(), who: this.who(), action, details, studentId })
     },
     assign(ids, owner, reason) {
       for (const id of ids) {
         const m = this.meta[id]
         const before = m.owner
         m.owner = owner
-        m.ownerHistory.push({ owner, at: new Date(), by: this.who(), reason })
+        m.ownerHistory.push({ owner, at: new Date(), by: this.me(), reason })
         const s = this.students.find((x) => x.id === id)
-        this.log('Assignment', `${s.name} ${before ? `reassigned from ${STAFF[before].name} to` : 'assigned to'} ${STAFF[owner].name}. Reason: ${reason}.`, id)
+        this.log('Assignment', `${s.name} ${before ? `reassigned from ${STAFF[before]?.name} to` : 'assigned to'} ${STAFF[owner]?.name}. Reason: ${reason}.`, id)
       }
+      return this.save(api.post('/staff/assignments', { studentIds: ids, owner, reason }))
     },
     logIntervention(rec) {
-      const me = useAuthStore().user
-      const item = { id: `i${this.interventions.length + 1}-${Date.now()}`, referralTo: null, followUp: null, ...rec, by: me?.staffId || 'suresh' }
+      const item = { id: `new-${Date.now()}`, referralTo: null, followUp: null, ...rec, by: this.me() }
       this.interventions.push(item)
       const s = this.students.find((x) => x.id === rec.studentId)
-      this.log('Intervention', `${cap(rec.type)} logged for ${s.name}${rec.referralTo ? `, referred to ${STAFF[rec.referralTo].name}` : ''}. Outcome: ${rec.outcome.replace('_', ' ')}.`, rec.studentId)
+      this.log('Intervention', `${cap(rec.type)} logged for ${s.name}${rec.referralTo ? `, referred to ${STAFF[rec.referralTo]?.name}` : ''}. Outcome: ${rec.outcome.replace('_', ' ')}.`, rec.studentId)
+      this.save(api.post('/staff/interventions', rec))
       return item
     },
     setOutcome(studentId, outcome) {
@@ -124,20 +125,20 @@ export const useStaffStore = defineStore('staff', {
       const s = this.students.find((x) => x.id === studentId)
       if (latest) latest.outcome = outcome
       else {
-        this.interventions.push({ id: `i${this.interventions.length + 1}-${Date.now()}`, studentId, courseId: this.row(studentId)?.risk.focus?.course.id || null, reason: 'status', type: 'call', at: new Date(), by: useAuthStore().user?.staffId || 'suresh', notes: 'Status changed on the board.', followUp: null, referralTo: null, outcome })
+        this.interventions.push({ id: `new-${Date.now()}`, studentId, courseId: this.row(studentId)?.risk.focus?.course.id || null, reason: 'status', type: 'call', at: new Date(), by: this.me(), notes: 'Status changed on the board.', followUp: null, referralTo: null, outcome })
       }
       this.log('Outcome', `${s.name}: case marked "${outcome.replace('_', ' ')}".`, studentId)
+      return this.save(api.put(`/staff/students/${studentId}/outcome`, { outcome }))
     },
     toggleShared(studentId, key, text) {
       const list = this.shared[studentId] || (this.shared[studentId] = [])
       const idx = list.indexOf(key)
       if (idx >= 0) list.splice(idx, 1)
-      else {
-        list.push(key)
-        const s = this.students.find((x) => x.id === studentId)
-        this.log('Suggestion shared', `${s.name}: "${text}"`, studentId)
-      }
+      else list.push(key)
+      return this.save(api.post(`/staff/students/${studentId}/shared`, { key, text }))
     },
+    // A quick check in the browser while the administrator edits; the backend repeats
+    // the same checks before anything is saved.
     previewRules(next) {
       const problems = []
       if (!(next.highFails > next.lowFails)) problems.push('High risk must need more failed attempts than Low risk.')
@@ -156,50 +157,27 @@ export const useStaffStore = defineStore('staff', {
         .map((c) => ({ id: c.s.id, name: c.s.name, from: c.from, to: c.to }))
       return { problems, changes }
     },
-    applyRules(next, reason) {
-      const { changes } = this.previewRules(next)
-      const version = this.rules.version + 1
-      this.rules = { ...JSON.parse(JSON.stringify(next)), version }
-      const summary = `High: same course failed ${next.highFails} times. Low: failed ${next.lowFails === 1 ? 'once' : `${next.lowFails} times`}. OPPE: assignment average ${next.oppeMin}.`
-      this.ruleHistory.push({ version, effective: next.effective, at: new Date(), by: this.who(), summary, reason })
-      this.log('Rule change', `Rules v${version} from ${next.effective}. ${summary} Reason: ${reason}.`)
-      this.lastRecalc = new Date()
-      this.jobs.unshift({ id: `j${Date.now()}`, name: 'Risk recalculation', detail: `Rules v${version}: ${changes.length} ${changes.length === 1 ? 'student changed' : 'students changed'} risk level`, status: 'succeeded', at: new Date() })
-      this.audit.unshift({ id: `a${this.audit.length + 1}`, at: new Date(), who: 'System', action: 'Risk recalculation', details: `Rules v${version}: ${changes.length} risk level ${changes.length === 1 ? 'change' : 'changes'}.` })
-      return changes
+    /** Saves the rules as the next version; the backend recalculates everyone's risk. */
+    async applyRules(next, reason) {
+      const { version, ...rules } = clone(next)
+      const res = await this.save(api.post('/rules', { rules, reason }), { reference: true })
+      return res?.changes || null
     },
-    confirmImport(file, result) {
-      const rec = { id: `imp${Date.now()}`, file, category: result.category, term: result.terms.join(', ') || 'None', rows: result.total, accepted: result.accepted.length, rejected: result.rejected.length, status: 'succeeded', at: new Date(), by: this.who() }
-      this.imports.unshift(rec)
-      this.log('Data import', `${rec.category}, ${rec.term}: ${rec.accepted} rows accepted, ${rec.rejected} rejected (${file}).`)
-      const job = { id: `j${Date.now()}`, name: 'Risk recalculation', detail: `Rules v${this.rules.version}, from ${file}`, status: 'running', at: new Date() }
-      this.jobs.unshift(job)
-      setTimeout(() => {
-        const j = this.jobs.find((x) => x.id === job.id)
-        if (j) {
-          j.status = 'succeeded'
-          j.detail = `Rules v${this.rules.version}, from ${file}: ${this.students.length} students checked, no risk level changed`
-        }
-        this.lastRecalc = new Date()
-        this.audit.unshift({ id: `a${this.audit.length + 1}`, at: new Date(), who: 'System', action: 'Risk recalculation', details: `After ${file}: no risk level changed.` })
-      }, 1400)
-      return rec
+    /** Applies an upload the backend has already checked (see DataView). */
+    async confirmImport(importId) {
+      const res = await this.save(api.post(`/imports/${importId}/commit`))
+      return res?.import || null
     },
     setLLM(on) {
       this.llmEnabled = on
-      this.log('Setting', on ? 'Language model for student messages switched on.' : 'Language model for student messages switched off: students now see the rule-based reasons.')
+      return this.save(api.put('/admin/settings/llm', { enabled: on }))
     },
-    setUser(email, change) {
-      const u = this.users.find((x) => x.email === email)
-      if (!u) return
-      if ('role' in change && change.role !== u.role) {
-        this.log('Access', `${u.name}: role changed from ${u.role} to ${change.role}.`)
-        u.role = change.role
-      }
-      if ('active' in change && change.active !== u.active) {
-        u.active = change.active
-        this.log('Access', `${u.name}: account ${u.active ? 'reactivated' : 'deactivated'}.`)
-      }
+    setUser(id, change) {
+      const u = this.users.find((x) => x.id === id)
+      if (!u) return null
+      if ('role' in change) u.role = change.role
+      if ('active' in change) u.active = change.active
+      return this.save(api.patch(`/admin/users/${id}`, change), { reference: true })
     },
   },
 })
