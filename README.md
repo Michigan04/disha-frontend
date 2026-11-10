@@ -53,8 +53,8 @@ One Vercel project serves both parts: the built frontend from `dist/`, and the F
 
    It applies the migrations and seeds the demo accounts and cohort. Running it again is safe. Do the same after adding a new migration.
 3. **Import the repository in Vercel** (Add New… → Project). Leave the detected settings; `vercel.json` sets the Vite build, the `dist` folder and the Python function.
-4. **Add the environment variables** listed in `.env.vercel` under Settings → Environment Variables: at least `DATABASE_URL`, `USE_NULL_POOL=true`, `JWT_SECRET`, `AUTO_MIGRATE=false` and `AUTO_SEED=false`. Optionally `VITE_GOOGLE_CLIENT_ID`.
-5. **Deploy.** Every push to `main` redeploys. Check `https://<your-project>.vercel.app/api/health`: it answers `{"status":"ok"}` when the function can reach Neon.
+4. **Give the project the database URL**: either connect Neon under the project's **Storage** tab (Vercel then adds `POSTGRES_URL`, which the backend uses), or add `DATABASE_URL` (the pooled URL) under Settings → Environment Variables. Recommended: a `JWT_SECRET`. On Vercel the backend already defaults `USE_NULL_POOL=true`, `AUTO_MIGRATE=false` and `AUTO_SEED=false`; `.env.vercel` lists the rest. Optionally `VITE_GOOGLE_CLIENT_ID`.
+5. **Deploy.** Every push to `main` redeploys. Check `https://<your-project>.vercel.app/api/health`: it answers `{"status":"ok", ...}` when the function can reach Neon, and names the problem otherwise (for example `"host": "localhost"` means no database URL is set).
 
 If you use Google Calendar, add the Vercel URL to the OAuth client's **Authorised JavaScript origins**.
 

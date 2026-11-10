@@ -6,16 +6,14 @@ start with /api, so paths arrive unchanged.
 
 Set up the Neon database once before the first deploy (see README, "Deploy on
 Vercel"): `python -m app.bootstrap` from the backend folder with DATABASE_URL
-pointing at Neon. Keep AUTO_MIGRATE and AUTO_SEED false on Vercel so cold starts
-do not run migrations.
+pointing at Neon.
 
 Environment variables (Vercel → Settings → Environment Variables):
-  DATABASE_URL    Neon pooled connection string (postgresql://...-pooler...?sslmode=require)
-  USE_NULL_POOL   true
-  JWT_SECRET      long random string
-  AUTO_MIGRATE    false
-  AUTO_SEED       false
-  Optional: SHOW_DEMO_ACCOUNTS, DEMO_PASSWORD, HASH_PASSWORDS, OLLAMA_URL, OLLAMA_MODEL
+  DATABASE_URL    Neon pooled connection string. Not needed when the Neon
+                  integration is connected: its POSTGRES_URL is used instead.
+  JWT_SECRET      optional; derived from DATABASE_URL when unset.
+On Vercel (VERCEL=1) USE_NULL_POOL defaults to true and AUTO_MIGRATE / AUTO_SEED
+to false. Optional: SHOW_DEMO_ACCOUNTS, DEMO_PASSWORD, HASH_PASSWORDS, OLLAMA_*.
 """
 import json
 import logging

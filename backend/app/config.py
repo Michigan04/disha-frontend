@@ -1,10 +1,14 @@
+import hashlib
+import os
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import field_validator
+from pydantic import AliasChoices, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
+# Vercel sets VERCEL=1 in its functions; serverless defaults below follow it.
+ON_VERCEL = bool(os.environ.get("VERCEL"))
 
 
 class Settings(BaseSettings):
@@ -13,10 +17,12 @@ class Settings(BaseSettings):
     # --- Database ---
     # For local dev: postgresql+psycopg://user:pass@localhost:5432/disha
     # For Neon: postgresql+psycopg://user:pass@ep-xxx.neon.tech/disha?sslmode=require
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/disha"
-    # Set true on Vercel/Neon so SQLAlchemy does not keep a connection pool
+    # Vercel's Neon integration sets POSTGRES_URL; DATABASE_URL wins when both exist.
+    database_url: str = Field("postgresql+psycopg://postgres:postgres@localhost:5432/disha",
+                              validation_alias=AliasChoices("DATABASE_URL", "POSTGRES_URL"))
+    # True on Vercel/Neon so SQLAlchemy does not keep a connection pool
     # (Neon's pooler handles pooling; SQLAlchemy's pool would exhaust the limit).
-    use_null_pool: bool = False
+    use_null_pool: bool = ON_VERCEL
 
     @field_validator("database_url")
     @classmethod
@@ -29,7 +35,9 @@ class Settings(BaseSettings):
         return url
 
     # --- Auth ---
-    jwt_secret: str = "change-me"
+    # Unset: derived from DATABASE_URL, so it is secret without extra set-up.
+    # Set JWT_SECRET to keep sign-ins valid when the database URL changes.
+    jwt_secret: str = ""
     jwt_expire_minutes: int = 720
 
     # --- CORS ---
@@ -38,8 +46,9 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173,http://localhost:4173"
 
     # --- Startup behaviour ---
-    auto_migrate: bool = True
-    auto_seed: bool = True
+    # Off by default on Vercel: set the database up once with `python -m app.bootstrap`.
+    auto_migrate: bool = not ON_VERCEL
+    auto_seed: bool = not ON_VERCEL
     # Seed the 60-student demo cohort (false = only admin + reference data)
     seed_demo_data: bool = True
 
@@ -62,6 +71,12 @@ class Settings(BaseSettings):
     # Leave OLLAMA_MODEL empty to use the built-in rule-based replies.
     ollama_url: str = "http://localhost:11434"
     ollama_model: str = ""
+
+    @model_validator(mode="after")
+    def _default_jwt_secret(self):
+        if not self.jwt_secret:
+            self.jwt_secret = hashlib.sha256(("disha-jwt:" + self.database_url).encode()).hexdigest()
+        return self
 
     @property
     def cors_list(self) -> list[str]:
