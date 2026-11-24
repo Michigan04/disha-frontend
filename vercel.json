@@ -13,6 +13,12 @@
     }
   },
 
+  "redirects": [
+    { "source": "/docs{/}?", "destination": "/api/docs", "permanent": false },
+    { "source": "/redoc{/}?", "destination": "/api/redoc", "permanent": false },
+    { "source": "/openapi.json", "destination": "/api/openapi.json", "permanent": false }
+  ],
+
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.py" }
   ],
